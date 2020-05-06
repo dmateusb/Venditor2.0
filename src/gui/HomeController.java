@@ -764,6 +764,7 @@ public class HomeController implements Initializable {
         File file = new File("./src/res/img/tempphoto.jpg");
         javafx.scene.image.Image image = new Image(file.toURI().toString());
         imageViewDetalleContrato.setImage(image);
+        System.out.println("PUSHHHH");
     }
 
     public void llenarDatos(){
