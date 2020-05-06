@@ -757,11 +757,11 @@ public class HomeController implements Initializable {
         ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
         try {
             BufferedImage bImage = ImageIO.read(bis);
-            ImageIO.write(bImage, "jpg", new File("./Venditor/src/res/img/tempphoto.jpg"));
+            ImageIO.write(bImage, "jpg", new File("./src/res/img/tempphoto.jpg"));
         } catch (IOException ex) {
             System.err.println(ex.toString());
         }
-        File file = new File("./Venditor/src/res/img/tempphoto.jpg");
+        File file = new File("./src/res/img/tempphoto.jpg");
         javafx.scene.image.Image image = new Image(file.toURI().toString());
         imageViewDetalleContrato.setImage(image);
     }
