@@ -418,7 +418,6 @@ public class HomeController implements Initializable {
             pantallaActiva = 18;
             vboxBusquedaCliente.toFront();
             anchorTablaClientes.toFront();
-
             new FadeIn(vboxBusquedaCliente).play();
         }
     }
@@ -764,7 +763,6 @@ public class HomeController implements Initializable {
         File file = new File("./src/res/img/tempphoto.jpg");
         javafx.scene.image.Image image = new Image(file.toURI().toString());
         imageViewDetalleContrato.setImage(image);
-        System.out.println("PUSHHHH");
     }
 
     public void llenarDatos(){
@@ -1069,6 +1067,11 @@ public class HomeController implements Initializable {
         llenarDatos_DetalleContrato();
         anchorDetallesContrato.toFront();
     }
+    @FXML
+    public void regresarBusquedaClientes(){
+        vboxBusquedaCliente.toFront();
+        anchorTablaClientes.toFront();
+    }
 
     @FXML
     public void verDetalleContrato(){
@@ -1130,7 +1133,7 @@ public class HomeController implements Initializable {
         ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
         try {
             BufferedImage bImage = ImageIO.read(bis);
-            ImageIO.write(bImage, "jpg", new File("./Venditor/src/res/img/tempphoto.jpg"));
+            ImageIO.write(bImage, "jpg", new File("./src/res/img/tempphoto.jpg"));
         } catch (IOException ex) {
             System.err.println(ex.toString());
         }
