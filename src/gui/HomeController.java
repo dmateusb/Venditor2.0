@@ -12,13 +12,11 @@ import animatefx.animation.FadeIn;
 import com.github.sarxos.webcam.Webcam;
 import com.twilio.Twilio;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -30,6 +28,7 @@ import java.util.Stack;
 import com.twilio.rest.api.v2010.account.IncomingPhoneNumber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -437,8 +436,7 @@ public class HomeController implements Initializable {
                 btnFotoNuevoCliente.setDisable(false);
                 btnInsertarDatosNuevoCliente.setDisable(true);
             }
-            File file = new File("./temp/fotocedula.PNG");
-            file.delete();
+
         } else {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setContentText("Favor revise el número de cédula");
@@ -637,7 +635,7 @@ public class HomeController implements Initializable {
     }
     @FXML
     public void buscarClienteBusquedaCliente() {
-        llenarDatos(txtBusquedaCliente.getText());
+        llenarDatosDetalleCliente(txtBusquedaCliente.getText());
     }
     @FXML
     public void habilitarCambioPorcentaje(){
@@ -645,7 +643,7 @@ public class HomeController implements Initializable {
         btnCambiarPorcentaje.setDisable(true);
     }
 
-    public void llenarDatos(String cedula){
+    public void llenarDatosDetalleCliente(String cedula){
         Object[][] informacionCliente = controlBd.GetClienteNuevoContrato(cedula);
         txtNombreBusquedaCliente.setText(informacionCliente[0][1].toString());
         txtApellidoBusquedaCliente.setText(informacionCliente[0][2].toString());
@@ -654,16 +652,7 @@ public class HomeController implements Initializable {
         txtTelefono2BusquedaCliente.setText(informacionCliente[0][5].toString());
         txtCorreoBusquedaCliente.setText(informacionCliente[0][6].toString());
         byte[] imagen = controlBd.ConsultarFotoVisitante(cedula);
-        ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
-        try {
-            BufferedImage bImage = ImageIO.read(bis);
-            ImageIO.write(bImage, "jpg", new File("./src/res/img/tempphoto.jpg"));
-        } catch (IOException ex) {
-            System.err.println(ex.toString());
-        }
-        File file = new File("./src/res/img/tempphoto.jpg");
-        javafx.scene.image.Image image = new Image(file.toURI().toString());
-        imageViewBusquedaCliente.setImage(image);
+        mostrarFoto(imagen,imageViewBusquedaCliente);
     }
 
     public void llenarDatos_DetalleContrato(String numeroContrato, String cedula){
@@ -703,17 +692,10 @@ public class HomeController implements Initializable {
         txtSubcategoria_DetalleContrato.setText(informacionArticulo[0][3].toString());
 
         byte[] imagen = controlBd.ConsultarFotoVisitante(Integer.toString(TablaContratos.getSelectionModel().getSelectedItem().getCedula()));
-        ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
-        try {
-            BufferedImage bImage = ImageIO.read(bis);
-            ImageIO.write(bImage, "jpg", new File("./Venditor/src/res/img/tempphoto.jpg"));
-        } catch (IOException ex) {
-            System.err.println(ex.toString());
-        }
-        File file = new File("./Venditor/src/res/img/tempphoto.jpg");
-        javafx.scene.image.Image image = new Image(file.toURI().toString());
-        imageViewDetalleContrato.setImage(image);
+        mostrarFoto(imagen,imageViewDetalleContrato);
     }
+
+
 
 
     public void llenarDatos_DetalleContrato(){
@@ -751,21 +733,13 @@ public class HomeController implements Initializable {
         txtDescripcion_DetalleContrato.setText(informacionArticulo[0][4].toString());
         txtCategoria_DetalleContrato.setText(informacionArticulo[0][2].toString());
         txtSubcategoria_DetalleContrato.setText(informacionArticulo[0][3].toString());
+        //getClass.getResource("ruta")
 
         byte[] imagen = controlBd.ConsultarFotoVisitante(Integer.toString(TablaContratos.getSelectionModel().getSelectedItem().getCedula()));
-        ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
-        try {
-            BufferedImage bImage = ImageIO.read(bis);
-            ImageIO.write(bImage, "jpg", new File("./src/res/img/tempphoto.jpg"));
-        } catch (IOException ex) {
-            System.err.println(ex.toString());
-        }
-        File file = new File("./src/res/img/tempphoto.jpg");
-        javafx.scene.image.Image image = new Image(file.toURI().toString());
-        imageViewDetalleContrato.setImage(image);
+        mostrarFoto(imagen,imageViewDetalleContrato);
     }
 
-    public void llenarDatos(){
+    public void llenarDatosDetalleCliente(){
         Object[][] informacionCliente = controlBd.GetClienteNuevoContrato(Procedimientos.getCedula());
         txtNombreBusquedaCliente.setText(informacionCliente[0][1].toString());
         txtApellidoBusquedaCliente.setText(informacionCliente[0][2].toString());
@@ -774,16 +748,8 @@ public class HomeController implements Initializable {
         txtTelefono2BusquedaCliente.setText(informacionCliente[0][5].toString());
         txtCorreoBusquedaCliente.setText(informacionCliente[0][6].toString());
         byte[] imagen = controlBd.ConsultarFotoVisitante(txtBusquedaCliente.getText());
-        ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
-        try {
-            BufferedImage bImage = ImageIO.read(bis);
-            ImageIO.write(bImage, "jpg", new File("./Venditor/src/res/img/tempphoto.jpg"));
-        } catch (IOException ex) {
-            System.err.println(ex.toString());
-        }
-        File file = new File("./Venditor/src/res/img/tempphoto.jpg");
-        javafx.scene.image.Image image = new Image(file.toURI().toString());
-        imageViewBusquedaCliente.setImage(image);
+        mostrarFoto(imagen,imageViewDetalleContrato);
+
     }
 
     public void setTxtBusquedaCliente(String txtBusquedaCliente) {
@@ -1050,13 +1016,13 @@ public class HomeController implements Initializable {
 
     @FXML
     public void verDetalleTablaClientes(){
-        llenarDatos(Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString());
+        llenarDatosDetalleCliente(Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString());
         mostrarTablaInicialContratos_BusquedaClientes(Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString());
         anchorDetallesCliente.toFront();
     }
     @FXML
     public void verDetalleCliente(){
-        llenarDatos(txtCedula_DetalleContrato.getText());
+        llenarDatosDetalleCliente(txtCedula_DetalleContrato.getText());
         //mostrarTablaInicialContratos_BusquedaClientes();
 
         anchorDetallesCliente.toFront();
@@ -1130,30 +1096,19 @@ public class HomeController implements Initializable {
     @FXML
     public void verFoto_NuevaRetroventa(){
         byte[] imagen = controlBd.ConsultarFotoVisitante(txtcedulaNuevaRetroventa.getText());
-        ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
-        try {
-            BufferedImage bImage = ImageIO.read(bis);
-            ImageIO.write(bImage, "jpg", new File("./src/res/img/tempphoto.jpg"));
-        } catch (IOException ex) {
-            System.err.println(ex.toString());
-        }
-        File file = new File("./Venditor/src/res/img/tempphoto.jpg");
-//        javafx.scene.image.Image image = new Image(file.toURI().toString());
-//        imageViewBusquedaCliente.setImage(image);
-//        file.delete();
-        if(!Desktop.isDesktopSupported()){
-            System.out.println("Desktop is not supported");
-            return;
-        }
-        Desktop desktop = Desktop.getDesktop();
-        if(file.exists()) {
-            try {
-                desktop.open(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        file.delete();
+       // mostrarfoto(imagen);
 
+    }
+
+    public void mostrarFoto(byte[] imagen, ImageView panelImagen) {
+        ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
+        BufferedImage bImage = null;
+        try {
+            bImage = ImageIO.read(bis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Image image = SwingFXUtils.toFXImage(bImage, null);
+        panelImagen.setImage(image);
     }
 }
