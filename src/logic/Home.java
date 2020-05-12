@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.BasicConfigurator;
 
+import java.net.URL;
+
 /**
  *
  * @author david
@@ -46,7 +48,11 @@ public class Home extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+        /*Class clazz=Home.class;
+        URL url = clazz.getResource("../img/tempphoto.jpg");
+        */
+
+       Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
         stage.initStyle(StageStyle.UNDECORATED);
         Scene scene = new Scene(root);
         stage.setScene(scene);
