@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="daec976d-cce5-43f9-94e6-2129995b6b42" name="Default Changelist" comment="Commit 2//Arreglo de rutas">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="daec976d-cce5-43f9-94e6-2129995b6b42" name="Default Changelist" comment="Commit para hacer pull">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,24 +24,6 @@
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
         <item name="@localhost" type="feb32156:DbDataSourceImpl" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="venditor: schema" type="ebfa3cd1:MariaImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="venditor: schema" type="ebfa3cd1:MariaImplModel$Schema" />
-        <item name="clientes: table" type="dbc44a63:MariaImplModel$Table" />
       </path>
     </expand>
     <select />
@@ -105,12 +84,7 @@
               <path>
                 <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
                 <item name="root:@localhost" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="com.intellij.database.console.session.MessageBusSession@7991c379" type="9fbbdea:ServiceModel$ServiceNode" />
-              </path>
-              <path>
-                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-                <item name="root:@localhost" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="com.intellij.database.console.session.MessageBusSession@3506d75b" type="9fbbdea:ServiceModel$ServiceNode" />
+                <item name="com.intellij.database.console.session.MessageBusSession@237b59c8" type="9fbbdea:ServiceModel$ServiceNode" />
               </path>
             </expand>
             <select />
@@ -130,7 +104,8 @@
       <option name="presentableId" value="Default" />
       <updated>1588806048455</updated>
       <workItem from="1588806057913" duration="2238000" />
-      <workItem from="1589140583677" duration="888000" />
+      <workItem from="1589140583677" duration="3072000" />
+      <workItem from="1589240879090" duration="746000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 2//Arreglo de rutas">
       <created>1588807379935</created>
@@ -146,7 +121,14 @@
       <option name="project" value="LOCAL" />
       <updated>1589141390139</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Test1">
+      <created>1589141532507</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1589141532507</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,41 +136,31 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commit 2//Arreglo de rutas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit 2//Arreglo de rutas" />
+    <MESSAGE value="Test1" />
+    <MESSAGE value="Commit para hacer pull" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit para hacer pull" />
   </component>
   <component name="WindowStateProjectService">
     <state x="361" y="72" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588806583195">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="72" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1588806583195" />
-    <state x="347" y="8" key="CommitChangelistDialog2" timestamp="1589141383587">
+    <state x="347" y="8" key="CommitChangelistDialog2" timestamp="1589241526825">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="347" y="8" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1589141383587" />
+    <state x="347" y="8" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1589241526825" />
     <state x="21" y="30" key="DiffContextDialog" timestamp="1589141311126">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="21" y="30" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1589141311126" />
-    <state width="0" height="0" key="GridCell.Tab.0.bottom" timestamp="1589140597198">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="0" height="0" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589140597198" />
-    <state width="0" height="0" key="GridCell.Tab.0.center" timestamp="1589140597198">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="0" height="0" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589140597198" />
-    <state width="0" height="0" key="GridCell.Tab.0.left" timestamp="1589140597198">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="0" height="0" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589140597198" />
-    <state width="0" height="0" key="GridCell.Tab.0.right" timestamp="1589140597198">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="0" height="0" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589140597198" />
     <state width="194" height="457" key="HiddenNamespacesPopup" timestamp="1588806698682">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="194" height="457" key="HiddenNamespacesPopup/0.0.1536.824@0.0.1536.824" timestamp="1588806698682" />
+    <state x="481" y="129" key="MultipleFileMergeDialog" timestamp="1589141571881">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="481" y="129" key="MultipleFileMergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1589141571881" />
     <state x="277" y="56" key="SettingsEditor" timestamp="1588807948477">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -197,13 +169,17 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="146" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1588807391858" />
-    <state x="465" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1589140588190">
+    <state x="465" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1589240917487">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="238" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1589140588190" />
-    <state x="498" y="205" key="git4idea.merge.GitPullDialog" timestamp="1589141398805">
+    <state x="465" y="238" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1589240917487" />
+    <state x="498" y="205" key="git4idea.merge.GitPullDialog" timestamp="1589241533205">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="498" y="205" key="git4idea.merge.GitPullDialog/0.0.1536.824@0.0.1536.824" timestamp="1589141398805" />
+    <state x="498" y="205" key="git4idea.merge.GitPullDialog/0.0.1536.824@0.0.1536.824" timestamp="1589241533205" />
+    <state x="542" y="308" key="git4idea.ui.GitResetDialog" timestamp="1589241642149">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="542" y="308" key="git4idea.ui.GitResetDialog/0.0.1536.824@0.0.1536.824" timestamp="1589241642149" />
   </component>
 </project>
