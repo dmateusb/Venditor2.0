@@ -57,6 +57,7 @@ public class HomeController implements Initializable {
 
     private String usuario;
     private String pass;
+    private String cedulaSeleccionada;
     private ControlBd controlBd = new ControlBd("root", "");
     @FXML private ImageView imageViewBusquedaCliente;
     @FXML private ImageView imageViewDetalleContrato;
@@ -77,7 +78,8 @@ public class HomeController implements Initializable {
     @FXML private Button btnVerDetalleTablaClientes;
     @FXML private Button btnVerDetallesContratos;
     @FXML private Button btnVerFoto;
-
+    @FXML private Button btnModificarDetalleCliente;
+    @FXML private Button btnGuardarDetalleCliente;
     //Ventana Detalle Contrato
     @FXML private TextField txtNumeroContrato_DetalleContrato;
     @FXML private TextField txtFechaInicio_DetalleContrato;
@@ -1022,7 +1024,8 @@ public class HomeController implements Initializable {
 
     @FXML
     public void verDetalleTablaClientes(){
-        llenarDatosDetalleCliente(Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString());
+        cedulaSeleccionada=Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString();
+        llenarDatosDetalleCliente(cedulaSeleccionada);
         mostrarTablaInicialContratos_BusquedaClientes(Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString());
         anchorDetallesCliente.toFront();
     }
@@ -1031,6 +1034,7 @@ public class HomeController implements Initializable {
         //llenarDatosDetalleCliente(txtCedula_DetalleContrato.getText());
         llenarDatosDetalleCliente(txtCedula_DetalleContrato.getText());
         mostrarTablaInicialContratos_BusquedaClientes(txtCedula_DetalleContrato.getText());
+        btnModificarDetalleCliente.toFront();
         //mostrarTablaInicialContratos_BusquedaClientes();
 
         anchorDetallesCliente.toFront();
@@ -1042,6 +1046,35 @@ public class HomeController implements Initializable {
         anchorDetallesContrato.toFront();
     }
     @FXML
+    public void modificarDetalleCLienteOnClic(){
+        txtNombreBusquedaCliente.setEditable(true);
+        txtApellidoBusquedaCliente.setEditable(true);
+        txtDireccionBusquedaCliente.setEditable(true);
+        txtTelefono1BusquedaCliente.setEditable(true);
+        txtTelefono2BusquedaCliente.setEditable(true);
+        txtCorreoBusquedaCliente.setEditable(true);
+        btnGuardarDetalleCliente.toFront();
+    }
+    @FXML
+    public void guardarDetalleCLienteOnClic(){
+        controlBd.UpdateCliente(
+                txtNombreBusquedaCliente.getText(),
+                txtApellidoBusquedaCliente.getText(),
+                txtDireccionBusquedaCliente.getText(),
+                txtTelefono1BusquedaCliente.getText(),
+                txtTelefono2BusquedaCliente.getText(),
+                txtCorreoBusquedaCliente.getText(),
+                cedulaSeleccionada
+        );
+        txtNombreBusquedaCliente.setEditable(false);
+        txtApellidoBusquedaCliente.setEditable(false);
+        txtDireccionBusquedaCliente.setEditable(false);
+        txtTelefono1BusquedaCliente.setEditable(false);
+        txtTelefono2BusquedaCliente.setEditable(false);
+        txtCorreoBusquedaCliente.setEditable(false);
+        btnModificarDetalleCliente.toFront();
+    }
+    @FXML
     public void regresarBusquedaClientes(){
         mostrarTablaInicial_Clientes();
         vboxBusquedaCliente.toFront();
@@ -1050,9 +1083,10 @@ public class HomeController implements Initializable {
 
     @FXML
     public void verDetalleContrato(){
+        cedulaSeleccionada=txtCedula_DetalleContrato.getText();
         llenarDatos_DetalleContrato(
                 TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem().getNumeroContrato().toString(),
-                txtCedula_DetalleContrato.getText());
+                cedulaSeleccionada);
         anchorDetallesContrato.toFront();
         vboxContratos.toFront();
     }
