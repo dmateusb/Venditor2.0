@@ -378,12 +378,14 @@ public class HomeController implements Initializable {
             pantallaActiva = 3;
             vboxNuevaRetroventa.toFront();
             new FadeIn(vboxNuevaRetroventa).play();
-        } else if (event.getSource() == btncontrato && pantallaActiva != 4) {
-            pantallaActiva = 4;
+        } else if (event.getSource() == btncontrato ) {
             mostrarTablaInicial();
             anchorTablaContratos.toFront();
             vboxContratos.toFront();
-            new FadeIn(vboxContratos).play();
+            if(pantallaActiva != 4){
+                new FadeIn(vboxContratos).play();
+            }
+            pantallaActiva = 4;
 
         } else if (event.getSource() == btncontrato) {
             anchorDetallesContrato.toBack();

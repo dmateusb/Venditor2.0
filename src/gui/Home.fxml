@@ -27,318 +27,6 @@
    <children>
       <AnchorPane layoutX="332.0" prefHeight="768.0" prefWidth="1004.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox fx:id="vboxContratos" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
-                     <children>
-                        <AnchorPane fx:id="pnCrearUsuario4" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #e2e2e2;">
-                           <children>
-                              <FontAwesomeIcon iconName="EXCHANGE" layoutX="365.0" layoutY="63.0" size="3em" />
-                              <Text layoutX="416.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONTRATOS">
-                                 <font>
-                                    <Font name="System Bold" size="36.0" />
-                                 </font>
-                              </Text>
-                              <AnchorPane fx:id="anchorTablaContratos" layoutX="14.0" layoutY="96.0" prefHeight="615.0" prefWidth="940.0" styleClass="achPaneGris">
-                                 <children>
-                                    <TableView fx:id="TablaContratos" layoutX="14.0" layoutY="114.0" onMouseClicked="#onClicTablaContratos" prefHeight="438.0" prefWidth="911.0">
-                                      <columns>
-                                        <TableColumn fx:id="numeroContrato" minWidth="2.4000244140625" prefWidth="144.800048828125" text="# Contrato" />
-                                          <TableColumn fx:id="vencimiento" prefWidth="138.39990234375" text="Fecha inicio" />
-                                        <TableColumn fx:id="cedula" prefWidth="92.00000381469727" text="Cédula" />
-                                          <TableColumn fx:id="nombre" prefWidth="147.9999237060547" text="Nombre" />
-                                          <TableColumn fx:id="apellidos" prefWidth="146.39996337890625" text="Apellidos" />
-                                          <TableColumn fx:id="descripcion" prefWidth="239.20000000000005" text="Descripción Artículo" />
-                                      </columns>
-                                    </TableView>
-                                    <Label layoutX="337.0" layoutY="15.0" styleClass="textos" text="Contrato">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txtNumeroContrato" layoutX="14.0" layoutY="51.0" onKeyReleased="#mostrarTablaContrato" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                                    <Label layoutX="14.0" layoutY="15.0" styleClass="textos" text="Cédula">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txtCedulaContratos" layoutX="337.0" layoutY="50.0" onKeyReleased="#mostrarTablaCedula" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                                    <Label layoutX="659.0" layoutY="15.0" styleClass="textos" text="Estado">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <ComboBox fx:id="comboEstados" layoutX="659.0" layoutY="50.0" onAction="#cambioEstadoContratos" prefHeight="30.0" prefWidth="230.0" />
-                                    <Button fx:id="btnRetractar" layoutX="613.0" layoutY="570.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Retractar" textFill="WHITE">
-                                       <cursor>
-                                          <Cursor fx:constant="DEFAULT" />
-                                       </cursor>
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="btnRenovar" layoutX="794.0" layoutY="570.0" mnemonicParsing="false" onAction="#crearUsuario" prefHeight="30.0" prefWidth="130.0" styleClass="btnVerde" text="Renovar" textFill="WHITE">
-                                       <cursor>
-                                          <Cursor fx:constant="DEFAULT" />
-                                       </cursor>
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="btnVerDetallesContratos" disable="true" layoutX="14.0" layoutY="570.0" mnemonicParsing="false" onAction="#verDetalleContratos" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzul" text="Detalles">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Button>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane fx:id="anchorDetallesContrato" layoutX="20.0" layoutY="100.0" prefHeight="615.0" prefWidth="960.0" styleClass="achPaneGris">
-                                 <children>
-                                    <TextField fx:id="txtNumeroContrato_DetalleContrato" editable="false" layoutX="162.0" layoutY="74.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtFechaInicio_DetalleContrato" editable="false" layoutX="471.0" layoutY="74.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtFechaFinal_DetalleContrato" editable="false" layoutX="773.0" layoutY="71.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtEstado_DetalleContrato" editable="false" layoutX="162.0" layoutY="116.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtRenovaciones_DetalleContrato" editable="false" layoutX="471.0" layoutY="113.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtCreadoPor_DetalleContrato" editable="false" layoutX="773.0" layoutY="113.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtValor_DetalleContrato" editable="false" layoutX="162.0" layoutY="158.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtTiempo_DetalleContrato" editable="false" layoutX="471.0" layoutY="158.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtPorcentaje_DetalleContrato" editable="false" layoutX="773.0" layoutY="158.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextArea fx:id="txtDescripcion_DetalleContrato" editable="false" layoutX="192.0" layoutY="229.0" prefHeight="38.0" prefWidth="699.0" wrapText="true" />
-                                    <TextField fx:id="txtCategoria_DetalleContrato" editable="false" layoutX="162.0" layoutY="279.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtSubcategoria_DetalleContrato" editable="false" layoutX="471.0" layoutY="279.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <TextField fx:id="txtPeso_DetalleContrato" editable="false" layoutX="761.0" layoutY="280.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <Text layoutX="50.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="N° Contrato" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="353.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha Inicio" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="71.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <AnchorPane layoutX="690.0" layoutY="345.0" prefHeight="179.0" prefWidth="230.0" style="-fx-background-color: #fff;">
-                                       <children>
-                                          <ImageView fx:id="imageViewDetalleContrato" fitHeight="201.0" fitWidth="230.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
-                                       </children>
-                                    </AnchorPane>
-                                    <Text layoutX="50.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estado" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="661.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Porcentaje" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="50.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valor" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="353.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tiempo" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="640.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Peso" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="50.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Categoría" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="353.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subcategoría" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="661.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha Final" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="353.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Renovaciones" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="661.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creado por" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="19.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contrato" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font name="System Bold" size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="14.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artículo" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font name="System Bold" size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <Text layoutX="14.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font name="System Bold" size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <TextField fx:id="txtCedula_DetalleContrato" editable="false" layoutX="162.0" layoutY="353.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <Text layoutX="50.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cédula" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <TextField fx:id="txtPerfil_DetalleContrato" editable="false" layoutX="471.0" layoutY="353.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <Text layoutX="353.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Perfil" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <TextField fx:id="txtNombre_DetalleContrato" editable="false" layoutX="162.0" layoutY="393.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <Text layoutX="50.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <TextField fx:id="txtApellidos_DetalleContrato" editable="false" layoutX="471.0" layoutY="393.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <Text layoutX="353.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellidos" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <TextField fx:id="txtCorreo_DetalleContrato" editable="false" layoutX="162.0" layoutY="434.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <Text layoutX="50.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <TextField fx:id="txtDireccion_DetalleContrato" editable="false" layoutX="471.0" layoutY="434.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <Text layoutX="353.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dirección" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <TextField fx:id="txtTelefono1_DetalleContrato" editable="false" layoutX="162.0" layoutY="475.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <Text layoutX="50.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono 1" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <TextField fx:id="txtTelefono2_DetalleContrato" editable="false" layoutX="471.0" layoutY="475.0" prefHeight="30.0" prefWidth="160.0" />
-                                    <Text layoutX="353.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono 2" wrappingWidth="110.9999942779541">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Button layoutX="25.0" layoutY="570.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnAzulClaro" text="Duplicar" />
-                                    <Button layoutX="486.0" layoutY="516.0" mnemonicParsing="false" onAction="#verDetalleCliente" prefHeight="30.0" prefWidth="130.0" styleClass="btnVerde" text="Detalles Cliente" />
-                                    <Button layoutX="906.0" layoutY="-1.0" mnemonicParsing="false" onAction="#OcultarDetallesContrato" style="-fx-background-color: rgb(0,0,0,0);" text="X" textFill="#77202f">
-                                       <font>
-                                          <Font name="System Bold" size="14.0" />
-                                       </font>
-                                    </Button>
-                                    <Button layoutX="658.0" layoutY="570.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnAzul" text="Renovar" />
-                                    <Button layoutX="830.0" layoutY="570.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnNaranja" text="Retractar" />
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox fx:id="vboxHome" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
-                     <children>
-                        <AnchorPane fx:id="pnCrearUsuario1" prefHeight="719.0" prefWidth="966.0" style="-fx-background-color: #e2e2e2;">
-                           <children>
-                              <Label layoutX="24.0" layoutY="118.0" text="Uso frecuente">
-                                 <font>
-                                    <Font name="System Bold" size="25.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="25.0" layoutY="164.0" styleClass="shortCutsHome" text="Ir a la caja" textFill="#255958">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="24.0" layoutY="280.0" styleClass="shortCutsHome" text="Buscar cliente">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="24.0" layoutY="201.0" prefHeight="29.0" prefWidth="183.0" styleClass="shortCutsHome" text="Nuevo contrato">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="24.0" layoutY="240.0" styleClass="shortCutsHome" text="Renovar contrato">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="27.0" layoutY="422.0" text="Avisos">
-                                 <font>
-                                    <Font name="System Bold" size="25.0" />
-                                 </font>
-                              </Label>
-                              <Text layoutX="283.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Bienvenido a Venditor!">
-                                 <font>
-                                    <Font name="System Bold" size="36.0" />
-                                 </font>
-                              </Text>
-                              <Text layoutX="27.0" layoutY="491.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Hoy se vencieron 4 contratos" />
-                              <Label layoutX="27.0" layoutY="510.0" styleClass="shortCutsHome" text="Revísalos aquí">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <LineChart fx:id="graficaHome" layoutX="400.0" layoutY="169.0" legendVisible="false" prefHeight="506.0" prefWidth="549.0" title="Tendencia semanal" titleSide="BOTTOM">
-                                <xAxis>
-                                  <CategoryAxis side="BOTTOM" />
-                                </xAxis>
-                                <yAxis>
-                                  <NumberAxis side="LEFT" />
-                                </yAxis>
-                              </LineChart>
-                              <Text layoutX="27.0" layoutY="574.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Se enviaron 12 mensajes de texto." />
-                              <Label layoutX="26.0" layoutY="591.0" styleClass="shortCutsHome" text="Revísalos aquí">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="592.0" layoutY="118.0" text="Total empeños al día">
-                                 <font>
-                                    <Font name="System Bold" size="25.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="25.0" layoutY="321.0" styleClass="shortCutsHome" text="Lista de artículos">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="25.0" layoutY="363.0" styleClass="shortCutsHome" text="Nueva movimiento en caja">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
             <VBox fx:id="vboxnuevocliente" alignment="CENTER" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
@@ -430,6 +118,88 @@
                                  </font>
                               </Label>
                               <FontAwesomeIcon iconName="USER" layoutX="344.0" layoutY="82.0" size="3em" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox fx:id="vboxHome" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
+                     <children>
+                        <AnchorPane fx:id="pnCrearUsuario1" prefHeight="719.0" prefWidth="966.0" style="-fx-background-color: #e2e2e2;">
+                           <children>
+                              <Label layoutX="24.0" layoutY="118.0" text="Uso frecuente">
+                                 <font>
+                                    <Font name="System Bold" size="25.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="25.0" layoutY="164.0" styleClass="shortCutsHome" text="Ir a la caja" textFill="#255958">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="24.0" layoutY="280.0" styleClass="shortCutsHome" text="Buscar cliente">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="24.0" layoutY="201.0" prefHeight="29.0" prefWidth="183.0" styleClass="shortCutsHome" text="Nuevo contrato">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="24.0" layoutY="240.0" styleClass="shortCutsHome" text="Renovar contrato">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="27.0" layoutY="422.0" text="Avisos">
+                                 <font>
+                                    <Font name="System Bold" size="25.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="283.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Bienvenido a Venditor!">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="27.0" layoutY="491.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Hoy se vencieron 4 contratos" />
+                              <Label layoutX="27.0" layoutY="510.0" styleClass="shortCutsHome" text="Revísalos aquí">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <LineChart fx:id="graficaHome" layoutX="400.0" layoutY="169.0" legendVisible="false" prefHeight="506.0" prefWidth="549.0" title="Tendencia semanal" titleSide="BOTTOM">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </LineChart>
+                              <Text layoutX="27.0" layoutY="574.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Se enviaron 12 mensajes de texto." />
+                              <Label layoutX="26.0" layoutY="591.0" styleClass="shortCutsHome" text="Revísalos aquí">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="592.0" layoutY="118.0" text="Total empeños al día">
+                                 <font>
+                                    <Font name="System Bold" size="25.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="25.0" layoutY="321.0" styleClass="shortCutsHome" text="Lista de artículos">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="25.0" layoutY="363.0" styleClass="shortCutsHome" text="Nueva movimiento en caja">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                      </children>
@@ -766,6 +536,236 @@
                                        <cursor>
                                           <Cursor fx:constant="DEFAULT" />
                                        </cursor>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox fx:id="vboxContratos" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
+                     <children>
+                        <AnchorPane fx:id="pnCrearUsuario4" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #e2e2e2;">
+                           <children>
+                              <FontAwesomeIcon iconName="EXCHANGE" layoutX="365.0" layoutY="63.0" size="3em" />
+                              <Text layoutX="416.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONTRATOS">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <AnchorPane fx:id="anchorDetallesContrato" layoutX="20.0" layoutY="100.0" prefHeight="615.0" prefWidth="960.0" styleClass="achPaneGris">
+                                 <children>
+                                    <TextField fx:id="txtNumeroContrato_DetalleContrato" editable="false" layoutX="162.0" layoutY="74.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtFechaInicio_DetalleContrato" editable="false" layoutX="471.0" layoutY="74.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtFechaFinal_DetalleContrato" editable="false" layoutX="773.0" layoutY="71.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtEstado_DetalleContrato" editable="false" layoutX="162.0" layoutY="116.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtRenovaciones_DetalleContrato" editable="false" layoutX="471.0" layoutY="113.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtCreadoPor_DetalleContrato" editable="false" layoutX="773.0" layoutY="113.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtValor_DetalleContrato" editable="false" layoutX="162.0" layoutY="158.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtTiempo_DetalleContrato" editable="false" layoutX="471.0" layoutY="158.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtPorcentaje_DetalleContrato" editable="false" layoutX="773.0" layoutY="158.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextArea fx:id="txtDescripcion_DetalleContrato" editable="false" layoutX="192.0" layoutY="229.0" prefHeight="38.0" prefWidth="699.0" wrapText="true" />
+                                    <TextField fx:id="txtCategoria_DetalleContrato" editable="false" layoutX="162.0" layoutY="279.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtSubcategoria_DetalleContrato" editable="false" layoutX="471.0" layoutY="279.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <TextField fx:id="txtPeso_DetalleContrato" editable="false" layoutX="761.0" layoutY="280.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <Text layoutX="50.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="N° Contrato" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="353.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha Inicio" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="71.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <AnchorPane layoutX="690.0" layoutY="345.0" prefHeight="179.0" prefWidth="230.0" style="-fx-background-color: #fff;">
+                                       <children>
+                                          <ImageView fx:id="imageViewDetalleContrato" fitHeight="201.0" fitWidth="230.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </AnchorPane>
+                                    <Text layoutX="50.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estado" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="661.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Porcentaje" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="50.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valor" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="353.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tiempo" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="640.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Peso" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="50.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Categoría" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="353.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subcategoría" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="661.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha Final" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="353.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Renovaciones" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="661.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creado por" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="19.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contrato" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="14.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artículo" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <Text layoutX="14.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="txtCedula_DetalleContrato" editable="false" layoutX="162.0" layoutY="353.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <Text layoutX="50.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cédula" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="txtPerfil_DetalleContrato" editable="false" layoutX="471.0" layoutY="353.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <Text layoutX="353.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Perfil" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="txtNombre_DetalleContrato" editable="false" layoutX="162.0" layoutY="393.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <Text layoutX="50.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="txtApellidos_DetalleContrato" editable="false" layoutX="471.0" layoutY="393.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <Text layoutX="353.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellidos" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="txtCorreo_DetalleContrato" editable="false" layoutX="162.0" layoutY="434.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <Text layoutX="50.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="txtDireccion_DetalleContrato" editable="false" layoutX="471.0" layoutY="434.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <Text layoutX="353.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dirección" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="txtTelefono1_DetalleContrato" editable="false" layoutX="162.0" layoutY="475.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <Text layoutX="50.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono 1" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="txtTelefono2_DetalleContrato" editable="false" layoutX="471.0" layoutY="475.0" prefHeight="30.0" prefWidth="160.0" />
+                                    <Text layoutX="353.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono 2" wrappingWidth="110.9999942779541">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Button layoutX="25.0" layoutY="570.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnAzulClaro" text="Duplicar" />
+                                    <Button layoutX="486.0" layoutY="516.0" mnemonicParsing="false" onAction="#verDetalleCliente" prefHeight="30.0" prefWidth="130.0" styleClass="btnVerde" text="Detalles Cliente" />
+                                    <Button layoutX="906.0" layoutY="-1.0" mnemonicParsing="false" onAction="#OcultarDetallesContrato" style="-fx-background-color: rgb(0,0,0,0);" text="X" textFill="#77202f">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Button layoutX="658.0" layoutY="570.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnAzul" text="Renovar" />
+                                    <Button layoutX="830.0" layoutY="570.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnNaranja" text="Retractar" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="anchorTablaContratos" layoutX="14.0" layoutY="96.0" prefHeight="615.0" prefWidth="940.0" styleClass="achPaneGris">
+                                 <children>
+                                    <TableView fx:id="TablaContratos" layoutX="14.0" layoutY="114.0" onMouseClicked="#onClicTablaContratos" prefHeight="438.0" prefWidth="911.0">
+                                      <columns>
+                                        <TableColumn fx:id="numeroContrato" minWidth="2.4000244140625" prefWidth="144.800048828125" text="# Contrato" />
+                                          <TableColumn fx:id="vencimiento" prefWidth="138.39990234375" text="Fecha inicio" />
+                                        <TableColumn fx:id="cedula" prefWidth="92.00000381469727" text="Cédula" />
+                                          <TableColumn fx:id="nombre" prefWidth="147.9999237060547" text="Nombre" />
+                                          <TableColumn fx:id="apellidos" prefWidth="146.39996337890625" text="Apellidos" />
+                                          <TableColumn fx:id="descripcion" prefWidth="239.20000000000005" text="Descripción Artículo" />
+                                      </columns>
+                                    </TableView>
+                                    <Label layoutX="337.0" layoutY="15.0" styleClass="textos" text="Contrato">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtNumeroContrato" layoutX="337.0" layoutY="50.0" onKeyReleased="#mostrarTablaContrato" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                                    <Label layoutX="14.0" layoutY="15.0" styleClass="textos" text="Cédula">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtCedulaContratos" layoutX="14.0" layoutY="50.0" onKeyReleased="#mostrarTablaCedula" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                                    <Label layoutX="659.0" layoutY="15.0" styleClass="textos" text="Estado">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="comboEstados" layoutX="659.0" layoutY="50.0" onAction="#cambioEstadoContratos" prefHeight="30.0" prefWidth="230.0" />
+                                    <Button fx:id="btnRetractar" layoutX="613.0" layoutY="570.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Retractar" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="btnRenovar" layoutX="794.0" layoutY="570.0" mnemonicParsing="false" onAction="#crearUsuario" prefHeight="30.0" prefWidth="130.0" styleClass="btnVerde" text="Renovar" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="btnVerDetallesContratos" disable="true" layoutX="14.0" layoutY="570.0" mnemonicParsing="false" onAction="#verDetalleContratos" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzul" text="Detalles">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
