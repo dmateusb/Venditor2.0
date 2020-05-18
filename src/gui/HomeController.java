@@ -249,7 +249,6 @@ public class HomeController implements Initializable {
         comboCategoria.setItems(categorias);
         comboEstados.setItems(estados);
         comboEstados.getSelectionModel().select(0);
-        mostrarTablaInicial_Clientes();
         graficar();
         InteresOro();
         //mostrarTablaInicial();
@@ -351,6 +350,7 @@ public class HomeController implements Initializable {
 
         System.out.println(incomingPhoneNumber.getSid());
 
+
 //        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 //        Message message = Message.creator(
 //                new com.twilio.type.PhoneNumber("+573124038290"),
@@ -368,10 +368,13 @@ public class HomeController implements Initializable {
 
     @FXML
     public void botonesHandle(ActionEvent event) {
-        if (event.getSource() == btnnuevaretro && pantallaActiva != 1) {
+        if (event.getSource() == btnnuevaretro) {
             vboxNuevaRetroventa.toFront();
+            if(pantallaActiva != 1){
+                new FadeIn(vboxNuevaRetroventa).play();
+            }
             pantallaActiva = 1;
-            new FadeIn(vboxNuevaRetroventa).play();
+
         } else if (event.getSource() == btnventa) {
 
         } else if (event.getSource() == btnnuevaretro && pantallaActiva != 3) {
@@ -416,6 +419,7 @@ public class HomeController implements Initializable {
             vboxnuevocliente.toFront();
             new FadeIn(vboxnuevocliente).play();
         } else if (event.getSource() == btnbusquedacliente && pantallaActiva != 18) {
+            mostrarTablaInicial_Clientes();
             pantallaActiva = 18;
             vboxBusquedaCliente.toFront();
             anchorTablaClientes.toFront();
@@ -1024,7 +1028,9 @@ public class HomeController implements Initializable {
     }
     @FXML
     public void verDetalleCliente(){
+        //llenarDatosDetalleCliente(txtCedula_DetalleContrato.getText());
         llenarDatosDetalleCliente(txtCedula_DetalleContrato.getText());
+        mostrarTablaInicialContratos_BusquedaClientes(txtCedula_DetalleContrato.getText());
         //mostrarTablaInicialContratos_BusquedaClientes();
 
         anchorDetallesCliente.toFront();
@@ -1037,14 +1043,16 @@ public class HomeController implements Initializable {
     }
     @FXML
     public void regresarBusquedaClientes(){
+        mostrarTablaInicial_Clientes();
         vboxBusquedaCliente.toFront();
         anchorTablaClientes.toFront();
     }
 
     @FXML
     public void verDetalleContrato(){
-        llenarDatos_DetalleContrato(TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem().getNumeroContrato().toString(),
-                Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString());
+        llenarDatos_DetalleContrato(
+                TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem().getNumeroContrato().toString(),
+                txtCedula_DetalleContrato.getText());
         anchorDetallesContrato.toFront();
         vboxContratos.toFront();
     }
