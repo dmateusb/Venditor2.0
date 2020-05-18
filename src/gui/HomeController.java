@@ -186,8 +186,9 @@ public class HomeController implements Initializable {
     @FXML private ComboBox<String> comboEstados;
     ObservableList<String> categorias = FXCollections.observableArrayList("Oro","Electrodomésticos");
     ObservableList<String> estados = FXCollections.observableArrayList("Todos","Activos","Retractados","Vencidos"); //Estados de los contratos
-    ObservableList<String> subElectrodomesticos = FXCollections.observableArrayList("Cámaras","Televisores","Portatil","Videojuegos","Sonido","Hogar","Instrumentos",
-            "Deportes", "Herramientas","Industria","Otros");
+    ObservableList<String> subElectrodomesticos = FXCollections.observableArrayList(
+            "Cámaras","Deportes","Herramientas","Hogar","Industria","Instrumentos",
+            "Portatil","Reloj","Sonido","Televisores","Videojuegos", "Otros");
     ObservableList<String> subOro = FXCollections.observableArrayList("Oro");
     @FXML private Spinner SpinnerPorcentaje;
     @FXML private VBox vboxnuevocliente;
