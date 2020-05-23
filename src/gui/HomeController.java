@@ -44,6 +44,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import logic.*;
 
 import javax.imageio.ImageIO;
@@ -54,7 +55,7 @@ import javax.swing.*;
  */
 
 public class HomeController implements Initializable {
-
+    private static Stage stage;
     private String usuario;
     private String pass;
     private ControlBd controlBd = new ControlBd("root", "");
@@ -254,6 +255,7 @@ public class HomeController implements Initializable {
         InteresOro();
         //mostrarTablaInicial();
         vboxHome.toFront();
+
     }
 
     //Método para actualizar la gráfica con los datos requeridos
