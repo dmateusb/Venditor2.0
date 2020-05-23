@@ -161,7 +161,14 @@ public class ControlBd {
     }
 
 
+//---------------------------UPDATE----------------------///-----------------------///--------
 
+    public boolean UpdateCliente(String nombre, String apellidos, String direccion,
+                                 String telefono1, String telefono2, String correo,String cedula){
+        String campos[]={nombre,apellidos,direccion,telefono1,telefono2,correo,cedula};
+        return sen.insertar(campos, "update clientes set Nombre = ?, Apellidos = ? ," +
+                " Direccion = ?, Telefono1 = ?, Telefono2 = ? , Correo = ? where Cedula = ?;");
+}
 
 
 
@@ -403,6 +410,7 @@ public class ControlBd {
         
         
     }
+
     public Object[][] EliminarVehiculo(String entrada){
         String[] columnas={"Placa","Marca","Color","Tipo_vehiculo","Serie","Cedula_visitante"};
         Object[][] resultado = sen.GetTabla(columnas, "vehiculo", "delete * from vehiculo where Placa = '"+entrada+"';");
