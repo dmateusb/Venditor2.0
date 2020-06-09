@@ -48,8 +48,8 @@ public class ControlBd {
 
      //Consultas
     public Object[][] GetClienteNuevoContrato(String cedula){
-        String[] columnas={"Cedula","Nombre", "Apellidos","Direccion","Telefono1","Telefono2", "Correo","Foto","Perfil"};
-        Object[][] resultado = sen.GetTabla(columnas, "clientes", "select Cedula, Nombre, Apellidos, Direccion, Telefono1, Telefono2, Correo, Foto, Perfil FROM clientes Where Cedula='"+cedula+"';");
+        String[] columnas={"Cedula","Nombre", "Apellidos","Direccion","Barrio","Telefono1","Telefono2", "Correo","Foto","Perfil","Fecha_registro"};
+        Object[][] resultado = sen.GetTabla(columnas, "clientes", "select Cedula, Nombre, Apellidos, Direccion, Barrio, Telefono1, Telefono2, Correo, Foto, Perfil, Fecha_registro FROM clientes Where Cedula='"+cedula+"';");
         return resultado;
     }
     public Object[][] GetContrato(String numeroContrato){
@@ -67,27 +67,27 @@ public class ControlBd {
 
 
     public Object[][] ConsultarContrato(){
-        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio FROM contratos");
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio, Estado FROM contratos");
         return resultado;
     }
 
     public Object[][] ConsultarContratosVencidos(){
-        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio FROM contratos where Estado = 'Vencido'");
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio, Estado FROM contratos where Estado = 'Vencido'");
         System.out.println("Entra a la sentencia");
         return resultado;
     }
     public Object[][] ConsultarContratosActivos(){
-        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio FROM contratos where Estado = 'Activo'");
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio, Estado FROM contratos where Estado = 'Activo'");
         System.out.println("Entra a la sentencia");
         return resultado;
     }
 
     public Object[][] ConsultarContratosRetractados(){
-        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio FROM contratos where Estado = 'Retractado'");
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio, Estado FROM contratos where Estado = 'Retractado'");
         System.out.println("Entra a la sentencia");
         return resultado;
     }
@@ -95,17 +95,17 @@ public class ControlBd {
 
 
     public Object[][] ConsultarContratosVencidosLikeCedula(String entrada){
-        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio"};
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
         Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Vencido' and Cedula like '%"+entrada+"%';");
         return resultado;
     }
     public Object[][] ConsultarContratosActivosLikeCedula(String entrada){
-        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio"};
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
         Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Activo' and Cedula like '%"+entrada+"%';");
         return resultado;
     }
     public Object[][] ConsultarContratosRetractadosLikeCedula(String entrada){
-        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio"};
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
         Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Retractado' and Cedula like '%"+entrada+"%';");
         return resultado;
     }
@@ -115,15 +115,42 @@ public class ControlBd {
         return resultado;
     }
 
+    public Object[][] ConsultarContratosWithCedula(String entrada){
+        System.out.println(entrada);
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Valor","Porcentaje","Renovaciones","Estado"};
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Cedula = "+entrada+";");
+        System.out.println(resultado[0][0]);
+        System.out.println(resultado[0][1]);
+
+        return resultado;
+    }
+
 
 
 
     public Object[][] ConsultarContratoLikeContrato(String entrada){
-        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio"};
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
         Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Numero_contrato like '%"+entrada+"%';");
         return resultado;
     }
 
+    public Object[][] ConsultarContratosVencidosLikeContrato(String entrada){
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Vencido' and  Numero_contrato like '%"+entrada+"%';");
+        return resultado;
+    }
+
+    public Object[][] ConsultarContratosActivosLikeContrato(String entrada){
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Activo' and  Numero_contrato like '%"+entrada+"%';");
+        return resultado;
+    }
+
+    public Object[][] ConsultarContratosRetractadosLikeContrato(String entrada){
+        String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Retractado' and  Numero_contrato like '%"+entrada+"%';");
+        return resultado;
+    }
 
     public Object[][] ConsultarDescripcionArticulo(String Id){
         String[] columnas={"Descripcion"};
