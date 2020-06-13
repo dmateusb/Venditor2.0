@@ -44,6 +44,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 import logic.*;
 
 import javax.imageio.ImageIO;
@@ -54,7 +59,7 @@ import javax.swing.*;
  */
 
 public class HomeController implements Initializable {
-
+    private static Stage stage;
     private String usuario;
     private String pass;
     private String cedulaSeleccionada;
@@ -105,15 +110,20 @@ public class HomeController implements Initializable {
     @FXML private TextField txtNombreBusquedaCliente;
     @FXML private TextField txtApellidoBusquedaCliente;
     @FXML private TextField txtDireccionBusquedaCliente;
+    @FXML private TextField txtBarrioBusquedaCliente;
     @FXML private TextField txtTelefono1BusquedaCliente;
     @FXML private TextField txtTelefono2BusquedaCliente;
     @FXML private TextField txtCorreoBusquedaCliente;
     @FXML private TextField txtBusquedaCliente;
+    @FXML private TextField txtFechaRegistroBusquedaCliente;
+    @FXML private TextField txtPerfilBusquedaCliente;
+    @FXML private TextField txtCedulaBusquedaCliente;
     @FXML TextField txtCedulaConfirmacionNuevoCLiente;
     @FXML private TextField txtnombre;
     @FXML private TextField txttelefono1;
     @FXML private TextField txtcorreo;
     @FXML private TextField txtdireccion;
+    @FXML private TextField txtbarrio;
     @FXML private TextField txtcedula;
     @FXML private TextField txtapellido;
     @FXML private TextField txttelefono2;
@@ -141,6 +151,7 @@ public class HomeController implements Initializable {
     @FXML private TableColumn<Contrato,String> nombre;
     @FXML private TableColumn<Contrato,String> apellidos;
     @FXML private TableColumn<Contrato,String> numeroContrato;
+    @FXML private TableColumn<Contrato,String> estado;
     @FXML private TableColumn<Contrato,String> descripcion;
     @FXML private TableColumn<Contrato,String> vencimiento;
     @FXML private TableColumn<Contrato,String> columnaContratoBusquedaClientes;
@@ -149,12 +160,8 @@ public class HomeController implements Initializable {
     @FXML private TableColumn<Contrato,String> columnaValorBusquedaClientes;
     @FXML private TableColumn<Contrato,String> columnaRenovacionesBusquedaClientes;
     @FXML private TableColumn<Contrato,String> columnaEstadoBusquedaClientes;
-
-    @FXML
-    private TableColumn<Cliente, Integer> ColumnaCedulaCliente;
-
-    @FXML
-    private TableColumn<Cliente, String> ColumnaNombreCliente;
+    @FXML private TableColumn<Cliente, Integer> ColumnaCedulaCliente;
+    @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
 
     @FXML
     private TableColumn<Cliente, String> ColumnaApellidosCliente;
@@ -247,6 +254,7 @@ public class HomeController implements Initializable {
 //                btnHuellaNuevoCliente.setDisable(true);
             }
         });
+        mostrarTablaInicial();
         SpinnerPorcentaje.setEditable(false);
         SpinnerPorcentaje.setDisable(true);
         comboCategoria.setItems(categorias);
@@ -256,6 +264,7 @@ public class HomeController implements Initializable {
         InteresOro();
         //mostrarTablaInicial();
         vboxHome.toFront();
+
     }
 
     //Método para actualizar la gráfica con los datos requeridos
@@ -438,7 +447,7 @@ public class HomeController implements Initializable {
             ControlBd control = new ControlBd("root", "");
 
             Boolean isCreado = bd.InsertarNuevoCliente((Integer.parseInt(txtcedula.getText())),
-                    txtnombre.getText(), txtapellido.getText(), txtdireccion.getText(),
+                    txtnombre.getText(), txtapellido.getText(), txtdireccion.getText(),txtbarrio.getText(),
                     txttelefono1.getText(), txttelefono2.getText(), txtcorreo.getText(), bd.getUser());
             if (isCreado) {
                 btnHuellaNuevoCliente.setDisable(false);
@@ -465,6 +474,7 @@ public class HomeController implements Initializable {
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
+                    contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
                     Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
@@ -475,6 +485,7 @@ public class HomeController implements Initializable {
             }
             lista = FXCollections.observableArrayList(arrayContratos);
             numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
             cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
             nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
             apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
@@ -482,12 +493,46 @@ public class HomeController implements Initializable {
             vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
             TablaContratos.setItems(lista);
             lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
             arrayContratos.removeAll(lista);
         }else if(output == "Activos"){
             Object[][] Contratos = control.ConsultarContratosActivos();
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
+                    contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
                     Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
@@ -498,6 +543,7 @@ public class HomeController implements Initializable {
             }
             lista = FXCollections.observableArrayList(arrayContratos);
             numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
             cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
             nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
             apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
@@ -505,6 +551,39 @@ public class HomeController implements Initializable {
             vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
             TablaContratos.setItems(lista);
             lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
             arrayContratos.removeAll(lista);
 
         }else if(output == "Retractados"){
@@ -512,6 +591,7 @@ public class HomeController implements Initializable {
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
+                    contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
                     Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
@@ -522,6 +602,7 @@ public class HomeController implements Initializable {
             }
             lista = FXCollections.observableArrayList(arrayContratos);
             numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
             cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
             nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
             apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
@@ -529,6 +610,39 @@ public class HomeController implements Initializable {
             vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
             TablaContratos.setItems(lista);
             lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
             arrayContratos.removeAll(lista);
 
         }else{
@@ -536,6 +650,7 @@ public class HomeController implements Initializable {
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
+                    contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
                     Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
@@ -544,9 +659,9 @@ public class HomeController implements Initializable {
                     arrayContratos.add(contrato);
                 }
             }
-
             lista = FXCollections.observableArrayList(arrayContratos);
             numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
             cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
             nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
             apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
@@ -554,6 +669,39 @@ public class HomeController implements Initializable {
             vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
             TablaContratos.setItems(lista);
             lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
             arrayContratos.removeAll(lista);
         }
     }
@@ -633,7 +781,6 @@ public class HomeController implements Initializable {
 
         t2.start();
         t1.start();
-
     }
 
     @FXML
@@ -654,12 +801,16 @@ public class HomeController implements Initializable {
 
     public void llenarDatosDetalleCliente(String cedula){
         Object[][] informacionCliente = controlBd.GetClienteNuevoContrato(cedula);
+        txtCedulaBusquedaCliente.setText(cedula);
         txtNombreBusquedaCliente.setText(informacionCliente[0][1].toString());
         txtApellidoBusquedaCliente.setText(informacionCliente[0][2].toString());
         txtDireccionBusquedaCliente.setText(informacionCliente[0][3].toString());
-        txtTelefono1BusquedaCliente.setText(informacionCliente[0][4].toString());
-        txtTelefono2BusquedaCliente.setText(informacionCliente[0][5].toString());
-        txtCorreoBusquedaCliente.setText(informacionCliente[0][6].toString());
+        txtBarrioBusquedaCliente.setText(informacionCliente[0][4].toString());
+        txtTelefono1BusquedaCliente.setText(informacionCliente[0][5].toString());
+        txtTelefono2BusquedaCliente.setText(informacionCliente[0][6].toString());
+        txtCorreoBusquedaCliente.setText(informacionCliente[0][7].toString());
+        txtPerfilBusquedaCliente.setText(informacionCliente[0][9].toString());
+        txtFechaRegistroBusquedaCliente.setText(informacionCliente[0][10].toString().substring(0,10));
         byte[] imagen = controlBd.ConsultarFotoVisitante(cedula);
         mostrarFoto(imagen,imageViewBusquedaCliente);
     }
@@ -670,10 +821,10 @@ public class HomeController implements Initializable {
         txtNombre_DetalleContrato.setText(informacionCliente[0][1].toString());
         txtApellidos_DetalleContrato.setText(informacionCliente[0][2].toString());
         txtDireccion_DetalleContrato.setText(informacionCliente[0][3].toString());
-        txtTelefono1_DetalleContrato.setText(informacionCliente[0][4].toString());
-        txtTelefono2_DetalleContrato.setText(informacionCliente[0][5].toString());
-        txtCorreo_DetalleContrato.setText(informacionCliente[0][6].toString());
-        txtPerfil_DetalleContrato.setText(informacionCliente[0][8].toString());
+        txtTelefono1_DetalleContrato.setText(informacionCliente[0][5].toString());
+        txtTelefono2_DetalleContrato.setText(informacionCliente[0][6].toString());
+        txtCorreo_DetalleContrato.setText(informacionCliente[0][7].toString());
+        txtPerfil_DetalleContrato.setText(informacionCliente[0][9].toString());
         Object[][] informacionContrato = controlBd.GetContrato(numeroContrato);
         txtNumeroContrato_DetalleContrato.setText(numeroContrato);
         txtFechaInicio_DetalleContrato.setText(informacionContrato[0][5].toString().substring(0,10));
@@ -700,7 +851,7 @@ public class HomeController implements Initializable {
         txtCategoria_DetalleContrato.setText(informacionArticulo[0][2].toString());
         txtSubcategoria_DetalleContrato.setText(informacionArticulo[0][3].toString());
 
-        byte[] imagen = controlBd.ConsultarFotoVisitante(Integer.toString(TablaContratos.getSelectionModel().getSelectedItem().getCedula()));
+        byte[] imagen = controlBd.ConsultarFotoVisitante(cedula);
         mostrarFoto(imagen,imageViewDetalleContrato);
     }
 
@@ -713,10 +864,10 @@ public class HomeController implements Initializable {
         txtNombre_DetalleContrato.setText(informacionCliente[0][1].toString());
         txtApellidos_DetalleContrato.setText(informacionCliente[0][2].toString());
         txtDireccion_DetalleContrato.setText(informacionCliente[0][3].toString());
-        txtTelefono1_DetalleContrato.setText(informacionCliente[0][4].toString());
-        txtTelefono2_DetalleContrato.setText(informacionCliente[0][5].toString());
-        txtCorreo_DetalleContrato.setText(informacionCliente[0][6].toString());
-        txtPerfil_DetalleContrato.setText(informacionCliente[0][8].toString());
+        txtTelefono1_DetalleContrato.setText(informacionCliente[0][5].toString());
+        txtTelefono2_DetalleContrato.setText(informacionCliente[0][6].toString());
+        txtCorreo_DetalleContrato.setText(informacionCliente[0][7].toString());
+        txtPerfil_DetalleContrato.setText(informacionCliente[0][9].toString());
         Object[][] informacionContrato = controlBd.GetContrato(TablaContratos.getSelectionModel().getSelectedItem().getNumeroContrato());
         txtNumeroContrato_DetalleContrato.setText(TablaContratos.getSelectionModel().getSelectedItem().getNumeroContrato());
         txtFechaInicio_DetalleContrato.setText(informacionContrato[0][5].toString().substring(0,10));
@@ -766,11 +917,11 @@ public class HomeController implements Initializable {
     }
 
     public void mostrarTablaInicial(){
-
         Object[][] Contratos = control.ConsultarContrato();
         for(int i=0;i<Contratos.length;i++){
             if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                 Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
+                contrato.setEstado(Contratos[i][4].toString());
                 Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                 contrato.setDescripcion(articulo[0][0].toString());
                 Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
@@ -782,6 +933,7 @@ public class HomeController implements Initializable {
 
         lista = FXCollections.observableArrayList(arrayContratos);
         numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+        estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
         cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
         nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
         apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
@@ -789,11 +941,46 @@ public class HomeController implements Initializable {
         vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
         TablaContratos.setItems(lista);
         lista.removeAll();
+        estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+        {
+            @Override
+            public TableCell<Contrato, String> call(
+                    TableColumn<Contrato, String> param)
+            {
+                return new TableCell<Contrato, String>()
+                {
+                    @Override
+                    protected void updateItem(String item, boolean empty)
+                    {
+                        if (!empty)
+                        {
+                            // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                            boolean isDeposit = true;
+                            char val = '█';
+                            setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                            if(item.toString().equals("Activo")) // should be if type is deposit
+                            {
+                                setTextFill(Color.GREEN);
+                                //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                            }
+                            else if(item.toString().equals("Retractado"))
+                            {
+                                setTextFill(Color.BLUE);
+                            }else{
+                                setTextFill(Color.RED);
+                            }
+                        }
+                    }
+                };
+            }
+        });
+
         arrayContratos.removeAll(lista);
     }
 
 
     //Mostrar la tabla filtrada por cédula
+    //Terminados los colores
     public void mostrarTablaCedula(){
         txtNumeroContrato.setText("");
         String output = (String) comboEstados.getValue();
@@ -802,6 +989,7 @@ public class HomeController implements Initializable {
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
+                    contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
                     Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
@@ -812,6 +1000,7 @@ public class HomeController implements Initializable {
             }
             lista = FXCollections.observableArrayList(arrayContratos);
             numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
             cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
             nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
             apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
@@ -819,12 +1008,46 @@ public class HomeController implements Initializable {
             vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
             TablaContratos.setItems(lista);
             lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
             arrayContratos.removeAll(lista);
         }else if(output == "Activos"){
             Object[][] Contratos = control.ConsultarContratosActivosLikeCedula(txtCedulaContratos.getText());
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
+                    contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
                     Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
@@ -835,6 +1058,7 @@ public class HomeController implements Initializable {
             }
             lista = FXCollections.observableArrayList(arrayContratos);
             numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
             cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
             nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
             apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
@@ -842,6 +1066,39 @@ public class HomeController implements Initializable {
             vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
             TablaContratos.setItems(lista);
             lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
             arrayContratos.removeAll(lista);
 
         }else if(output == "Retractados"){
@@ -849,6 +1106,7 @@ public class HomeController implements Initializable {
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
+                    contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
                     Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
@@ -859,6 +1117,7 @@ public class HomeController implements Initializable {
             }
             lista = FXCollections.observableArrayList(arrayContratos);
             numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
             cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
             nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
             apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
@@ -866,13 +1125,46 @@ public class HomeController implements Initializable {
             vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
             TablaContratos.setItems(lista);
             lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
             arrayContratos.removeAll(lista);
-
         }else{
             Object[][] Contratos = control.ConsultarContratosLikeCedula(txtCedulaContratos.getText());
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
+                    contrato.setEstado(Contratos[i][7].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
                     Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
@@ -884,6 +1176,7 @@ public class HomeController implements Initializable {
 
             lista = FXCollections.observableArrayList(arrayContratos);
             numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
             cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
             nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
             apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
@@ -891,6 +1184,39 @@ public class HomeController implements Initializable {
             vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
             TablaContratos.setItems(lista);
             lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
             arrayContratos.removeAll(lista);
         }
     }
@@ -899,28 +1225,235 @@ public class HomeController implements Initializable {
 
     //Mostrar la tabla Contratos filtrada por número de contrato
     public void mostrarTablaContrato(){
- Object[][] ContratosLikeContrato = control.ConsultarContratoLikeContrato(txtNumeroContrato.getText().toString());
-        for (int i = 0; i < ContratosLikeContrato.length; i++) {
-            if (ContratosLikeContrato[i][0] != null && ContratosLikeContrato[i][1] != null && ContratosLikeContrato[i][2] != null) {
-                Contrato contrato = new Contrato(ContratosLikeContrato[i][0].toString(), Integer.parseInt(ContratosLikeContrato[i][1].toString()), ContratosLikeContrato[i][3].toString().substring(0, 10));
-                Object[][] articulo = control.ConsultarDescripcionArticulo(ContratosLikeContrato[i][2].toString());
-                contrato.setDescripcion(articulo[0][0].toString());
-                Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(ContratosLikeContrato[i][1].toString()));
-                contrato.setNombre(clientes[0][0].toString());
-                contrato.setApellidos(clientes[0][1].toString());
-                arrayContratos.add(contrato);
+        txtCedulaContratos.setText("");
+        String output = (String) comboEstados.getValue();
+        if(output == "Vencidos"){
+            Object[][] ContratosLikeContrato = control.ConsultarContratosVencidosLikeContrato(txtNumeroContrato.getText().toString());
+            for (int i = 0; i < ContratosLikeContrato.length; i++) {
+                if (ContratosLikeContrato[i][0] != null && ContratosLikeContrato[i][1] != null && ContratosLikeContrato[i][2] != null) {
+                    Contrato contrato = new Contrato(ContratosLikeContrato[i][0].toString(), Integer.parseInt(ContratosLikeContrato[i][1].toString()), ContratosLikeContrato[i][3].toString().substring(0, 10));
+                    contrato.setEstado(ContratosLikeContrato[i][4].toString());
+                    Object[][] articulo = control.ConsultarDescripcionArticulo(ContratosLikeContrato[i][2].toString());
+                    contrato.setDescripcion(articulo[0][0].toString());
+                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(ContratosLikeContrato[i][1].toString()));
+                    contrato.setNombre(clientes[0][0].toString());
+                    contrato.setApellidos(clientes[0][1].toString());
+                    arrayContratos.add(contrato);
+                }
             }
+            lista = FXCollections.observableArrayList(arrayContratos);
+            numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
+            cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
+            nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
+            apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
+            descripcion.setCellValueFactory(new PropertyValueFactory<Contrato,String>("descripcion"));
+            vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
+            TablaContratos.setItems(lista);
+            lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
+            arrayContratos.removeAll(lista);
+        }else if(output == "Activos") {
+            Object[][] ContratosLikeContrato = control.ConsultarContratosActivosLikeContrato(txtNumeroContrato.getText().toString());
+            for (int i = 0; i < ContratosLikeContrato.length; i++) {
+                if (ContratosLikeContrato[i][0] != null && ContratosLikeContrato[i][1] != null && ContratosLikeContrato[i][2] != null) {
+                    Contrato contrato = new Contrato(ContratosLikeContrato[i][0].toString(), Integer.parseInt(ContratosLikeContrato[i][1].toString()), ContratosLikeContrato[i][3].toString().substring(0, 10));
+                    contrato.setEstado(ContratosLikeContrato[i][4].toString());
+                    Object[][] articulo = control.ConsultarDescripcionArticulo(ContratosLikeContrato[i][2].toString());
+                    contrato.setDescripcion(articulo[0][0].toString());
+                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(ContratosLikeContrato[i][1].toString()));
+                    contrato.setNombre(clientes[0][0].toString());
+                    contrato.setApellidos(clientes[0][1].toString());
+                    arrayContratos.add(contrato);
+                }
+            }
+            lista = FXCollections.observableArrayList(arrayContratos);
+            numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
+            cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
+            nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
+            apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
+            descripcion.setCellValueFactory(new PropertyValueFactory<Contrato,String>("descripcion"));
+            vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
+            TablaContratos.setItems(lista);
+            lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
+            arrayContratos.removeAll(lista);
+
+        }else if(output == "Retractados") {
+            Object[][] ContratosLikeContrato = control.ConsultarContratosRetractadosLikeContrato(txtNumeroContrato.getText().toString());
+            for (int i = 0; i < ContratosLikeContrato.length; i++) {
+                if (ContratosLikeContrato[i][0] != null && ContratosLikeContrato[i][1] != null && ContratosLikeContrato[i][2] != null) {
+                    Contrato contrato = new Contrato(ContratosLikeContrato[i][0].toString(), Integer.parseInt(ContratosLikeContrato[i][1].toString()), ContratosLikeContrato[i][3].toString().substring(0, 10));
+                    contrato.setEstado(ContratosLikeContrato[i][4].toString());
+                    Object[][] articulo = control.ConsultarDescripcionArticulo(ContratosLikeContrato[i][2].toString());
+                    contrato.setDescripcion(articulo[0][0].toString());
+                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(ContratosLikeContrato[i][1].toString()));
+                    contrato.setNombre(clientes[0][0].toString());
+                    contrato.setApellidos(clientes[0][1].toString());
+                    arrayContratos.add(contrato);
+                }
+            }
+            lista = FXCollections.observableArrayList(arrayContratos);
+            numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato,String>("estado"));
+            cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
+            nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
+            apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
+            descripcion.setCellValueFactory(new PropertyValueFactory<Contrato,String>("descripcion"));
+            vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
+            TablaContratos.setItems(lista);
+            lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>()
+            {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param)
+                {
+                    return new TableCell<Contrato, String>()
+                    {
+                        @Override
+                        protected void updateItem(String item, boolean empty)
+                        {
+                            if (!empty)
+                            {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                }
+                                else if(item.toString().equals("Retractado"))
+                                {
+                                    setTextFill(Color.BLUE);
+                                }else{
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
+            arrayContratos.removeAll(lista);
+        }else{
+            Object[][] ContratosLikeContrato = control.ConsultarContratoLikeContrato(txtNumeroContrato.getText().toString());
+            for (int i = 0; i < ContratosLikeContrato.length; i++) {
+                if (ContratosLikeContrato[i][0] != null && ContratosLikeContrato[i][1] != null && ContratosLikeContrato[i][2] != null) {
+                    Contrato contrato = new Contrato(ContratosLikeContrato[i][0].toString(), Integer.parseInt(ContratosLikeContrato[i][1].toString()), ContratosLikeContrato[i][3].toString().substring(0, 10));
+                    contrato.setEstado(ContratosLikeContrato[i][4].toString());
+                    Object[][] articulo = control.ConsultarDescripcionArticulo(ContratosLikeContrato[i][2].toString());
+                    contrato.setDescripcion(articulo[0][0].toString());
+                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(ContratosLikeContrato[i][1].toString()));
+                    contrato.setNombre(clientes[0][0].toString());
+                    contrato.setApellidos(clientes[0][1].toString());
+                    arrayContratos.add(contrato);
+                }
+            }
+            lista = FXCollections.observableArrayList(arrayContratos);
+            numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato, String>("numeroContrato"));
+            estado.setCellValueFactory(new PropertyValueFactory<Contrato, String>("estado"));
+            cedula.setCellValueFactory(new PropertyValueFactory<Contrato, Integer>("cedula"));
+            nombre.setCellValueFactory(new PropertyValueFactory<Contrato, String>("nombre"));
+            apellidos.setCellValueFactory(new PropertyValueFactory<Contrato, String>("apellidos"));
+            descripcion.setCellValueFactory(new PropertyValueFactory<Contrato, String>("descripcion"));
+            vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato, String>("vencimiento"));
+            TablaContratos.setItems(lista);
+            lista.removeAll();
+            estado.setCellFactory(new Callback<TableColumn<Contrato, String>, TableCell<Contrato, String>>() {
+                @Override
+                public TableCell<Contrato, String> call(
+                        TableColumn<Contrato, String> param) {
+                    return new TableCell<Contrato, String>() {
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            if (!empty) {
+                                // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                                boolean isDeposit = true;
+                                char val = '█';
+                                setText(String.valueOf(val) + String.valueOf(val) + String.valueOf(val) + String.valueOf(val));
+                                if (item.toString().equals("Activo")) // should be if type is deposit
+                                {
+                                    setTextFill(Color.GREEN);
+                                    //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                                } else if (item.toString().equals("Retractado")) {
+                                    setTextFill(Color.BLUE);
+                                } else {
+                                    setTextFill(Color.RED);
+                                }
+                            }
+                        }
+                    };
+                }
+            });
+            arrayContratos.removeAll(lista);
         }
-        lista = FXCollections.observableArrayList(arrayContratos);
-        numeroContrato.setCellValueFactory(new PropertyValueFactory<Contrato,String>("numeroContrato"));
-        cedula.setCellValueFactory(new PropertyValueFactory<Contrato,Integer>("cedula"));
-        nombre.setCellValueFactory(new PropertyValueFactory<Contrato,String>("nombre"));
-        apellidos.setCellValueFactory(new PropertyValueFactory<Contrato,String>("apellidos"));
-        descripcion.setCellValueFactory(new PropertyValueFactory<Contrato,String>("descripcion"));
-        vencimiento.setCellValueFactory(new PropertyValueFactory<Contrato,String>("vencimiento"));
-        TablaContratos.setItems(lista);
-        lista.removeAll();
-        arrayContratos.removeAll(lista);
     }
 
     public void mostrarTablaInicial_Clientes(){
@@ -978,7 +1511,7 @@ public class HomeController implements Initializable {
     }
     //Mostrar la tabla de contratos de un determinado Cliete
     public void mostrarTablaInicialContratos_BusquedaClientes(String cedula){
-        Object[][] Contratos = control.ConsultarContratosLikeCedula(cedula);
+        Object[][] Contratos = control.ConsultarContratosWithCedula(cedula);
         for(int i=0;i<Contratos.length-1;i++){
             if (Contratos[i][0] != null && Contratos[i][2] != null) {
                 Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
@@ -1025,9 +1558,10 @@ public class HomeController implements Initializable {
 
     @FXML
     public void verDetalleTablaClientes(){
-        cedulaSeleccionada=Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString();
+        cedulaSeleccionada = Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString();
+        System.out.println(cedulaSeleccionada);
         llenarDatosDetalleCliente(cedulaSeleccionada);
-        mostrarTablaInicialContratos_BusquedaClientes(Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString());
+        mostrarTablaInicialContratos_BusquedaClientes(cedulaSeleccionada);
         anchorDetallesCliente.toFront();
     }
     @FXML
@@ -1085,6 +1619,16 @@ public class HomeController implements Initializable {
     @FXML
     public void verDetalleContrato(){
         cedulaSeleccionada=txtCedula_DetalleContrato.getText();
+        llenarDatos_DetalleContrato(
+                TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem().getNumeroContrato().toString(),
+                cedulaSeleccionada);
+        anchorDetallesContrato.toFront();
+        vboxContratos.toFront();
+    }
+
+    @FXML
+    public void verDetalleContratoFromCliente(){
+        cedulaSeleccionada=txtCedulaBusquedaCliente.getText();
         llenarDatos_DetalleContrato(
                 TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem().getNumeroContrato().toString(),
                 cedulaSeleccionada);

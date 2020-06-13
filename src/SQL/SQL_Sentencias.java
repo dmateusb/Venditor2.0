@@ -192,18 +192,19 @@ public class SQL_Sentencias {
         }
     }
     
-    public boolean InsertarNuevoCliente(int cedula, String nombre, String apellidos, String direccion, String telefono1, String telefono2, String correo, String usuario) throws SQLException{
+    public boolean InsertarNuevoCliente(int cedula, String nombre, String apellidos, String direccion, String barrio, String telefono1, String telefono2, String correo, String usuario) throws SQLException{
         try {
             Connection c = con.conectado();
-            ps = c.prepareStatement("INSERT into venditor.clientes (Cedula,Nombre,Apellidos,Direccion,Telefono1,Telefono2,Correo,Usuario) values (?,?,?,?,?,?,?,?)");
+            ps = c.prepareStatement("INSERT into venditor.clientes (Cedula,Nombre,Apellidos,Direccion,Barrio,Telefono1,Telefono2,Correo,Usuario) values (?,?,?,?,?,?,?,?,?)");
             ps.setInt(1, cedula);
             ps.setString(2, nombre);
             ps.setString(3, apellidos);
             ps.setString(4, direccion);
-            ps.setString(5, telefono1);
-            ps.setString(6, telefono2);
-            ps.setString(7, correo);
-            ps.setString(8, usuario);
+            ps.setString(5, barrio);
+            ps.setString(6, telefono1);
+            ps.setString(7, telefono2);
+            ps.setString(8, correo);
+            ps.setString(9, usuario);
             ps.execute();
             con.desconectar();
             return true;
