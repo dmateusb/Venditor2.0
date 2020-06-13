@@ -1,0 +1,384 @@
+create table venditor.registro_adicion
+(
+    ID_ADICION        int auto_increment
+        primary key,
+    TABLA             varchar(20) not null,
+    ID_VALOR_AÑADIDO  varchar(20) not null,
+    FECHA             datetime    not null,
+    USUARIO_OPERACION varchar(20) not null
+);
+
+create table venditor.registro_modificacion
+(
+    ID_REGISTRO_MOD    int auto_increment
+        primary key,
+    ID_MODIFICADO      varchar(20) not null,
+    Fecha              datetime    not null,
+    Usario_operacion   varchar(20) not null,
+    Columna_modificada varchar(20) not null,
+    Valor_antiguo      varchar(20) not null,
+    Valor_nuevo        varchar(20) not null,
+    TABLA_MODIFICADA   varchar(20) not null
+);
+
+
+
+CREATE TRIGGER TRI_ARTICULOS_INSERT
+    BEFORE INSERT ON articulos
+    FOR EACH ROW
+BEGIN
+    INSERT INTO
+        registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
+    VALUES('articulos',new.Id,sysdate(),user());
+end;
+
+CREATE TRIGGER TRI_CAJA_INSERT
+    BEFORE INSERT ON CAJA
+    FOR EACH ROW
+BEGIN
+    INSERT INTO
+        registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
+    VALUES('CAJA',new.Id,sysdate(),user());
+end;
+CREATE TRIGGER TRI_CLIENTES_INSERT
+    BEFORE INSERT ON CLIENTES
+    FOR EACH ROW
+BEGIN
+    INSERT INTO
+        registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
+    VALUES('CLIENTES',new.Cedula,sysdate(),user());
+end;
+CREATE TRIGGER TRI_CONTRATOS_INSERT
+    BEFORE INSERT ON CONTRATOS
+    FOR EACH ROW
+BEGIN
+    INSERT INTO
+        registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
+    VALUES('CONTRATOS',new.Numero_contrato,sysdate(),user());
+end;
+CREATE TRIGGER TRI_DESCUENTOS_INSERT
+    BEFORE INSERT ON DESCUENTOS
+    FOR EACH ROW
+BEGIN
+    INSERT INTO
+        registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
+    VALUES('DESCUENTOS',new.Id,sysdate(),user());
+end;
+
+
+
+
+
+CREATE TRIGGER TRI_ARTICULOS_UPDATE
+    BEFORE UPDATE ON articulos
+    FOR EACH ROW
+BEGIN
+    IF NEW.id<>OLD.id THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'id',OLD.id,
+                                                                                                new.id,old.Id   );
+    end if;
+    IF NEW.Fecha<>OLD.Fecha THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'fecha',OLD.Fecha,
+                                                                                                new.Fecha,old.Id   );
+    end if;
+    IF NEW.categoria<>OLD.categoria THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'categoria',OLD.categoria,
+                                                                                                new.categoria,old.Id   );
+    end if;
+    IF NEW.subcategoria<>OLD.subcategoria THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'subcategoria',OLD.subcategoria,
+                                                                                                new.subcategoria,old.Id   );
+    end if;
+    IF NEW.descripcion<>OLD.descripcion THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'descripcion',OLD.descripcion,
+                                                                                                new.descripcion,old.Id   );
+    end if;
+    IF NEW.observaciones<>OLD.observaciones THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'observaciones',OLD.observaciones,
+                                                                                                new.observaciones,old.Id   );
+    end if;
+    IF NEW.peso<>OLD.peso THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'peso',OLD.peso,
+                                                                                                new.peso,old.Id   );
+    end if;
+    IF NEW.valor<>OLD.valor THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'valor',OLD.valor,
+                                                                                                new.valor,old.Id   );
+    end if;
+    IF NEW.estado<>OLD.estado THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'estado',OLD.estado,
+                                                                                                new.estado,old.Id   );
+    end if;
+    IF NEW.usuario<>OLD.usuario THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'ARTICULOS',sysdate(),user(),'usuario',OLD.usuario,
+                                                                                                new.usuario,old.Id   );
+    end if;
+end;
+
+CREATE TRIGGER TRI_CAJA_UPDATE
+    BEFORE UPDATE ON CAJA
+    FOR EACH ROW
+BEGIN
+    IF NEW.id<>OLD.id THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CAJA',sysdate(),user(),'id',OLD.id,new.id,old.Id   );
+    end if;
+    IF NEW.fecha<>OLD.fecha THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CAJA',sysdate(),user(),'fecha',OLD.fecha,new.fecha,old.Id   );
+    end if;
+    IF NEW.descripcion<>OLD.descripcion THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CAJA',sysdate(),user(),'descripcion',OLD.descripcion,new.descripcion,old.Id   );
+    end if;
+    IF NEW.ingreso<>OLD.ingreso THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CAJA',sysdate(),user(),'ingreso',OLD.ingreso,new.ingreso,old.Id   );
+    end if;
+    IF NEW.egreso<>OLD.egreso THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CAJA',sysdate(),user(),'egreso',OLD.egreso,new.egreso,old.Id   );
+    end if;
+    IF NEW.utilidad<>OLD.utilidad THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CAJA',sysdate(),user(),'utilidad',OLD.utilidad,new.utilidad,old.Id   );
+    end if;
+    IF NEW.total<>OLD.total THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CAJA',sysdate(),user(),'total',OLD.total,new.total,old.Id   );
+    end if;
+    IF NEW.usuario<>OLD.usuario THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CAJA',sysdate(),user(),'usuario',OLD.usuario,new.usuario,old.Id   );
+    end if;
+end;
+
+
+CREATE TRIGGER TRI_CLIENTES_UPDATE
+    BEFORE UPDATE ON CLIENTES
+    FOR EACH ROW
+BEGIN
+    IF NEW.Cedula<>OLD.CEDULA THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'cedula',OLD.Cedula,new.Cedula,old.Cedula   );
+    end if;
+    IF NEW.nombre<>OLD.nombre THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'nombre',OLD.nombre,new.nombre,old.Cedula   );
+    end if;
+    IF NEW.apellidos<>OLD.apellidos THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'apellidos',OLD.apellidos,new.apellidos,old.Cedula   );
+    end if;
+    IF NEW.direccion<>OLD.direccion THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'direccion',OLD.direccion,new.direccion,old.Cedula   );
+    end if;
+    IF NEW.telefono1<>OLD.telefono1 THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'telefono1',OLD.telefono1,new.telefono1,old.Cedula   );
+    end if;
+    IF NEW.telefono2<>OLD.telefono2 THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'telefono2',OLD.telefono2,new.telefono2,old.Cedula   );
+    end if;
+    IF NEW.correo<>OLD.correo THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'correo',OLD.correo,new.correo,old.Cedula   );
+    end if;
+    IF NEW.perfil<>OLD.perfil THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'perfil',OLD.perfil,new.perfil,old.Cedula   );
+    end if;
+    IF NEW.huella<>OLD.huella THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'huella',OLD.huella,new.huella,old.Cedula   );
+    end if;
+    IF NEW.foto<>OLD.foto THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'foto',OLD.foto,new.foto,old.Cedula   );
+    end if;
+    IF NEW.fecha_registro<>OLD.fecha_registro THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'fecha_registro',OLD.fecha_registro,new.fecha_registro,old.Cedula   );
+    end if;
+    IF NEW.usuario<>OLD.usuario THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CLIENTES',sysdate(),user(),'usuario',OLD.usuario,new.usuario,old.Cedula   );
+    end if;
+end;
+
+
+CREATE TRIGGER TRI_CONTRATOS_UPDATE
+    BEFORE UPDATE ON CONTRATOS
+    FOR EACH ROW
+BEGIN
+    IF NEW.numero_contrato<>OLD.numero_contrato THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'numero_contrato',
+                                                                                                OLD.numero_contrato,new.numero_contrato,old.numero_contrato);
+    end if;
+    IF NEW.cedula<>OLD.cedula THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'cedula',
+                                                                                                OLD.cedula,new.cedula,old.numero_contrato);
+    end if;
+    IF NEW.articulo<>OLD.articulo THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'articulo',
+                                                                                                OLD.articulo,new.articulo,old.numero_contrato);
+    end if;
+    IF NEW.sobreprecio_real<>OLD.sobreprecio_real THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'sobreprecio_real',
+                                                                                                OLD.sobreprecio_real,new.sobreprecio_real,old.numero_contrato);
+    end if;
+    IF NEW.sobreprecio_cobrado<>OLD.sobreprecio_cobrado THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'sobreprecio_cobrado',
+                                                                                                OLD.sobreprecio_cobrado,new.sobreprecio_cobrado,old.numero_contrato);
+    end if;
+    IF NEW.fecha_inicio<>OLD.fecha_inicio THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'fecha_inicio',
+                                                                                                OLD.fecha_inicio,new.fecha_inicio,old.numero_contrato);
+    end if;
+    IF NEW.fecha_final<>OLD.fecha_final THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'fecha_final',
+                                                                                                OLD.fecha_final,new.fecha_final,old.numero_contrato);
+    end if;
+    IF NEW.fecha_vencimiento<>OLD.fecha_vencimiento THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'fecha_vencimiento',
+                                                                                                OLD.fecha_vencimiento,new.fecha_vencimiento,old.numero_contrato);
+    end if;
+    IF NEW.tiempo<>OLD.tiempo THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'tiempo',
+                                                                                                OLD.tiempo,new.tiempo,old.numero_contrato);
+    end if;
+    IF NEW.valor<>OLD.valor THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'valor',
+                                                                                                OLD.valor,new.valor,old.numero_contrato);
+    end if;
+    IF NEW.porcentaje<>OLD.porcentaje THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'porcentaje',
+                                                                                                OLD.porcentaje,new.porcentaje,old.numero_contrato);
+    end if;
+    IF NEW.renovaciones<>OLD.renovaciones THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'renovaciones',
+                                                                                                OLD.renovaciones,new.renovaciones,old.numero_contrato);
+    end if;
+    IF NEW.estado<>OLD.estado THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'estado',
+                                                                                                OLD.estado,new.estado,old.numero_contrato);
+    end if;
+    IF NEW.usuario<>OLD.usuario THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'CONTRATOS',sysdate(),user(),'usuario',
+                                                                                                OLD.usuario,new.usuario,old.numero_contrato);
+    end if;
+
+end;
+
+
+CREATE TRIGGER TRI_DESCUENTOS_UPDATE
+    BEFORE UPDATE ON DESCUENTOS
+    FOR EACH ROW
+BEGIN
+    IF NEW.ID<>OLD.ID THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'DESCUENTOS',sysdate(),user(),'ID',
+                                                                                                OLD.ID,new.ID,old.ID);
+    end if;
+    IF NEW.numero_contrato<>OLD.numero_contrato THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'DESCUENTOS',sysdate(),user(),'numero_contrato',
+                                                                                                OLD.numero_contrato,new.numero_contrato,old.ID);
+    end if;
+    IF NEW.precio_real<>OLD.precio_real THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'DESCUENTOS',sysdate(),user(),'precio_real',
+                                                                                                OLD.precio_real,new.precio_real,old.ID);
+    end if;
+    IF NEW.precio_cobrado<>OLD.precio_cobrado THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'DESCUENTOS',sysdate(),user(),'precio_cobrado',
+                                                                                                OLD.precio_cobrado,new.precio_cobrado,old.ID);
+    end if;
+    IF NEW.razon<>OLD.razon THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'DESCUENTOS',sysdate(),user(),'razon',
+                                                                                                OLD.razon,new.razon,old.ID);
+    end if;
+    IF NEW.usuario<>OLD.usuario THEN
+        INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
+                                           Valor_antiguo, Valor_nuevo, ID_MODIFICADO)VALUES (
+                                                                                                'DESCUENTOS',sysdate(),user(),'usuario',
+                                                                                                OLD.usuario,new.usuario,old.ID);
+    end if;
+end;
