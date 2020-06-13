@@ -119,8 +119,6 @@ public class ControlBd {
         System.out.println(entrada);
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Valor","Porcentaje","Renovaciones","Estado"};
         Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Cedula = "+entrada+";");
-        System.out.println(resultado[0][0]);
-        System.out.println(resultado[0][1]);
 
         return resultado;
     }
