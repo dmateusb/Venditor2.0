@@ -370,6 +370,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private void CambiarCliente() {
+        //Parte información cliente
         txtcedulaNuevaRetroventa.setText("");
         txtnombreNuevaRetroventa.setText("");
         txtapellidoNuevaRetroventa.setText("");
@@ -379,7 +380,12 @@ public class HomeController implements Initializable {
         txttelefono2NuevaRetroventa.setText("");
         txtcedulaNuevaRetroventa.setEditable(true);
 
-
+        //Parte información articulo
+        comboCategoria.setValue("Seleccione una");
+        comboSubcategoria.setValue("Seleccione una");
+        txtPesoArticulo.setText("");
+        txtValorArticulo.setText("");
+        txtDescripcionArticulo.setText("");
         btnCambiarCliente.setDisable(true);
         btnVerFoto.setDisable(true);
     }
@@ -435,6 +441,7 @@ public class HomeController implements Initializable {
                 new FadeIn(vboxNuevaRetroventa).play();
             }
             aPimgClienteNuevaRetroventa.setOpacity(0);
+            aPimgClienteNuevaRetroventa.toBack();
             pantallaActiva = 1;
 
         } else if (event.getSource() == btnventa) {
@@ -1738,11 +1745,13 @@ public class HomeController implements Initializable {
         byte[] imagen = controlBd.ConsultarFotoVisitante(txtcedulaNuevaRetroventa.getText());
         mostrarFoto(imagen,imgViewFotoNuevaRetroveta);
         aPimgClienteNuevaRetroventa.setOpacity(1);
+        aPimgClienteNuevaRetroventa.toFront();
     }
 
     @FXML
     public void closeFotoNuevaRetroventa(){
         aPimgClienteNuevaRetroventa.setOpacity(0);
+        aPimgClienteNuevaRetroventa.toBack();
     }
 
     public void centerImage(ImageView imageView) {
