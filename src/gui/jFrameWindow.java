@@ -196,6 +196,7 @@ public class jFrameWindow extends JFrame  {
     private static JFrame jFrame= new jFrameWindow();
     private JButton btntomarFotografia;
     private JButton btnConfirmar;
+    private JLabel imgPrevFoto;
     private BufferedImage image=null;
     private static String cedula;
     private Object lock;
@@ -224,8 +225,14 @@ public class jFrameWindow extends JFrame  {
 
                 image = webcam.getImage();
                 if (image != null) {
-                    btnConfirmar.setEnabled(true);
-                    btntomarFotografia.setText("Tomar nuevamente");
+                   /* ImageIcon icon = new ImageIcon(image);
+                    imgPrevFoto= new JLabel();
+                    imgPrevFoto.setIcon(icon);
+                    imgPrevFoto.setVisible(true);
+                    main.add(imgPrevFoto);
+                    main.repaint();
+                    */
+                    handleButtons(btntomarFotografia);
 
                 }
             }
@@ -255,6 +262,18 @@ public class jFrameWindow extends JFrame  {
         });
     }
 
+    private void handleButtons(JButton btn) {
+        if(btn.getText()=="Tomar Fotografia"){
+            panel.pause();
+            btn.setText("Nueva Foto");
+            btnConfirmar.setEnabled(true);
+        }else if(btn.getText()=="Nueva Foto"){
+            btnConfirmar.setEnabled(false);
+            panel.resume();
+            btn.setText("Tomar Fotografia");
+        }
+    }
+
     public Webcam getCameraByName(String name) {
         for (Webcam webcam : Webcam.getWebcams()) {
             if (webcam.getName().equalsIgnoreCase(name)) {
@@ -265,7 +284,6 @@ public class jFrameWindow extends JFrame  {
     }
 
     public static void run() {
-
         jFrame.setSize(720,480);
         jFrame.setContentPane(new   jFrameWindow().main);
         jFrame.setVisible(true);
