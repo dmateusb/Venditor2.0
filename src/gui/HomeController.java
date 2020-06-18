@@ -24,14 +24,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 import com.twilio.rest.api.v2010.account.IncomingPhoneNumber;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
@@ -43,10 +47,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import logic.*;
@@ -66,6 +72,7 @@ public class HomeController implements Initializable {
     private ControlBd controlBd = new ControlBd("root", "");
     @FXML private ImageView imageViewBusquedaCliente;
     @FXML private ImageView imageViewDetalleContrato;
+    @FXML private ImageView imgViewFotoNuevaRetroveta;
     @FXML private LineChart graficaHome;
     @FXML private MenuItem btnnuevocliente;
     @FXML private MenuItem btnbusquedacliente;
@@ -74,6 +81,7 @@ public class HomeController implements Initializable {
     @FXML private AnchorPane anchorDetallesCliente;
     @FXML private AnchorPane anchorDetallesContrato;
     @FXML private AnchorPane anchorTablaContratos;
+    @FXML private AnchorPane aPimgClienteNuevaRetroventa;
     @FXML private Button btnFotoNuevoCliente;
     @FXML private Button btnCrearRetroventa;
     @FXML private Button btnConfirmarNuevoCliente;
@@ -243,17 +251,58 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        txtcedula.textProperty().addListener((observable, oldValue, newValue) -> {
-//            Aca deben ir los requisitos de todos los valores
-            if (txtcedula.getText().length() != 0) {
-//                btnFotoNuevoCliente.setDisable(false);
-//                btnHuellaNuevoCliente.setDisable(false);
-            } else {
-
-//                btnFotoNuevoCliente.setDisable(true);
-//                btnHuellaNuevoCliente.setDisable(true);
+        final char seperatorChar = '.';
+        final Pattern p = Pattern.compile("[0-9" + seperatorChar + "]*");
+        txtValorArticulo.setTextFormatter(new TextFormatter<>(c -> {
+            if (!c.isContentChange()) {
+                return c; // no need for modification, if only the selection changes
             }
-        });
+            String newText = c.getControlNewText();
+            if (newText.isEmpty()) {
+                return c;
+            }
+            if (!p.matcher(newText).matches()) {
+                return null; // invalid change
+            }
+
+            // invert everything before the range
+            int suffixCount = c.getControlText().length() - c.getRangeEnd();
+            int digits = suffixCount - suffixCount / 4;
+            StringBuilder sb = new StringBuilder();
+
+            // insert seperator just before caret, if necessary
+            if (digits % 3 == 0 && digits > 0 && suffixCount % 4 != 0) {
+                sb.append(seperatorChar);
+            }
+
+            // add the rest of the digits in reversed order
+            for (int i = c.getRangeStart() + c.getText().length() - 1; i >= 0; i--) {
+                char letter = newText.charAt(i);
+                if (Character.isDigit(letter)) {
+                    sb.append(letter);
+                    digits++;
+                    if (digits % 3 == 0) {
+                        sb.append(seperatorChar);
+                    }
+                }
+            }
+
+            // remove seperator char, if added as last char
+            if (digits % 3 == 0) {
+                sb.deleteCharAt(sb.length() - 1);
+            }
+            sb.reverse();
+            int length = sb.length();
+
+            // replace with modified text
+            c.setRange(0, c.getRangeEnd());
+            c.setText(sb.toString());
+            c.setCaretPosition(length);
+            c.setAnchor(length);
+
+            return c;
+        }));
+
         mostrarTablaInicial();
         SpinnerPorcentaje.setEditable(false);
         SpinnerPorcentaje.setDisable(true);
@@ -321,6 +370,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private void CambiarCliente() {
+        //Parte información cliente
         txtcedulaNuevaRetroventa.setText("");
         txtnombreNuevaRetroventa.setText("");
         txtapellidoNuevaRetroventa.setText("");
@@ -330,7 +380,12 @@ public class HomeController implements Initializable {
         txttelefono2NuevaRetroventa.setText("");
         txtcedulaNuevaRetroventa.setEditable(true);
 
-
+        //Parte información articulo
+        comboCategoria.setValue("Seleccione una");
+        comboSubcategoria.setValue("Seleccione una");
+        txtPesoArticulo.setText("");
+        txtValorArticulo.setText("");
+        txtDescripcionArticulo.setText("");
         btnCambiarCliente.setDisable(true);
         btnVerFoto.setDisable(true);
     }
@@ -385,6 +440,8 @@ public class HomeController implements Initializable {
             if(pantallaActiva != 1){
                 new FadeIn(vboxNuevaRetroventa).play();
             }
+            aPimgClienteNuevaRetroventa.setOpacity(0);
+            aPimgClienteNuevaRetroventa.toBack();
             pantallaActiva = 1;
 
         } else if (event.getSource() == btnventa) {
@@ -1660,6 +1717,7 @@ public class HomeController implements Initializable {
         btnConfirmarNuevoCliente.setDisable(true);
     }
 
+
     public void setTxtcedulaNuevaRetroventa(String cedula) {
         this.txtcedulaNuevaRetroventa.setText(cedula);
     }
@@ -1685,8 +1743,40 @@ public class HomeController implements Initializable {
     @FXML
     public void verFoto_NuevaRetroventa(){
         byte[] imagen = controlBd.ConsultarFotoVisitante(txtcedulaNuevaRetroventa.getText());
-       // mostrarfoto(imagen);
+        mostrarFoto(imagen,imgViewFotoNuevaRetroveta);
+        aPimgClienteNuevaRetroventa.setOpacity(1);
+        aPimgClienteNuevaRetroventa.toFront();
+    }
 
+    @FXML
+    public void closeFotoNuevaRetroventa(){
+        aPimgClienteNuevaRetroventa.setOpacity(0);
+        aPimgClienteNuevaRetroventa.toBack();
+    }
+
+    public void centerImage(ImageView imageView) {
+        Image img = imageView.getImage();
+        if (img != null) {
+            double w = 0;
+            double h = 0;
+
+            double ratioX = imageView.getFitWidth() / img.getWidth();
+            double ratioY = imageView.getFitHeight() / img.getHeight();
+
+            double reducCoeff = 0;
+            if(ratioX >= ratioY) {
+                reducCoeff = ratioY;
+            } else {
+                reducCoeff = ratioX;
+            }
+
+            w = img.getWidth() * reducCoeff;
+            h = img.getHeight() * reducCoeff;
+
+            imageView.setX((imageView.getFitWidth() - w) / 2);
+            imageView.setY((imageView.getFitHeight() - h) / 2);
+
+        }
     }
 
     public void mostrarFoto(byte[] imagen, ImageView panelImagen) {
