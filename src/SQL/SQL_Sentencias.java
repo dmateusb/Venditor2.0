@@ -60,7 +60,7 @@ public class SQL_Sentencias {
         if(resultado.length==0){
             Id = 1;
         }else {
-            Id = Integer.parseInt(resultado[0][0].toString().substring(1))+1;
+            Id = Integer.parseInt(resultado[resultado.length-1][0].toString().substring(1))+1;
         }
         String IdArticulo = String.valueOf(Id);
         while (IdArticulo.length()<7){
@@ -76,7 +76,7 @@ public class SQL_Sentencias {
             ps.setString(4, descripcion);
             ps.setDouble(5, peso);
             ps.setInt(6, valor);
-            ps.setString(7,"Activo");
+            ps.setString(7,"Vigente");
             ps.setString(8, usuario);
             ps.execute();
             con.desconectar();
@@ -122,7 +122,7 @@ public class SQL_Sentencias {
             ps.setString(3, subcategoria);
             ps.setString(4, descripcion);
             ps.setInt(5, valor);
-            ps.setString(6,"Activo");
+            ps.setString(6,"Vigente");
             ps.setString(7, usuario);
             ps.execute();
             con.desconectar();

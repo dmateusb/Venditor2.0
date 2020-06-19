@@ -200,7 +200,7 @@ public class HomeController implements Initializable {
     @FXML private ComboBox<String> comboSubcategoria;
     @FXML private ComboBox<String> comboEstados;
     ObservableList<String> categorias = FXCollections.observableArrayList("Oro","Electrodomésticos");
-    ObservableList<String> estados = FXCollections.observableArrayList("Todos","Activos","Retractados","Vencidos"); //Estados de los contratos
+    ObservableList<String> estados = FXCollections.observableArrayList("Todos","Vigentes","Retractados","Vencidos"); //Estados de los contratos
     ObservableList<String> subElectrodomesticos = FXCollections.observableArrayList(
             "Cámaras","Deportes","Herramientas","Hogar","Industria","Instrumentos",
             "Portatil","Reloj","Sonido","Televisores","Videojuegos", "Otros");
@@ -450,7 +450,7 @@ public class HomeController implements Initializable {
             pantallaActiva = 3;
             vboxNuevaRetroventa.toFront();
             new FadeIn(vboxNuevaRetroventa).play();
-        } else if (event.getSource() == btncontrato ) {
+        } else if (event.getSource() == btncontrato) {
             mostrarTablaInicial();
             anchorTablaContratos.toFront();
             vboxContratos.toFront();
@@ -487,12 +487,16 @@ public class HomeController implements Initializable {
             pantallaActiva = 17;
             vboxnuevocliente.toFront();
             new FadeIn(vboxnuevocliente).play();
-        } else if (event.getSource() == btnbusquedacliente && pantallaActiva != 18) {
+        } else if (event.getSource() == btnbusquedacliente) {
             mostrarTablaInicial_Clientes();
-            pantallaActiva = 18;
             vboxBusquedaCliente.toFront();
             anchorTablaClientes.toFront();
-            new FadeIn(vboxBusquedaCliente).play();
+            //new FadeIn(vboxBusquedaCliente).play();
+
+            if(pantallaActiva != 18){
+                new FadeIn(vboxContratos).play();
+            }
+            pantallaActiva = 18;
         }
     }
 
@@ -567,7 +571,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -584,8 +588,8 @@ public class HomeController implements Initializable {
                 }
             });
             arrayContratos.removeAll(lista);
-        }else if(output == "Activos"){
-            Object[][] Contratos = control.ConsultarContratosActivos();
+        }else if(output == "Vigentes"){
+            Object[][] Contratos = control.ConsultarContratosVigentes();
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
@@ -625,7 +629,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -684,7 +688,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -743,7 +747,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -786,8 +790,9 @@ public class HomeController implements Initializable {
         String IdArticulo;
         SQL_Sentencias sen = new SQL_Sentencias("root", "");
         if(comboCategoria.getValue().toString() =="Oro"){
+            String precio = txtValorArticulo.getText().replace(".", "");
             IdArticulo = sen.InsertarNuevoArticulo(comboCategoria.getValue().toString(),comboSubcategoria.getValue().toString(),txtDescripcionArticulo.getText(),
-                    Double.parseDouble(txtPesoArticulo.getText()),Integer.parseInt(txtValorArticulo.getText()),sen.getUser());
+                    Double.parseDouble(txtPesoArticulo.getText()),Integer.parseInt(precio),sen.getUser());
         }else{
             IdArticulo = sen.InsertarNuevoArticulo(comboCategoria.getValue().toString(),comboSubcategoria.getValue().toString(),txtDescripcionArticulo.getText(),
                     Integer.parseInt(txtValorArticulo.getText()),sen.getUser());
@@ -802,7 +807,8 @@ public class HomeController implements Initializable {
         //System.out.println(dtf.format(now));
         String ArticuloId = InsertarNuevoArticulo();
         SQL_Sentencias sen = new SQL_Sentencias("root", "");
-        sen.InsertarNuevoContrato(Integer.parseInt(txtcedulaNuevaRetroventa.getText().toString()),ArticuloId,Integer.parseInt(txtValorArticulo.getText().toString()),
+        String precio = txtValorArticulo.getText().replace(".", "");
+        sen.InsertarNuevoContrato(Integer.parseInt(txtcedulaNuevaRetroventa.getText().toString()),ArticuloId,Integer.parseInt(precio),
                                 Double.parseDouble(SpinnerPorcentaje.getValue().toString()),vencimiento,sen.getUser());
     }
 
@@ -1015,7 +1021,7 @@ public class HomeController implements Initializable {
                             boolean isDeposit = true;
                             char val = '█';
                             setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                            if(item.toString().equals("Activo")) // should be if type is deposit
+                            if(item.toString().equals("Vigente")) // should be if type is deposit
                             {
                                 setTextFill(Color.GREEN);
                                 //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -1082,7 +1088,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -1099,8 +1105,8 @@ public class HomeController implements Initializable {
                 }
             });
             arrayContratos.removeAll(lista);
-        }else if(output == "Activos"){
-            Object[][] Contratos = control.ConsultarContratosActivosLikeCedula(txtCedulaContratos.getText());
+        }else if(output == "Vigentes"){
+            Object[][] Contratos = control.ConsultarContratosVigentesLikeCedula(txtCedulaContratos.getText());
             for(int i=0;i<Contratos.length;i++){
                 if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
                     Contrato contrato = new Contrato(Contratos[i][0].toString(), Integer.parseInt(Contratos[i][1].toString()), Contratos[i][3].toString().substring(0, 10));
@@ -1140,7 +1146,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -1199,7 +1205,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -1258,7 +1264,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -1325,7 +1331,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente"))
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -1342,8 +1348,8 @@ public class HomeController implements Initializable {
                 }
             });
             arrayContratos.removeAll(lista);
-        }else if(output == "Activos") {
-            Object[][] ContratosLikeContrato = control.ConsultarContratosActivosLikeContrato(txtNumeroContrato.getText().toString());
+        }else if(output == "Vigentes") {
+            Object[][] ContratosLikeContrato = control.ConsultarContratosVigentesLikeContrato(txtNumeroContrato.getText().toString());
             for (int i = 0; i < ContratosLikeContrato.length; i++) {
                 if (ContratosLikeContrato[i][0] != null && ContratosLikeContrato[i][1] != null && ContratosLikeContrato[i][2] != null) {
                     Contrato contrato = new Contrato(ContratosLikeContrato[i][0].toString(), Integer.parseInt(ContratosLikeContrato[i][1].toString()), ContratosLikeContrato[i][3].toString().substring(0, 10));
@@ -1383,7 +1389,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -1442,7 +1448,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
-                                if(item.toString().equals("Activo")) // should be if type is deposit
+                                if(item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -1495,7 +1501,7 @@ public class HomeController implements Initializable {
                                 boolean isDeposit = true;
                                 char val = '█';
                                 setText(String.valueOf(val) + String.valueOf(val) + String.valueOf(val) + String.valueOf(val));
-                                if (item.toString().equals("Activo")) // should be if type is deposit
+                                if (item.toString().equals("Vigente")) // should be if type is deposit
                                 {
                                     setTextFill(Color.GREEN);
                                     //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
@@ -1691,6 +1697,7 @@ public class HomeController implements Initializable {
                 cedulaSeleccionada);
         anchorDetallesContrato.toFront();
         vboxContratos.toFront();
+        pantallaActiva = 4;
     }
 
     @FXML

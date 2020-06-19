@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HomeController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HomeController">
    <children>
       <AnchorPane layoutX="332.0" prefHeight="768.0" prefWidth="1004.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -212,184 +212,180 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox fx:id="vboxBusquedaCliente" alignment="CENTER" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="vboxNuevaRetroventa" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
                      <children>
-                        <AnchorPane fx:id="pnCrearUsuario3" prefHeight="719.0" prefWidth="966.0" style="-fx-background-color: #e2e2e2;">
+                        <AnchorPane fx:id="pnCrearUsuario2" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #e2e2e2;">
                            <children>
-                              <Text layoutX="293.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BÚSQUEDA DE CLIENTES">
+                              <ImageView fitHeight="700.0" fitWidth="1000.0" opacity="0.25" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../im/FONDO-02.png" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="txtcedulaNuevaRetroventa" layoutX="92.0" layoutY="160.0" onAction="#onEnterCedulaNuevaRetroventa" prefHeight="30.0" prefWidth="190.0" styleClass="campotexto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextField>
+                              <TextField fx:id="txtPesoArticulo" layoutX="399.0" layoutY="436.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextField>
+                              <TextField fx:id="txtValorArticulo" layoutX="398.0" layoutY="503.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextField>
+                              <ComboBox fx:id="comboCategoria" layoutX="92.0" layoutY="438.0" onAction="#cambioSubcategorias" prefHeight="30.0" prefWidth="230.0" promptText="Seleccione una" />
+                              <ComboBox fx:id="comboSubcategoria" layoutX="92.0" layoutY="507.0" prefHeight="30.0" prefWidth="230.0" promptText="Seleccione una" />
+                              <TextArea fx:id="txtDescripcionArticulo" layoutX="704.0" layoutY="434.0" prefHeight="100.0" prefWidth="230.0" promptText="Escribe la descripción del artículo" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextArea>
+                              <Button fx:id="btnBorrarTodoNuevaRetro" layoutX="91.0" layoutY="636.0" mnemonicParsing="false" onAction="#CambiarCliente" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Borrar Todo">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnCambiarCliente112" disable="true" layoutX="610.0" layoutY="636.0" mnemonicParsing="false" onAction="#CambiarCliente" prefHeight="30.0" prefWidth="150.0" styleClass="btnVerde" text="Imprimir Contrato">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnCrearRetroventa" layoutX="781.0" layoutY="637.0" mnemonicParsing="false" onAction="#InsertarNuevoContrato" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Crear Retroventa">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <TextField fx:id="txtnombreNuevaRetroventa" editable="false" layoutX="94.0" layoutY="228.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextField>
+                              <TextField fx:id="txtapellidoNuevaRetroventa" editable="false" layoutX="399.0" layoutY="228.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextField>
+                              <TextField fx:id="txtdireccionNuevaRetroventa" editable="false" layoutX="704.0" layoutY="227.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextField>
+                              <TextField fx:id="txtcorreoNuevaRetroventa" editable="false" layoutX="92.0" layoutY="300.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextField>
+                              <TextField fx:id="txttelefono1NuevaRetroventa" editable="false" layoutX="399.0" layoutY="300.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextField>
+                              <TextField fx:id="txttelefono2NuevaRetroventa" editable="false" layoutX="704.0" layoutY="300.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></TextField>
+                              <Spinner fx:id="SpinnerPorcentaje" editable="true" layoutX="702.0" layoutY="578.0" prefHeight="30.0" prefWidth="94.0" />
+                              <Button layoutX="400.0" layoutY="159.0" mnemonicParsing="false" onAction="#buscarClientePorHuella_NuevaRetroventa" prefHeight="30.0" prefWidth="230.0" styleClass="btnVerde" text="Buscar con Huella" />
+                              <Button fx:id="btnVerFoto" disable="true" layoutX="703.0" layoutY="159.0" mnemonicParsing="false" onAction="#verFoto_NuevaRetroventa" prefHeight="30.0" prefWidth="78.0" styleClass="btnAzul" text="Ver foto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnCambiarCliente" disable="true" layoutX="798.0" layoutY="159.0" mnemonicParsing="false" onAction="#CambiarCliente" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzulClaro" text="Cambiar cliente">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnCambiarPorcentaje" layoutX="816.0" layoutY="578.0" mnemonicParsing="false" onAction="#habilitarCambioPorcentaje" prefHeight="30.0" prefWidth="116.0" styleClass="btnAzulClaro" text="Cambiar" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="93.0" layoutY="198.0" styleClass="textos" text="Nombres">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="91.0" layoutY="129.0" styleClass="textos" text="Cédula">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="398.0" layoutY="198.0" styleClass="textos" text="Apellidos">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="91.0" layoutY="270.0" styleClass="textos" text="Correo">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="703.0" layoutY="197.0" styleClass="textos" text="Dirección">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="398.0" layoutY="270.0" styleClass="textos" text="Teléfono 1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="704.0" layoutY="270.0" styleClass="textos" text="Teléfono 2">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="353.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NUEVA RETROVENTA">
                                  <font>
                                     <Font name="System Bold" size="36.0" />
                                  </font>
                               </Text>
-                              <FontAwesomeIcon iconName="USER" layoutX="251.0" layoutY="52.0" size="3em" />
-                              <AnchorPane fx:id="anchorTablaClientes" layoutX="50.0" layoutY="75.0" prefHeight="640.0" prefWidth="875.0" style="-fx-background-color: #e2e2e2;">
+                              <Text layoutX="49.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Información del Cliente">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Text>
+                              <HBox layoutX="289.0" layoutY="159.0">
                                  <children>
-                                    <Button fx:id="btnVerDetalleTablaClientes" disable="true" layoutX="703.0" layoutY="584.0" mnemonicParsing="false" onAction="#verDetalleTablaClientes" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Ver detalle">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
+                                    <Button mnemonicParsing="false" onAction="#buscarClienteNuevaRetro" prefHeight="30.0" prefWidth="30.0">
+                                       <graphic>
+                                          <FontAwesomeIcon fill="#255958" iconName="SEARCH" size="1.5em" />
+                                       </graphic>
                                     </Button>
-                                    <TextField fx:id="txtBusquedaCliente" layoutX="273.0" layoutY="60.0" onKeyReleased="#mostrarTablaClientesPorCedula" prefHeight="26.0" prefWidth="210.0" />
-                                    <Button layoutX="509.0" layoutY="58.0" mnemonicParsing="false" onAction="#buscarConHuellaBusquedaCliente" prefHeight="30.0" prefWidth="160.0" styleClass="btnVerde" text="Buscar con huella" textFill="WHITE">
-                                       <cursor>
-                                          <Cursor fx:constant="DEFAULT" />
-                                       </cursor>
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Button>
-                                    <Label layoutX="163.0" layoutY="60.0" styleClass="textos" text="Cédula">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <AnchorPane layoutX="20.0" layoutY="108.0" prefHeight="447.0" prefWidth="834.0" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="108.0">
-                                       <children>
-                                          <TableView fx:id="Tabla_BusquedaClientes" layoutX="-14.0" layoutY="89.0" onMouseClicked="#onClicTablaClientes" prefHeight="478.0" prefWidth="833.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <columns>
-                                              <TableColumn fx:id="ColumnaCedulaCliente" prefWidth="116.0" text="Cedula" />
-                                              <TableColumn fx:id="ColumnaNombreCliente" prefWidth="116.0" text="Nombre" />
-                                                <TableColumn fx:id="ColumnaApellidosCliente" prefWidth="116.0" text="Apellidos" />
-                                                <TableColumn fx:id="ColumnaDireccionCliente" prefWidth="116.0" text="Direccion" />
-                                                <TableColumn fx:id="ColumnaTelefono1Cliente" prefWidth="116.0" text="Teléfono 1" />
-                                                <TableColumn fx:id="ColumnaTelefono2Cliente" prefWidth="116.0" text="Telefono 2" />
-                                                <TableColumn fx:id="ColumnaCorreoCliente" prefWidth="116.0" text="Correo" />
-                                            </columns>
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                          </TableView>
-                                       </children>
-                                    </AnchorPane>
                                  </children>
-                              </AnchorPane>
-                              <AnchorPane fx:id="anchorDetallesCliente" layoutX="50.0" layoutY="75.0" prefHeight="640.0" prefWidth="875.0" style="-fx-background-color: #e2e2e2;">
+                              </HBox>
+                              <Text layoutX="49.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Información del artículo">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="705.0" layoutY="404.0" styleClass="textos" text="Descripción">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="93.0" layoutY="408.0" styleClass="textos" text="Categoría">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="93.0" layoutY="477.0" styleClass="textos" text="Subcategoría">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="402.0" layoutY="401.0" styleClass="textos" text="Peso">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="399.0" layoutY="473.0" styleClass="textos" text="Valor">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <FontAwesomeIcon iconName="EXCHANGE" layoutX="300.0" layoutY="50.0" size="3em" />
+                              <AnchorPane fx:id="aPimgClienteNuevaRetroventa" layoutX="138.0" layoutY="198.0" prefHeight="357.0" prefWidth="662.0" style="-fx-background-color: rgb(0,0,0,0);">
                                  <children>
-                                    <AnchorPane layoutX="14.0" layoutY="360.0" prefWidth="822.0">
-                                       <children>
-                                          <TableView fx:id="TablaContratos_BusquedaClientes" prefHeight="200.0" prefWidth="822.0">
-                                             <columns>
-                                                <TableColumn fx:id="columnaContratoBusquedaClientes" minWidth="2.4000244140625" prefWidth="144.800048828125" text="# Contrato" />
-                                                <TableColumn fx:id="columnaArticuloBusquedaClientes" prefWidth="92.00000381469727" text="Articulo" />
-                                                <TableColumn fx:id="columnaValorBusquedaClientes" prefWidth="146.39996337890625" text="Valor" />
-                                                <TableColumn fx:id="columnaRenovacionesBusquedaClientes" prefWidth="235.20001220703125" text="Renovaciones" />
-                                                <TableColumn fx:id="columnaPorcentajeBusquedaClientes" prefWidth="147.9999237060547" text="Porcentaje" />
-                                                <TableColumn fx:id="columnaEstadoBusquedaClientes" prefWidth="138.39990234375" text="Estado" />
-                                             </columns>
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                          </TableView>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="14.0" layoutY="16.0" prefHeight="292.0" prefWidth="570.0">
-                                       <children>
-                                          <TextField fx:id="txtNombreBusquedaCliente" editable="false" layoutX="110.0" layoutY="15.0" prefHeight="26.0" prefWidth="142.0" />
-                                          <Text layoutX="4.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" wrappingWidth="110.9999942779541" AnchorPane.leftAnchor="4.0">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <Text layoutX="285.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido" wrappingWidth="69.4000186920166">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtApellidoBusquedaCliente" editable="false" layoutX="403.0" layoutY="15.0" prefHeight="26.0" prefWidth="142.0" />
-                                          <Text layoutX="285.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dirección" wrappingWidth="78.40000000000003" AnchorPane.leftAnchor="285.0">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtDireccionBusquedaCliente" editable="false" layoutX="403.0" layoutY="64.0" prefHeight="26.0" prefWidth="142.0" AnchorPane.rightAnchor="25.0" />
-                                          <Text layoutX="4.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono 1" wrappingWidth="94.40000000000009" AnchorPane.leftAnchor="4.0">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtTelefono1BusquedaCliente" editable="false" layoutX="109.99999999999997" layoutY="115.0" prefHeight="26.0" prefWidth="142.0" AnchorPane.rightAnchor="318.0" />
-                                          <Text layoutX="4.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefono 2" wrappingWidth="110.9999942779541">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtTelefono2BusquedaCliente" editable="false" layoutX="110.0" layoutY="166.0" prefHeight="26.0" prefWidth="142.0" />
-                                          <Text layoutX="285.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clasificación" wrappingWidth="110.9999942779541">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtPerfilBusquedaCliente" editable="false" layoutX="403.0" layoutY="166.0" prefHeight="26.0" prefWidth="142.0" />
-                                          <Text layoutX="285.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente desde" wrappingWidth="110.9999942779541">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtFechaRegistroBusquedaCliente" editable="false" layoutX="403.0" layoutY="218.0" prefHeight="25.0" prefWidth="142.0" />
-                                          <Text layoutX="285.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Barrio" wrappingWidth="69.40001869201637">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtBarrioBusquedaCliente" editable="false" layoutX="403.0" layoutY="115.0" prefHeight="26.0" prefWidth="142.0" />
-                                          <Text layoutX="4.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo" wrappingWidth="69.40001869201637">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtCorreoBusquedaCliente" editable="false" layoutX="110.0" layoutY="218.0" prefHeight="26.0" prefWidth="142.0" />
-                                          <Text layoutX="4.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cédula" wrappingWidth="78.40000000000003">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtCedulaBusquedaCliente" editable="false" layoutX="110.0" layoutY="64.0" prefHeight="26.0" prefWidth="142.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="584.0" layoutY="77.0" style="-fx-background-color: #fff;">
-                                       <children>
-                                          <ImageView fx:id="imageViewBusquedaCliente" fitHeight="179.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true" />
-                                       </children>
-                                    </AnchorPane>
-                                    <Button layoutX="686.0" layoutY="579.0" mnemonicParsing="false" onAction="#verDetalleContratoFromCliente" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Ver detalle" textFill="WHITE">
-                                       <cursor>
-                                          <Cursor fx:constant="DEFAULT" />
-                                       </cursor>
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="btnGuardarDetalleCliente" layoutX="14.0" layoutY="293.0" mnemonicParsing="false" onAction="#guardarDetalleCLienteOnClic" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzulClaro" text="Guardar" textFill="WHITE">
-                                       <cursor>
-                                          <Cursor fx:constant="DEFAULT" />
-                                       </cursor>
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Button>
-                                    <Button layoutX="809.0" layoutY="7.0" mnemonicParsing="false" onAction="#OcultarDetallesCliente" style="-fx-background-color: rgb(0,0,0,0);" text="X" textFill="RED">
-                                       <font>
-                                          <Font name="System Bold" size="14.0" />
-                                       </font>
-                                    </Button>
-                                    <Button layoutX="14.0" layoutY="579.0" mnemonicParsing="false" onAction="#regresarBusquedaClientes" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Volver" textFill="WHITE">
-                                       <cursor>
-                                          <Cursor fx:constant="DEFAULT" />
-                                       </cursor>
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="btnModificarDetalleCliente" layoutX="14.0" layoutY="293.0" mnemonicParsing="false" onAction="#modificarDetalleCLienteOnClic" prefHeight="30.0" prefWidth="150.0" styleClass="btnNaranja" text="Modificar" textFill="WHITE">
-                                       <cursor>
-                                          <Cursor fx:constant="DEFAULT" />
-                                       </cursor>
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Button>
+                                    <ImageView fx:id="imgViewFotoNuevaRetroveta" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <FontAwesomeIcon iconName="CLOSE" onMouseClicked="#closeFotoNuevaRetroventa" size="2em" stroke="WHITE" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
                                  </children>
                               </AnchorPane>
                            </children>
@@ -630,180 +626,184 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox fx:id="vboxNuevaRetroventa" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="vboxBusquedaCliente" alignment="CENTER" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
                      <children>
-                        <AnchorPane fx:id="pnCrearUsuario2" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #e2e2e2;">
+                        <AnchorPane fx:id="pnCrearUsuario3" prefHeight="719.0" prefWidth="966.0" style="-fx-background-color: #e2e2e2;">
                            <children>
-                              <ImageView fitHeight="700.0" fitWidth="1000.0" opacity="0.25" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../im/FONDO-02.png" />
-                                 </image>
-                              </ImageView>
-                              <TextField fx:id="txtcedulaNuevaRetroventa" layoutX="92.0" layoutY="160.0" onAction="#onEnterCedulaNuevaRetroventa" prefHeight="30.0" prefWidth="190.0" styleClass="campotexto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextField>
-                              <TextField fx:id="txtPesoArticulo" layoutX="399.0" layoutY="436.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextField>
-                              <TextField fx:id="txtValorArticulo" layoutX="398.0" layoutY="503.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextField>
-                              <ComboBox fx:id="comboCategoria" layoutX="92.0" layoutY="438.0" onAction="#cambioSubcategorias" prefHeight="30.0" prefWidth="230.0" promptText="Seleccione una" />
-                              <ComboBox fx:id="comboSubcategoria" layoutX="92.0" layoutY="507.0" prefHeight="30.0" prefWidth="230.0" promptText="Seleccione una" />
-                              <TextArea fx:id="txtDescripcionArticulo" layoutX="704.0" layoutY="434.0" prefHeight="100.0" prefWidth="230.0" promptText="Escribe la descripción del artículo" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextArea>
-                              <Button fx:id="btnBorrarTodoNuevaRetro" layoutX="91.0" layoutY="636.0" mnemonicParsing="false" onAction="#CambiarCliente" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Borrar Todo">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="btnCambiarCliente112" disable="true" layoutX="610.0" layoutY="636.0" mnemonicParsing="false" onAction="#CambiarCliente" prefHeight="30.0" prefWidth="150.0" styleClass="btnVerde" text="Imprimir Contrato">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="btnCrearRetroventa" layoutX="781.0" layoutY="637.0" mnemonicParsing="false" onAction="#InsertarNuevoContrato" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Crear Retroventa">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
-                              <TextField fx:id="txtnombreNuevaRetroventa" editable="false" layoutX="94.0" layoutY="228.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextField>
-                              <TextField fx:id="txtapellidoNuevaRetroventa" editable="false" layoutX="399.0" layoutY="228.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextField>
-                              <TextField fx:id="txtdireccionNuevaRetroventa" editable="false" layoutX="704.0" layoutY="227.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextField>
-                              <TextField fx:id="txtcorreoNuevaRetroventa" editable="false" layoutX="92.0" layoutY="300.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextField>
-                              <TextField fx:id="txttelefono1NuevaRetroventa" editable="false" layoutX="399.0" layoutY="300.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextField>
-                              <TextField fx:id="txttelefono2NuevaRetroventa" editable="false" layoutX="704.0" layoutY="300.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></TextField>
-                              <Spinner fx:id="SpinnerPorcentaje" editable="true" layoutX="702.0" layoutY="578.0" prefHeight="30.0" prefWidth="94.0" />
-                              <Button layoutX="400.0" layoutY="159.0" mnemonicParsing="false" onAction="#buscarClientePorHuella_NuevaRetroventa" prefHeight="30.0" prefWidth="230.0" styleClass="btnVerde" text="Buscar con Huella" />
-                              <Button fx:id="btnVerFoto" disable="true" layoutX="703.0" layoutY="159.0" mnemonicParsing="false" onAction="#verFoto_NuevaRetroventa" prefHeight="30.0" prefWidth="78.0" styleClass="btnAzul" text="Ver foto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="btnCambiarCliente" disable="true" layoutX="798.0" layoutY="159.0" mnemonicParsing="false" onAction="#CambiarCliente" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzulClaro" text="Cambiar cliente">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="btnCambiarPorcentaje" layoutX="816.0" layoutY="578.0" mnemonicParsing="false" onAction="#habilitarCambioPorcentaje" prefHeight="30.0" prefWidth="116.0" styleClass="btnAzulClaro" text="Cambiar" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
-                              <Label layoutX="93.0" layoutY="198.0" styleClass="textos" text="Nombres">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="91.0" layoutY="129.0" styleClass="textos" text="Cédula">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="398.0" layoutY="198.0" styleClass="textos" text="Apellidos">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="91.0" layoutY="270.0" styleClass="textos" text="Correo">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="703.0" layoutY="197.0" styleClass="textos" text="Dirección">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="398.0" layoutY="270.0" styleClass="textos" text="Teléfono 1">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="704.0" layoutY="270.0" styleClass="textos" text="Teléfono 2">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Text layoutX="353.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NUEVA RETROVENTA">
+                              <Text layoutX="293.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BÚSQUEDA DE CLIENTES">
                                  <font>
                                     <Font name="System Bold" size="36.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="49.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Información del Cliente">
-                                 <font>
-                                    <Font name="System Bold" size="24.0" />
-                                 </font>
-                              </Text>
-                              <HBox layoutX="289.0" layoutY="159.0">
+                              <FontAwesomeIcon iconName="USER" layoutX="251.0" layoutY="52.0" size="3em" />
+                              <AnchorPane fx:id="anchorTablaClientes" layoutX="50.0" layoutY="75.0" prefHeight="640.0" prefWidth="875.0" style="-fx-background-color: #e2e2e2;">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#buscarClienteNuevaRetro" prefHeight="30.0" prefWidth="30.0">
-                                       <graphic>
-                                          <FontAwesomeIcon fill="#255958" iconName="SEARCH" size="1.5em" />
-                                       </graphic>
+                                    <Button fx:id="btnVerDetalleTablaClientes" disable="true" layoutX="20.0" layoutY="582.0" mnemonicParsing="false" onAction="#verDetalleTablaClientes" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Ver detalle">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
                                     </Button>
+                                    <TextField fx:id="txtBusquedaCliente" layoutX="273.0" layoutY="60.0" onKeyReleased="#mostrarTablaClientesPorCedula" prefHeight="26.0" prefWidth="210.0" />
+                                    <Button layoutX="509.0" layoutY="58.0" mnemonicParsing="false" onAction="#buscarConHuellaBusquedaCliente" prefHeight="30.0" prefWidth="160.0" styleClass="btnVerde" text="Buscar con huella" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Label layoutX="163.0" layoutY="60.0" styleClass="textos" text="Cédula">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <AnchorPane layoutX="20.0" layoutY="108.0" prefHeight="447.0" prefWidth="834.0" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="108.0">
+                                       <children>
+                                          <TableView fx:id="Tabla_BusquedaClientes" layoutX="-14.0" layoutY="89.0" onMouseClicked="#onClicTablaClientes" prefHeight="478.0" prefWidth="833.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columns>
+                                              <TableColumn fx:id="ColumnaCedulaCliente" prefWidth="116.0" text="Cedula" />
+                                              <TableColumn fx:id="ColumnaNombreCliente" prefWidth="116.0" text="Nombre" />
+                                                <TableColumn fx:id="ColumnaApellidosCliente" prefWidth="116.0" text="Apellidos" />
+                                                <TableColumn fx:id="ColumnaDireccionCliente" prefWidth="116.0" text="Direccion" />
+                                                <TableColumn fx:id="ColumnaTelefono1Cliente" prefWidth="116.0" text="Teléfono 1" />
+                                                <TableColumn fx:id="ColumnaTelefono2Cliente" prefWidth="116.0" text="Telefono 2" />
+                                                <TableColumn fx:id="ColumnaCorreoCliente" prefWidth="116.0" text="Correo" />
+                                            </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
                                  </children>
-                              </HBox>
-                              <Text layoutX="49.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Información del artículo">
-                                 <font>
-                                    <Font name="System Bold" size="24.0" />
-                                 </font>
-                              </Text>
-                              <Label layoutX="705.0" layoutY="404.0" styleClass="textos" text="Descripción">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="93.0" layoutY="408.0" styleClass="textos" text="Categoría">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="93.0" layoutY="477.0" styleClass="textos" text="Subcategoría">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="402.0" layoutY="401.0" styleClass="textos" text="Peso">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="399.0" layoutY="473.0" styleClass="textos" text="Valor">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <FontAwesomeIcon iconName="EXCHANGE" layoutX="300.0" layoutY="50.0" size="3em" />
-                              <AnchorPane fx:id="aPimgClienteNuevaRetroventa" layoutX="138.0" layoutY="198.0" prefHeight="357.0" prefWidth="662.0" style="-fx-background-color: rgb(0,0,0,0);">
+                              </AnchorPane>
+                              <AnchorPane fx:id="anchorDetallesCliente" layoutX="50.0" layoutY="75.0" prefHeight="640.0" prefWidth="875.0" style="-fx-background-color: #e2e2e2;">
                                  <children>
-                                    <ImageView fx:id="imgViewFotoNuevaRetroveta" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    <FontAwesomeIcon iconName="CLOSE" onMouseClicked="#closeFotoNuevaRetroventa" size="2em" stroke="WHITE" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
+                                    <AnchorPane layoutX="14.0" layoutY="360.0" prefWidth="822.0">
+                                       <children>
+                                          <TableView fx:id="TablaContratos_BusquedaClientes" prefHeight="200.0" prefWidth="822.0">
+                                             <columns>
+                                                <TableColumn fx:id="columnaContratoBusquedaClientes" minWidth="2.4000244140625" prefWidth="144.800048828125" text="# Contrato" />
+                                                <TableColumn fx:id="columnaArticuloBusquedaClientes" prefWidth="92.00000381469727" text="Articulo" />
+                                                <TableColumn fx:id="columnaValorBusquedaClientes" prefWidth="146.39996337890625" text="Valor" />
+                                                <TableColumn fx:id="columnaRenovacionesBusquedaClientes" prefWidth="235.20001220703125" text="Renovaciones" />
+                                                <TableColumn fx:id="columnaPorcentajeBusquedaClientes" prefWidth="147.9999237060547" text="Porcentaje" />
+                                                <TableColumn fx:id="columnaEstadoBusquedaClientes" prefWidth="138.39990234375" text="Estado" />
+                                             </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="14.0" layoutY="16.0" prefHeight="292.0" prefWidth="570.0">
+                                       <children>
+                                          <TextField fx:id="txtNombreBusquedaCliente" editable="false" layoutX="110.0" layoutY="15.0" prefHeight="26.0" prefWidth="142.0" />
+                                          <Text layoutX="4.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" wrappingWidth="110.9999942779541" AnchorPane.leftAnchor="4.0">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <Text layoutX="285.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido" wrappingWidth="69.4000186920166">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtApellidoBusquedaCliente" editable="false" layoutX="403.0" layoutY="15.0" prefHeight="26.0" prefWidth="142.0" />
+                                          <Text layoutX="285.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dirección" wrappingWidth="78.40000000000003" AnchorPane.leftAnchor="285.0">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtDireccionBusquedaCliente" editable="false" layoutX="403.0" layoutY="64.0" prefHeight="26.0" prefWidth="142.0" AnchorPane.rightAnchor="25.0" />
+                                          <Text layoutX="4.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono 1" wrappingWidth="94.40000000000009" AnchorPane.leftAnchor="4.0">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtTelefono1BusquedaCliente" editable="false" layoutX="109.99999999999997" layoutY="115.0" prefHeight="26.0" prefWidth="142.0" AnchorPane.rightAnchor="318.0" />
+                                          <Text layoutX="4.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefono 2" wrappingWidth="110.9999942779541">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtTelefono2BusquedaCliente" editable="false" layoutX="110.0" layoutY="166.0" prefHeight="26.0" prefWidth="142.0" />
+                                          <Text layoutX="285.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clasificación" wrappingWidth="110.9999942779541">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtPerfilBusquedaCliente" editable="false" layoutX="403.0" layoutY="166.0" prefHeight="26.0" prefWidth="142.0" />
+                                          <Text layoutX="285.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente desde" wrappingWidth="110.9999942779541">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtFechaRegistroBusquedaCliente" editable="false" layoutX="403.0" layoutY="218.0" prefHeight="25.0" prefWidth="142.0" />
+                                          <Text layoutX="285.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Barrio" wrappingWidth="69.40001869201637">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtBarrioBusquedaCliente" editable="false" layoutX="403.0" layoutY="115.0" prefHeight="26.0" prefWidth="142.0" />
+                                          <Text layoutX="4.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo" wrappingWidth="69.40001869201637">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtCorreoBusquedaCliente" editable="false" layoutX="110.0" layoutY="218.0" prefHeight="26.0" prefWidth="142.0" />
+                                          <Text layoutX="4.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cédula" wrappingWidth="78.40000000000003">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtCedulaBusquedaCliente" editable="false" layoutX="110.0" layoutY="64.0" prefHeight="26.0" prefWidth="142.0" />
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="584.0" layoutY="77.0" style="-fx-background-color: #fff;">
+                                       <children>
+                                          <ImageView fx:id="imageViewBusquedaCliente" fitHeight="179.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </AnchorPane>
+                                    <Button layoutX="686.0" layoutY="579.0" mnemonicParsing="false" onAction="#verDetalleContratoFromCliente" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Ver detalle" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="btnGuardarDetalleCliente" layoutX="14.0" layoutY="293.0" mnemonicParsing="false" onAction="#guardarDetalleCLienteOnClic" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzulClaro" text="Guardar" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Button layoutX="809.0" layoutY="7.0" mnemonicParsing="false" onAction="#OcultarDetallesCliente" style="-fx-background-color: rgb(0,0,0,0);" text="X" textFill="RED">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Button layoutX="14.0" layoutY="579.0" mnemonicParsing="false" onAction="#regresarBusquedaClientes" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Volver" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="btnModificarDetalleCliente" layoutX="14.0" layoutY="293.0" mnemonicParsing="false" onAction="#modificarDetalleCLienteOnClic" prefHeight="30.0" prefWidth="150.0" styleClass="btnNaranja" text="Modificar" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
                                  </children>
                               </AnchorPane>
                            </children>

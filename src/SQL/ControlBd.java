@@ -78,9 +78,9 @@ public class ControlBd {
         System.out.println("Entra a la sentencia");
         return resultado;
     }
-    public Object[][] ConsultarContratosActivos(){
+    public Object[][] ConsultarContratosVigentes(){
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio, Estado FROM contratos where Estado = 'Activo'");
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio, Estado FROM contratos where Estado = 'Vigente'");
         System.out.println("Entra a la sentencia");
         return resultado;
     }
@@ -99,9 +99,9 @@ public class ControlBd {
         Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Vencido' and Cedula like '%"+entrada+"%';");
         return resultado;
     }
-    public Object[][] ConsultarContratosActivosLikeCedula(String entrada){
+    public Object[][] ConsultarContratosVigentesLikeCedula(String entrada){
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Activo' and Cedula like '%"+entrada+"%';");
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Vigente' and Cedula like '%"+entrada+"%';");
         return resultado;
     }
     public Object[][] ConsultarContratosRetractadosLikeCedula(String entrada){
@@ -138,9 +138,9 @@ public class ControlBd {
         return resultado;
     }
 
-    public Object[][] ConsultarContratosActivosLikeContrato(String entrada){
+    public Object[][] ConsultarContratosVigentesLikeContrato(String entrada){
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Activo' and  Numero_contrato like '%"+entrada+"%';");
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Vigente' and  Numero_contrato like '%"+entrada+"%';");
         return resultado;
     }
 
