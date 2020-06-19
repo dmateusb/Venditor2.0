@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.Stack;
+
 public class Contrato {
     int cedula;
     String numeroContrato;
@@ -21,9 +23,24 @@ public class Contrato {
     private String vencimiento;
 
     public Contrato(String numeroContrato, String articulo, String valor, String porcentaje, String renovaciones, String estado) {
+        String valorFormateado="";
+        Stack<String> stack1 = new Stack<String>();
+        Stack<String> stack2 = new Stack<String>();
+        for(int i=0;i<valor.length();i++){
+            stack1.push(valor.substring(i,i+1));
+        }
+        int contador=0;
+        while(!stack1.isEmpty()){
+            valorFormateado = stack1.pop()+valorFormateado;
+            contador++;
+            if(contador%3==0){
+                valorFormateado = "."+valorFormateado;
+            }
+        }
+
         this.numeroContrato = numeroContrato;
         this.articulo = articulo;
-        this.valor = valor;
+        this.valor = valorFormateado;
         this.porcentaje = porcentaje;
         this.renovaciones = renovaciones;
         this.estado = estado;
@@ -124,7 +141,23 @@ public class Contrato {
     }
 
     public void setValor(String valor) {
-        this.valor = valor;
+        //Este método hace que el valor tenga el formato de dinero, agregando un punto cada 3 cifras
+        String valorFormateado="";
+        Stack<String> stack1 = new Stack<String>();
+        Stack<String> stack2 = new Stack<String>();
+        for(int i=0;i<valor.length();i++){
+            stack1.push(valor.substring(i,i+1));
+        }
+        int contador=0;
+        while(!stack1.isEmpty()){
+            valorFormateado = stack1.pop()+valorFormateado;
+            contador++;
+            if(contador%3==0 && !stack1.isEmpty()){
+                valorFormateado = "."+valorFormateado;
+            }
+        }
+
+        this.valor = valorFormateado;
     }
 
     public String getPorcentaje() {

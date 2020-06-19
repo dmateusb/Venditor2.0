@@ -10,8 +10,8 @@ import SQL.ControlBd;
 import SQL.SQL_Sentencias;
 import animatefx.animation.FadeIn;
 import com.github.sarxos.webcam.Webcam;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.IncomingPhoneNumber;
+ //import com.twilio.Twilio;
+//import com.twilio.rest.api.v2010.account.IncomingPhoneNumber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,22 +31,20 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import logic.*;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.Document;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Stack;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -78,6 +77,9 @@ public class HomeController implements Initializable {
     @FXML private Button btnCambiarPorcentaje;
     @FXML private Button btnVerDetalleTablaClientes;
     @FXML private Button btnVerDetallesContratos;
+    @FXML private Button btnVerDetalleTablaDetallesClientes;
+    @FXML private Button btnRetractar;
+    @FXML private Button btnRenovar;
     @FXML private Button btnVerFoto;
     @FXML private Button btnModificarDetalleCliente;
     @FXML private Button btnGuardarDetalleCliente;
@@ -175,6 +177,7 @@ public class HomeController implements Initializable {
     private TableColumn<Cliente, String> ColumnaCorreoCliente;
     @FXML private Cliente clienteEscogidoTabla;
     @FXML private Contrato contratoEscogidoTabla;
+    @FXML private Contrato contratoEscogidoTablaDetalles;
 
 
     SQL_Sentencias bd = new SQL_Sentencias("root", "");
@@ -237,11 +240,10 @@ public class HomeController implements Initializable {
             "Crear Usuario", "Editar Usuario", "Eliminar Usuario"
     );
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void TextFormater(TextField textField){
         final char seperatorChar = '.';
         final Pattern p = Pattern.compile("[0-9" + seperatorChar + "]*");
-        txtValorArticulo.setTextFormatter(new TextFormatter<>(c -> {
+        textField.setTextFormatter(new TextFormatter<>(c -> {
             if (!c.isContentChange()) {
                 return c; // no need for modification, if only the selection changes
             }
@@ -291,6 +293,13 @@ public class HomeController implements Initializable {
             return c;
         }));
 
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        TextFormater(txtValorArticulo);
+        TextFormater(txtValor_DetalleContrato);
         mostrarTablaInicial();
         SpinnerPorcentaje.setEditable(false);
         SpinnerPorcentaje.setDisable(true);
@@ -393,17 +402,17 @@ public class HomeController implements Initializable {
         buscarClienteNuevaRetro();
     }
 
-    @FXML
-    private void enviarMensaje() {
-        String ACCOUNT_SID = "ACb97798b04b2e86fa5cadabae8600fa7e";
-        String AUTH_TOKEN = "b70b68a8ffa00dabe2d2429fb27b1832";
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        IncomingPhoneNumber incomingPhoneNumber = IncomingPhoneNumber.creator(
-                new com.twilio.type.PhoneNumber("+15005550006"))
-                .setVoiceUrl(URI.create("http://demo.twilio.com/docs/voice.xml"))
-                .create();
-
-        System.out.println(incomingPhoneNumber.getSid());
+//    @FXML
+//    private void enviarMensaje() {
+//        String ACCOUNT_SID = "ACb97798b04b2e86fa5cadabae8600fa7e";
+//        String AUTH_TOKEN = "b70b68a8ffa00dabe2d2429fb27b1832";
+//        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+//        IncomingPhoneNumber incomingPhoneNumber = IncomingPhoneNumber.creator(
+//                new com.twilio.type.PhoneNumber("+15005550006"))
+//                .setVoiceUrl(URI.create("http://demo.twilio.com/docs/voice.xml"))
+//                .create();
+//
+//        System.out.println(incomingPhoneNumber.getSid());
 
 
 //        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
@@ -414,7 +423,7 @@ public class HomeController implements Initializable {
 //                .create();
 //
 //        System.out.println(message.getSid());
-    }
+//    }
 
     @FXML
     public void handleButtonAction() {
@@ -1592,19 +1601,155 @@ public class HomeController implements Initializable {
         lista.removeAll();
         arrayContratos.removeAll(lista);
     }
+
+    Contrato tempo;
+    Date ultimoMomentoClic;
+    public void onClicTablaContratos_BusquedaClientes(){
+        contratoEscogidoTablaDetalles=TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem();
+        if(contratoEscogidoTablaDetalles!=null){
+            btnVerDetalleTablaDetallesClientes.setDisable(false);
+        }
+        Contrato fila = TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem();
+        if (fila == null) return;
+        if(fila != tempo){
+            tempo = fila;
+            ultimoMomentoClic = new Date();
+        } else if(fila == tempo) {
+            Date now = new Date();
+            long diff = now.getTime() - ultimoMomentoClic.getTime();
+            if (diff < 300){ //another click registered in 300 millis
+                verDetalleContratoFromCliente();
+            } else {
+                ultimoMomentoClic = new Date();
+            }
+        }
+    }
+
+
+    Cliente temporal;
+    Date ultimoClick;
     @FXML
     public void onClicTablaClientes(){
         clienteEscogidoTabla=Tabla_BusquedaClientes.getSelectionModel().getSelectedItem();
         if(clienteEscogidoTabla!=null){
             btnVerDetalleTablaClientes.setDisable(false);
         }
+        Cliente fila = Tabla_BusquedaClientes.getSelectionModel().getSelectedItem();
+        if (fila == null) return;
+        if(fila != temporal){
+            temporal = fila;
+            ultimoClick = new Date();
+        } else if(fila == temporal) {
+            Date now = new Date();
+            long diff = now.getTime() - ultimoClick.getTime();
+            if (diff < 300){ //another click registered in 300 millis
+                verDetalleTablaClientes();
+            } else {
+                ultimoClick = new Date();
+            }
+        }
     }
 
+
+
+    Contrato temp;
+    Date lastClickTime;
     @FXML
     public void onClicTablaContratos(){
         contratoEscogidoTabla=TablaContratos.getSelectionModel().getSelectedItem();
         if(contratoEscogidoTabla!=null){
             btnVerDetallesContratos.setDisable(false);
+            btnRetractar.setDisable(false);
+            btnRenovar.setDisable(false);
+        }
+        Contrato row = TablaContratos.getSelectionModel().getSelectedItem();
+        if (row == null) return;
+        if(row != temp){
+            temp = row;
+            lastClickTime = new Date();
+        } else if(row == temp) {
+            Date now = new Date();
+            long diff = now.getTime() - lastClickTime.getTime();
+            if (diff < 300){ //another click registered in 300 millis
+                verDetalleContratos();
+            } else {
+                lastClickTime = new Date();
+            }
+        }
+    }
+
+    @FXML
+    public void generarDocumento() throws IOException, DocumentException {
+
+        /* example inspired from "iText in action" (2006), chapter 2 */
+
+        PdfReader reader = new PdfReader("/im/CONTRATO OFICIO.pdf"); // input PDF
+        File f = new File("program.txt");
+
+        // Get the absolute path of file f
+        String absolute = f.getAbsolutePath();
+        String address = absolute.substring(0,absolute.length()-11);
+        String direccion = address.replace("\\", "/");
+        System.out.println(address);
+        System.out.println(direccion);
+        String cedulaImprimir = txtCedula_DetalleContrato.getText();
+        String contratoImprimir = txtNumeroContrato_DetalleContrato.getText();
+        PdfStamper stamper = new PdfStamper(reader,
+                new FileOutputStream(direccion+"CONTRATO "+contratoImprimir+".pdf")); // output PDF
+        BaseFont bf = BaseFont.createFont(
+                BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED); // set font
+
+
+
+        //loop on pages (1-based)
+        for (int i=1; i<=reader.getNumberOfPages(); i++){
+
+            // get object for writing over the existing content;
+            // you can also use getUnderContent for writing in the bottom layer
+            PdfContentByte over = stamper.getOverContent(i);
+
+            // write text
+            over.beginText();
+            over.setFontAndSize(bf, 10);    // set font and size
+            over.setTextMatrix(539, 970);   // set x,y position (0,0 is at the bottom left)
+            over.showText(contratoImprimir);  // set text
+            over.endText();
+
+            over.beginText();
+            over.setFontAndSize(bf, 10);    // set font and size
+            over.setTextMatrix(338, 907);   // set x,y position (0,0 is at the bottom left)
+            over.showText(cedulaImprimir);  // set text
+            over.endText();
+
+
+            // draw a red circle
+//            over.setRGBColorStroke(0xFF, 0x00, 0x00);
+//            over.setLineWidth(5f);
+//            over.ellipse(250, 450, 350, 550);
+//            over.stroke();
+        }
+
+        stamper.close();
+
+        try {
+
+            if ((new File(direccion+"CONTRATO "+contratoImprimir+".pdf")).exists()) {
+
+                Process p = Runtime
+                        .getRuntime()
+                        .exec("rundll32 url.dll,FileProtocolHandler "+direccion+"CONTRATO "+contratoImprimir+".pdf");
+                p.waitFor();
+
+            } else {
+
+                System.out.println("File is not exists");
+
+            }
+
+            System.out.println("Done");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -1631,6 +1776,9 @@ public class HomeController implements Initializable {
     public void verDetalleContratos(){
         llenarDatos_DetalleContrato();
         anchorDetallesContrato.toFront();
+        btnVerDetallesContratos.setDisable(true);
+        btnRetractar.setDisable(true);
+        btnRenovar.setDisable(true);
     }
     @FXML
     public void modificarDetalleCLienteOnClic(){
@@ -1680,6 +1828,7 @@ public class HomeController implements Initializable {
 
     @FXML
     public void verDetalleContratoFromCliente(){
+
         cedulaSeleccionada=txtCedulaBusquedaCliente.getText();
         llenarDatos_DetalleContrato(
                 TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem().getNumeroContrato().toString(),
@@ -1687,6 +1836,7 @@ public class HomeController implements Initializable {
         anchorDetallesContrato.toFront();
         vboxContratos.toFront();
         pantallaActiva = 4;
+        btnVerDetalleTablaDetallesClientes.setDisable(true);
     }
 
     @FXML
