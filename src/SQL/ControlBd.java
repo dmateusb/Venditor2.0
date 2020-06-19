@@ -5,17 +5,6 @@
  */
 package SQL;
 
-import com.digitalpersona.onetouch.DPFPFeatureSet;
-import com.digitalpersona.onetouch.DPFPGlobal;
-import com.digitalpersona.onetouch.DPFPTemplate;
-import com.digitalpersona.onetouch.verification.DPFPVerification;
-import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 /**
  *
  * @author Ingeniería
