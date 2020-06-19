@@ -147,7 +147,6 @@ public class SQL_Sentencias {
         int Id = 0;
         String[] columnas={"Numero_contrato"};
         Object[][] resultado = GetTabla(columnas, "contratos", "SELECT Numero_contrato FROM contratos ORDER BY Numero_contrato ASC;");
-        System.out.println(resultado[0][0].toString());
         if(resultado.length==0){
             Id = 1;
         }else {

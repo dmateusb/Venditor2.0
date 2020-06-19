@@ -11,9 +11,31 @@ import SQL.SQL_Sentencias;
 import animatefx.animation.FadeIn;
 import com.github.sarxos.webcam.Webcam;
 import com.twilio.Twilio;
-
+import com.twilio.rest.api.v2010.account.IncomingPhoneNumber;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+import logic.*;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
@@ -25,40 +47,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
-
-import com.twilio.rest.api.v2010.account.IncomingPhoneNumber;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Callback;
-import logic.*;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
 
 /**
  * @author david
@@ -789,16 +777,17 @@ public class HomeController implements Initializable {
     @FXML protected String InsertarNuevoArticulo() throws SQLException{
         String IdArticulo;
         SQL_Sentencias sen = new SQL_Sentencias("root", "");
+        String precio = txtValorArticulo.getText().replace(".", "");
         if(comboCategoria.getValue().toString() =="Oro"){
-            String precio = txtValorArticulo.getText().replace(".", "");
             IdArticulo = sen.InsertarNuevoArticulo(comboCategoria.getValue().toString(),comboSubcategoria.getValue().toString(),txtDescripcionArticulo.getText(),
                     Double.parseDouble(txtPesoArticulo.getText()),Integer.parseInt(precio),sen.getUser());
         }else{
             IdArticulo = sen.InsertarNuevoArticulo(comboCategoria.getValue().toString(),comboSubcategoria.getValue().toString(),txtDescripcionArticulo.getText(),
-                    Integer.parseInt(txtValorArticulo.getText()),sen.getUser());
+                   Integer.parseInt(precio),sen.getUser());
         }
         return IdArticulo;
     }
+
 
     @FXML protected void InsertarNuevoContrato() throws SQLException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -1750,9 +1739,17 @@ public class HomeController implements Initializable {
     @FXML
     public void verFoto_NuevaRetroventa(){
         byte[] imagen = controlBd.ConsultarFotoVisitante(txtcedulaNuevaRetroventa.getText());
-        mostrarFoto(imagen,imgViewFotoNuevaRetroveta);
-        aPimgClienteNuevaRetroventa.setOpacity(1);
-        aPimgClienteNuevaRetroventa.toFront();
+        if(imagen!=null) {
+            mostrarFoto(imagen, imgViewFotoNuevaRetroveta);
+            aPimgClienteNuevaRetroventa.setOpacity(1);
+            aPimgClienteNuevaRetroventa.toFront();
+        }else{
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setContentText("Foto no disponible");
+            alert1.setTitle("Advertencia");
+            alert1.setHeaderText(null);
+            alert1.showAndWait();
+        }
     }
 
     @FXML
@@ -1787,14 +1784,21 @@ public class HomeController implements Initializable {
     }
 
     public void mostrarFoto(byte[] imagen, ImageView panelImagen) {
-        ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
-        BufferedImage bImage = null;
-        try {
-            bImage = ImageIO.read(bis);
-        } catch (IOException e) {
-            e.printStackTrace();
+        try{
+            ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
+            BufferedImage bImage = null;
+            try {
+                bImage = ImageIO.read(bis);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Image image = SwingFXUtils.toFXImage(bImage, null);
+            panelImagen.setImage(image);
+        } catch (NullPointerException e) {
+            System.out.print(e.toString());
+            Image image = new Image(getClass().getClassLoader().getResourceAsStream("img/Imagen_no_disponible.png"));
+            panelImagen.setImage(image);
+
         }
-        Image image = SwingFXUtils.toFXImage(bImage, null);
-        panelImagen.setImage(image);
     }
 }
