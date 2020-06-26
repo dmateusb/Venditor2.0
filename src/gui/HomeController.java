@@ -35,10 +35,8 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.Document;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -71,7 +69,7 @@ public class HomeController implements Initializable {
     @FXML private AnchorPane aPimgClienteNuevaRetroventa;
     @FXML private Button btnFotoNuevoCliente;
     @FXML private Button btnCrearRetroventa;
-    @FXML private Button btnConfirmarNuevoCliente;
+    @FXML private Button btnBorrarDatosCliente;
     @FXML private Button btnHuellaNuevoCliente;
     @FXML private Button btnInsertarDatosNuevoCliente;
     @FXML private Button btnCambiarPorcentaje;
@@ -508,9 +506,21 @@ public class HomeController implements Initializable {
                     txtnombre.getText(), txtapellido.getText(), txtdireccion.getText(),txtbarrio.getText(),
                     txttelefono1.getText(), txttelefono2.getText(), txtcorreo.getText(), bd.getUser());
             if (isCreado) {
+                Alert alert= new Alert(Alert.AlertType.CONFIRMATION,"Usuario creado exitosamente",ButtonType.OK);
+                alert.setHeaderText("");
+                alert.showAndWait();
                 btnHuellaNuevoCliente.setDisable(false);
                 btnFotoNuevoCliente.setDisable(false);
                 btnInsertarDatosNuevoCliente.setDisable(true);
+                txtcedula.setEditable(false);
+                txtnombre.setEditable(false);
+                txtCedulaConfirmacionNuevoCLiente.setEditable(false);
+                txtapellido.setEditable(false);
+                txtdireccion.setEditable(false);
+                txtbarrio.setEditable(false);
+                txttelefono1.setEditable(false);
+                txttelefono2.setEditable(false);
+                txtcorreo.setEditable(false);
             }
 
         } else {
@@ -842,6 +852,29 @@ public class HomeController implements Initializable {
 
         t2.start();
         t1.start();
+    }
+    public void onClicBorrarDatosNuevoCliente(){
+        txtcedula.setText("");
+        txtnombre.setText("");
+        txtapellido.setText("");
+        txtCedulaConfirmacionNuevoCLiente.setText("");
+        txtdireccion.setText("");
+        txtbarrio.setText("");
+        txttelefono1.setText("");
+        txttelefono2.setText("");
+        txtcorreo.setText("");
+        txtcedula.setEditable(true);
+        txtnombre.setEditable(true);
+        txtCedulaConfirmacionNuevoCLiente.setEditable(true);
+        txtapellido.setEditable(true);
+        txtdireccion.setEditable(true);
+        txtbarrio.setEditable(true);
+        txttelefono1.setEditable(true);
+        txttelefono2.setEditable(true);
+        txtcorreo.setEditable(true);
+        btnInsertarDatosNuevoCliente.setDisable(false);
+        btnFotoNuevoCliente.setDisable(true);
+        btnHuellaNuevoCliente.setDisable(true);
     }
 
     @FXML
@@ -1860,7 +1893,7 @@ public class HomeController implements Initializable {
         btnInsertarDatosNuevoCliente.setDisable(false);
         btnFotoNuevoCliente.setDisable(true);
         btnHuellaNuevoCliente.setDisable(true);
-        btnConfirmarNuevoCliente.setDisable(true);
+        btnBorrarDatosCliente.setDisable(true);
     }
 
 
