@@ -259,6 +259,8 @@ public class jFrameWindow extends JFrame  {
                     JOptionPane.showMessageDialog(null,"Error en la conexión con la base de datos");
                     ex.printStackTrace();
                 }
+                webcam.getDiscoveryService().setEnabled(false);
+                webcam.getDiscoveryService().stop();
                 webcam.close();
                 jFrame.dispose();
             }

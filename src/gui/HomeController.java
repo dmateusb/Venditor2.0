@@ -851,6 +851,8 @@ public class HomeController implements Initializable {
         for (Webcam webcam : camaras) {
             nombrescamaras.add(webcam.getName());
         }
+        cam.getDiscoveryService().setEnabled(false);
+        cam.getDiscoveryService().stop();
         cam.close();
         Combo combo = new Combo(lock, nombrescamaras);
         Detener detener = new Detener(lock);

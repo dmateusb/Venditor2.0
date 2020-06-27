@@ -14,7 +14,6 @@
       <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.5.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.7.5.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/webcam-capture-0.3.11.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../../Librerías/Venditor/AnimateFX-1.2.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
