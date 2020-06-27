@@ -81,6 +81,7 @@ public class HomeController implements Initializable {
     @FXML private Button btnVerFoto;
     @FXML private Button btnModificarDetalleCliente;
     @FXML private Button btnGuardarDetalleCliente;
+    @FXML private Button btnTomarNuevaFotoDetalleCliente;
     //Ventana Detalle Contrato
     @FXML private TextField txtNumeroContrato_DetalleContrato;
     @FXML private TextField txtFechaInicio_DetalleContrato;
@@ -833,9 +834,16 @@ public class HomeController implements Initializable {
         huella.setCedula(txtcedula.getText());
         huella.setVisible(true);
     }
-
     @FXML
-    public void tomarFotografia(ActionEvent event) {
+    public void onClicTomarFotografia(){
+        if(pantallaActiva==17) {
+            tomarFotografia(txtcedula.getText());
+        }else if(pantallaActiva==18){
+            tomarFotografia(txtCedulaBusquedaCliente.getText());
+        }
+    }
+
+    public void tomarFotografia(String cedula) {
         Webcam cam = Webcam.getDefault();
         Stack<String> nombrescamaras = new Stack<>();
         List<Webcam> camaras = Webcam.getWebcams();
@@ -843,15 +851,21 @@ public class HomeController implements Initializable {
         for (Webcam webcam : camaras) {
             nombrescamaras.add(webcam.getName());
         }
+        cam.close();
         Combo combo = new Combo(lock, nombrescamaras);
         Detener detener = new Detener(lock);
-        detener.setCedula(txtcedula.getText());
+        detener.setCedula(cedula);
 
         Thread t2 = new Thread(detener);
         Thread t1 = new Thread(combo);
 
         t2.start();
         t1.start();
+    }
+    @FXML
+    public void onClicRefreshFotogradiaDetalleCliente(){
+        byte[] imagen = controlBd.ConsultarFotoVisitante(txtCedulaBusquedaCliente.getText());
+        mostrarFoto(imagen,imageViewBusquedaCliente);
     }
     public void onClicBorrarDatosNuevoCliente(){
         txtcedula.setText("");
@@ -1822,6 +1836,7 @@ public class HomeController implements Initializable {
         txtTelefono2BusquedaCliente.setEditable(true);
         txtCorreoBusquedaCliente.setEditable(true);
         btnGuardarDetalleCliente.toFront();
+        btnTomarNuevaFotoDetalleCliente.setDisable(false);
     }
     @FXML
     public void guardarDetalleCLienteOnClic(){
@@ -1840,7 +1855,11 @@ public class HomeController implements Initializable {
         txtTelefono1BusquedaCliente.setEditable(false);
         txtTelefono2BusquedaCliente.setEditable(false);
         txtCorreoBusquedaCliente.setEditable(false);
+        btnTomarNuevaFotoDetalleCliente.setDisable(true);
         btnModificarDetalleCliente.toFront();
+    }
+    public void onClicTomarNuevaFotoDetallesCliente(){
+
     }
     @FXML
     public void regresarBusquedaClientes(){

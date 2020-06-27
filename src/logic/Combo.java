@@ -11,7 +11,6 @@ import java.awt.event.ItemListener;
 import java.util.Stack;
 
 public class Combo implements Runnable, ItemListener {
-    private Webcam cam;
     private String nombre;
     private JComboBox combo;
     private JFrame v;
