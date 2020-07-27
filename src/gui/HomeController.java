@@ -10,8 +10,8 @@ import SQL.ControlBd;
 import SQL.SQL_Sentencias;
 import animatefx.animation.FadeIn;
 import com.github.sarxos.webcam.Webcam;
- //import com.twilio.Twilio;
-//import com.twilio.rest.api.v2010.account.IncomingPhoneNumber;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -31,12 +31,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import logic.*;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.*;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -44,6 +46,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Pattern;
+
+//import com.twilio.Twilio;
+//import com.twilio.rest.api.v2010.account.IncomingPhoneNumber;
 
 /**
  * @author david
@@ -295,8 +300,29 @@ public class HomeController implements Initializable {
 
     }
 
+    public void contratosVencidos(){
+        Object[][] Contratos = control.ConsultarContratosVigentes();
+        for(int i=0;i<Contratos.length;i++){
+            if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
+                String numeroContrato = Contratos[i][0].toString();
+                Object[][] informacionContrato = controlBd.GetContrato(numeroContrato);
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+                String fecha = informacionContrato[0][6].toString().substring(0,19).replace(' ','T');
+                LocalDateTime fechaFinContrato = LocalDateTime.parse(fecha,dtf);
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime tempDateTime = LocalDateTime.from(fechaFinContrato);
+                long days = tempDateTime.until(now,ChronoUnit.DAYS );
+                if(days>0){
+                    control.UpdateEstado_Vencido(numeroContrato);
+                }
+            }
+        }
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        contratosVencidos();
         TextFormater(txtValorArticulo);
         TextFormater(txtValor_DetalleContrato);
         mostrarTablaInicial();
