@@ -168,6 +168,7 @@ import SQL.SQL_Sentencias;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import logic.CloseListener;
 import logic.Procedimientos;
 import org.apache.log4j.Logger;
@@ -247,15 +248,19 @@ public class jFrameWindow extends JFrame  {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     ImageIO.write(bImage, "jpg", bos);
                     data = bos.toByteArray();
-                    SQL_Sentencias bd2 = new SQL_Sentencias("root", "");
                 } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null,"Error al obtener la foto");
                     ex.printStackTrace();
                 }
                 try {
                     sen.InsertarFotoCliente(data, Integer.parseInt(cedula));
+                    JOptionPane.showMessageDialog(null,"Foto insertada exitosamente");
                 } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null,"Error en la conexión con la base de datos");
                     ex.printStackTrace();
                 }
+                webcam.getDiscoveryService().setEnabled(false);
+                webcam.getDiscoveryService().stop();
                 webcam.close();
                 jFrame.dispose();
             }

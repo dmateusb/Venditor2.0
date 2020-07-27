@@ -35,10 +35,8 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.Document;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -71,7 +69,7 @@ public class HomeController implements Initializable {
     @FXML private AnchorPane aPimgClienteNuevaRetroventa;
     @FXML private Button btnFotoNuevoCliente;
     @FXML private Button btnCrearRetroventa;
-    @FXML private Button btnConfirmarNuevoCliente;
+    @FXML private Button btnBorrarDatosCliente;
     @FXML private Button btnHuellaNuevoCliente;
     @FXML private Button btnInsertarDatosNuevoCliente;
     @FXML private Button btnCambiarPorcentaje;
@@ -83,6 +81,7 @@ public class HomeController implements Initializable {
     @FXML private Button btnVerFoto;
     @FXML private Button btnModificarDetalleCliente;
     @FXML private Button btnGuardarDetalleCliente;
+    @FXML private Button btnTomarNuevaFotoDetalleCliente;
     //Ventana Detalle Contrato
     @FXML private TextField txtNumeroContrato_DetalleContrato;
     @FXML private TextField txtFechaInicio_DetalleContrato;
@@ -508,9 +507,21 @@ public class HomeController implements Initializable {
                     txtnombre.getText(), txtapellido.getText(), txtdireccion.getText(),txtbarrio.getText(),
                     txttelefono1.getText(), txttelefono2.getText(), txtcorreo.getText(), bd.getUser());
             if (isCreado) {
+                Alert alert= new Alert(Alert.AlertType.CONFIRMATION,"Usuario creado exitosamente",ButtonType.OK);
+                alert.setHeaderText("");
+                alert.showAndWait();
                 btnHuellaNuevoCliente.setDisable(false);
                 btnFotoNuevoCliente.setDisable(false);
                 btnInsertarDatosNuevoCliente.setDisable(true);
+                txtcedula.setEditable(false);
+                txtnombre.setEditable(false);
+                txtCedulaConfirmacionNuevoCLiente.setEditable(false);
+                txtapellido.setEditable(false);
+                txtdireccion.setEditable(false);
+                txtbarrio.setEditable(false);
+                txttelefono1.setEditable(false);
+                txttelefono2.setEditable(false);
+                txtcorreo.setEditable(false);
             }
 
         } else {
@@ -823,9 +834,16 @@ public class HomeController implements Initializable {
         huella.setCedula(txtcedula.getText());
         huella.setVisible(true);
     }
-
     @FXML
-    public void tomarFotografia(ActionEvent event) {
+    public void onClicTomarFotografia(){
+        if(pantallaActiva==17) {
+            tomarFotografia(txtcedula.getText());
+        }else if(pantallaActiva==18){
+            tomarFotografia(txtCedulaBusquedaCliente.getText());
+        }
+    }
+
+    public void tomarFotografia(String cedula) {
         Webcam cam = Webcam.getDefault();
         Stack<String> nombrescamaras = new Stack<>();
         List<Webcam> camaras = Webcam.getWebcams();
@@ -833,15 +851,46 @@ public class HomeController implements Initializable {
         for (Webcam webcam : camaras) {
             nombrescamaras.add(webcam.getName());
         }
+        cam.getDiscoveryService().setEnabled(false);
+        cam.getDiscoveryService().stop();
+        cam.close();
         Combo combo = new Combo(lock, nombrescamaras);
         Detener detener = new Detener(lock);
-        detener.setCedula(txtcedula.getText());
+        detener.setCedula(cedula);
 
         Thread t2 = new Thread(detener);
         Thread t1 = new Thread(combo);
 
         t2.start();
         t1.start();
+    }
+    @FXML
+    public void onClicRefreshFotogradiaDetalleCliente(){
+        byte[] imagen = controlBd.ConsultarFotoVisitante(txtCedulaBusquedaCliente.getText());
+        mostrarFoto(imagen,imageViewBusquedaCliente);
+    }
+    public void onClicBorrarDatosNuevoCliente(){
+        txtcedula.setText("");
+        txtnombre.setText("");
+        txtapellido.setText("");
+        txtCedulaConfirmacionNuevoCLiente.setText("");
+        txtdireccion.setText("");
+        txtbarrio.setText("");
+        txttelefono1.setText("");
+        txttelefono2.setText("");
+        txtcorreo.setText("");
+        txtcedula.setEditable(true);
+        txtnombre.setEditable(true);
+        txtCedulaConfirmacionNuevoCLiente.setEditable(true);
+        txtapellido.setEditable(true);
+        txtdireccion.setEditable(true);
+        txtbarrio.setEditable(true);
+        txttelefono1.setEditable(true);
+        txttelefono2.setEditable(true);
+        txtcorreo.setEditable(true);
+        btnInsertarDatosNuevoCliente.setDisable(false);
+        btnFotoNuevoCliente.setDisable(true);
+        btnHuellaNuevoCliente.setDisable(true);
     }
 
     @FXML
@@ -1789,6 +1838,7 @@ public class HomeController implements Initializable {
         txtTelefono2BusquedaCliente.setEditable(true);
         txtCorreoBusquedaCliente.setEditable(true);
         btnGuardarDetalleCliente.toFront();
+        btnTomarNuevaFotoDetalleCliente.setDisable(false);
     }
     @FXML
     public void guardarDetalleCLienteOnClic(){
@@ -1807,7 +1857,11 @@ public class HomeController implements Initializable {
         txtTelefono1BusquedaCliente.setEditable(false);
         txtTelefono2BusquedaCliente.setEditable(false);
         txtCorreoBusquedaCliente.setEditable(false);
+        btnTomarNuevaFotoDetalleCliente.setDisable(true);
         btnModificarDetalleCliente.toFront();
+    }
+    public void onClicTomarNuevaFotoDetallesCliente(){
+
     }
     @FXML
     public void regresarBusquedaClientes(){
@@ -1860,7 +1914,7 @@ public class HomeController implements Initializable {
         btnInsertarDatosNuevoCliente.setDisable(false);
         btnFotoNuevoCliente.setDisable(true);
         btnHuellaNuevoCliente.setDisable(true);
-        btnConfirmarNuevoCliente.setDisable(true);
+        btnBorrarDatosCliente.setDisable(true);
     }
 
 
