@@ -52,7 +52,7 @@ public class Home extends Application {
         URL url = clazz.getResource("../img/tempphoto.jpg");
         */
 
-       Parent root = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+       Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
         stage.initStyle(StageStyle.UNDECORATED);
         Scene scene = new Scene(root);
         stage.setScene(scene);
