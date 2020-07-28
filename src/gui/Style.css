@@ -14,8 +14,16 @@
 
 .achPaneGris {
     -fx-background-color: #e2e2e2;
-}
 
+}
+.btnclasificacion:readonly .text{
+
+}
+.btnclasificacion{
+    -fx-background-color:  #42ad78;
+    -fx-text-fill: black   ;
+
+}
 .shortCutsHome{
     -fx-text-fill: #255958;
     -fx-font-family: "System";

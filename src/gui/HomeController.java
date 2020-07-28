@@ -379,6 +379,17 @@ public class HomeController implements Initializable {
     }
 
     @FXML
+    public void onClicBorrarArticuloNuevaRetroventa() {
+        //Parte información articulo
+        comboCategoria.setValue("Seleccione una");
+        comboSubcategoria.setValue("Seleccione una");
+        txtPesoArticulo.setText("");
+        txtValorArticulo.setText("");
+        txtDescripcionArticulo.setText("");
+        btnCambiarCliente.setDisable(true);
+        btnVerFoto.setDisable(true);
+    }
+    @FXML
     private void InteresOro(){
         SpinnerValueFactory<Double> ValoresSpinner = new SpinnerValueFactory.DoubleSpinnerValueFactory(3,5,5,0.5);
         this.SpinnerPorcentaje.setValueFactory(ValoresSpinner);
@@ -402,14 +413,7 @@ public class HomeController implements Initializable {
         txttelefono2NuevaRetroventa.setText("");
         txtcedulaNuevaRetroventa.setEditable(true);
 
-        //Parte información articulo
-        comboCategoria.setValue("Seleccione una");
-        comboSubcategoria.setValue("Seleccione una");
-        txtPesoArticulo.setText("");
-        txtValorArticulo.setText("");
-        txtDescripcionArticulo.setText("");
-        btnCambiarCliente.setDisable(true);
-        btnVerFoto.setDisable(true);
+
     }
 
     public void recibirParametros(String user, String password) throws IOException {
@@ -931,8 +935,13 @@ public class HomeController implements Initializable {
     }
     @FXML
     public void habilitarCambioPorcentaje(){
-        SpinnerPorcentaje.setDisable(false);
-        btnCambiarPorcentaje.setDisable(true);
+        if(btnCambiarPorcentaje.getText().equals("Cambiar")){
+            SpinnerPorcentaje.setDisable(false);
+            btnCambiarPorcentaje.setText("Confirmar");
+        }else if(btnCambiarPorcentaje.getText().equals("Confirmar")){
+            SpinnerPorcentaje.setDisable(true);
+            btnCambiarPorcentaje.setText("Cambiar");
+        }
     }
 
     public void llenarDatosDetalleCliente(String cedula){

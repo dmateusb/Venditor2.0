@@ -341,6 +341,109 @@
                   </HBox>
                </children>
             </VBox>
+            <VBox fx:id="vboxnuevocliente" alignment="CENTER" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
+                     <children>
+                        <AnchorPane fx:id="pnCrearUsuario" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #e2e2e2;">
+                           <children>
+                              <ImageView fitHeight="719.0" fitWidth="966.0" opacity="0.25" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../im/FONDO-02.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="396.0" layoutY="166.0" styleClass="textos" text="Nombres">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="89.0" layoutY="166.0" styleClass="textos" text="Cédula">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="701.0" layoutY="166.0" styleClass="textos" text="Apellidos">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="701.0" layoutY="252.0" styleClass="textos" text="Barrio">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="395.0" layoutY="252.0" styleClass="textos" text="Dirección">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="89.0" layoutY="340.0" styleClass="textos" text="Teléfono 1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="396.0" layoutY="340.0" styleClass="textos" text="Teléfono 2">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtcedula" layoutX="89.0" layoutY="199.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                              <TextField fx:id="txtnombre" layoutX="396.0" layoutY="199.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                              <TextField fx:id="txtapellido" layoutX="701.0" layoutY="199.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                              <TextField fx:id="txtCedulaConfirmacionNuevoCLiente" layoutX="89.0" layoutY="283.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                              <TextField fx:id="txtdireccion" layoutX="396.0" layoutY="282.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                              <TextField fx:id="txtbarrio" layoutX="701.0" layoutY="282.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                              <TextField fx:id="txttelefono1" layoutX="89.0" layoutY="371.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                              <TextField fx:id="txttelefono2" layoutX="396.0" layoutY="370.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                              <TextField fx:id="txtcorreo" layoutX="701.0" layoutY="371.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
+                              <Button fx:id="btnInsertarDatosNuevoCliente" layoutX="801.0" layoutY="464.0" mnemonicParsing="false" onAction="#crearUsuario" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzul" text="Insertar datos" textFill="WHITE">
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnFotoNuevoCliente" disable="true" layoutX="633.0" layoutY="464.0" mnemonicParsing="false" onAction="#onClicTomarFotografia" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzulClaro" text="Tomar Foto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnHuellaNuevoCliente" disable="true" layoutX="469.0" layoutY="464.0" mnemonicParsing="false" onAction="#tomarHuella" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzul" text="Tomar huella">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnBorrarDatosCliente" layoutX="89.0" layoutY="464.0" mnemonicParsing="false" onAction="#onClicBorrarDatosNuevoCliente" prefHeight="30.0" prefWidth="130.0" styleClass="btnRojo" text="Borrar datos" textFill="WHITE">
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Text layoutX="387.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NUEVO CLIENTE">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="89.0" layoutY="252.0" styleClass="textos" text="Confirmar Cédula">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <FontAwesomeIcon iconName="USER" layoutX="344.0" layoutY="82.0" size="3em" />
+                              <Label layoutX="701.0" layoutY="340.0" styleClass="textos" text="Correo">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
             <VBox fx:id="vboxNuevaRetroventa" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
@@ -370,7 +473,7 @@
                                  <font>
                                     <Font size="14.0" />
                                  </font></TextArea>
-                              <Button fx:id="btnBorrarTodoNuevaRetro" layoutX="91.0" layoutY="636.0" mnemonicParsing="false" onAction="#CambiarCliente" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Borrar Todo">
+                              <Button fx:id="btnBorrarTodoNuevaRetro" layoutX="91.0" layoutY="558.0" mnemonicParsing="false" onAction="#onClicBorrarArticuloNuevaRetroventa" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Borrar artículo">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -523,109 +626,6 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox fx:id="vboxnuevocliente" alignment="CENTER" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
-                     <children>
-                        <AnchorPane fx:id="pnCrearUsuario" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #e2e2e2;">
-                           <children>
-                              <ImageView fitHeight="719.0" fitWidth="966.0" opacity="0.25" pickOnBounds="true">
-                                 <image>
-                                    <Image url="@../im/FONDO-02.png" />
-                                 </image>
-                              </ImageView>
-                              <Label layoutX="396.0" layoutY="166.0" styleClass="textos" text="Nombres">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="89.0" layoutY="166.0" styleClass="textos" text="Cédula">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="701.0" layoutY="166.0" styleClass="textos" text="Apellidos">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="701.0" layoutY="252.0" styleClass="textos" text="Barrio">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="395.0" layoutY="252.0" styleClass="textos" text="Dirección">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="89.0" layoutY="340.0" styleClass="textos" text="Teléfono 1">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="396.0" layoutY="340.0" styleClass="textos" text="Teléfono 2">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="txtcedula" layoutX="89.0" layoutY="199.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                              <TextField fx:id="txtnombre" layoutX="396.0" layoutY="199.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                              <TextField fx:id="txtapellido" layoutX="701.0" layoutY="199.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                              <TextField fx:id="txtCedulaConfirmacionNuevoCLiente" layoutX="89.0" layoutY="283.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                              <TextField fx:id="txtdireccion" layoutX="396.0" layoutY="282.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                              <TextField fx:id="txtbarrio" layoutX="701.0" layoutY="282.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                              <TextField fx:id="txttelefono1" layoutX="89.0" layoutY="371.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                              <TextField fx:id="txttelefono2" layoutX="396.0" layoutY="370.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                              <TextField fx:id="txtcorreo" layoutX="701.0" layoutY="371.0" prefHeight="30.0" prefWidth="230.0" styleClass="campotexto" />
-                              <Button fx:id="btnInsertarDatosNuevoCliente" layoutX="801.0" layoutY="464.0" mnemonicParsing="false" onAction="#crearUsuario" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzul" text="Insertar datos" textFill="WHITE">
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="btnFotoNuevoCliente" disable="true" layoutX="633.0" layoutY="464.0" mnemonicParsing="false" onAction="#onClicTomarFotografia" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzulClaro" text="Tomar Foto">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="btnHuellaNuevoCliente" disable="true" layoutX="469.0" layoutY="464.0" mnemonicParsing="false" onAction="#tomarHuella" prefHeight="30.0" prefWidth="130.0" styleClass="btnAzul" text="Tomar huella">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="btnBorrarDatosCliente" layoutX="89.0" layoutY="464.0" mnemonicParsing="false" onAction="#onClicBorrarDatosNuevoCliente" prefHeight="30.0" prefWidth="130.0" styleClass="btnRojo" text="Borrar datos" textFill="WHITE">
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
-                              <Text layoutX="387.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NUEVO CLIENTE">
-                                 <font>
-                                    <Font name="System Bold" size="36.0" />
-                                 </font>
-                              </Text>
-                              <Label layoutX="89.0" layoutY="252.0" styleClass="textos" text="Confirmar Cédula">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <FontAwesomeIcon iconName="USER" layoutX="344.0" layoutY="82.0" size="3em" />
-                              <Label layoutX="701.0" layoutY="340.0" styleClass="textos" text="Correo">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
             <VBox fx:id="vboxBusquedaCliente" alignment="CENTER" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="719.2" prefWidth="1020.0" style="-fx-background-color: #e2e2e2;">
@@ -730,18 +730,21 @@
                                              </font>
                                           </Text>
                                           <TextField fx:id="txtTelefono2BusquedaCliente" editable="false" layoutX="110.0" layoutY="166.0" prefHeight="26.0" prefWidth="142.0" />
-                                          <Text layoutX="285.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clasificación" wrappingWidth="110.9999942779541">
+                                          <Text layoutX="285.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clasificación" wrappingWidth="110.9999942779541">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="txtPerfilBusquedaCliente" editable="false" layoutX="403.0" layoutY="218.0" opacity="0.65" prefHeight="26.0" prefWidth="142.0" styleClass="btnclasificacion" stylesheets="@Style.css">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font></TextField>
+                                          <Text layoutX="285.0" layoutY="186.0" stroke="#a84f4f" strokeLineCap="BUTT" strokeType="INSIDE" strokeWidth="0.0" text="Cliente desde" wrappingWidth="110.9999942779541">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
-                                          <TextField fx:id="txtPerfilBusquedaCliente" editable="false" layoutX="403.0" layoutY="166.0" prefHeight="26.0" prefWidth="142.0" />
-                                          <Text layoutX="285.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente desde" wrappingWidth="110.9999942779541">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextField fx:id="txtFechaRegistroBusquedaCliente" editable="false" layoutX="403.0" layoutY="218.0" prefHeight="25.0" prefWidth="142.0" />
+                                          <TextField fx:id="txtFechaRegistroBusquedaCliente" editable="false" layoutX="403.0" layoutY="167.0" prefHeight="25.0" prefWidth="142.0" />
                                           <Text layoutX="285.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Barrio" wrappingWidth="69.40001869201637">
                                              <font>
                                                 <Font size="18.0" />
