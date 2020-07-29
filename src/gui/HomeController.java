@@ -379,6 +379,62 @@ public class HomeController implements Initializable {
         }
     }
 
+
+    public void revisarHuellayFoto(int opcion) {
+        if(opcion==1){
+            Object huella = controlBd.getHuella(txtcedulaNuevaRetroventa.getText());
+            Object foto = controlBd.ConsultarFotoCliente(txtcedulaNuevaRetroventa.getText());
+            if (huella == null && foto == null) {
+                alertaHuellayFoto("El usuario ingresado no " +
+                        "cuenta con foto ni huella en la base de datos, ¿Desea editar este usuario?");
+            } else if(huella==null){
+                alertaHuellayFoto("El usuario ingresado no " +
+                        "cuenta con huella en la base de datos, ¿Desea editar este usuario?");
+            } else if(foto==null){
+                alertaHuellayFoto("El usuario ingresado no " +
+                        "cuenta con foto en la base de datos, ¿Desea editar este usuario?");
+            }
+        } else if(opcion==2){
+            String cedula = Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString();
+            Object huella = controlBd.getHuella(cedula);
+            Object foto = controlBd.ConsultarFotoCliente(cedula);
+            if (huella == null && foto == null) {
+                mensajeHuellayFoto("El usuario ingresado no " +
+                        "cuenta con foto ni huella en la base de datos");
+            } else if(huella==null){
+                mensajeHuellayFoto("El usuario ingresado no " +
+                        "cuenta con huella en la base de datos");
+            } else if(foto==null){
+                mensajeHuellayFoto("El usuario ingresado no " +
+                        "cuenta con foto en la base de datos");
+            }
+        }
+
+
+    }
+
+    public void mensajeHuellayFoto(String mensaje){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, mensaje, ButtonType.OK);
+        alert.setHeaderText(null);
+        alert.setHeaderText("");
+        alert.showAndWait();
+    }
+
+    public void alertaHuellayFoto(String mensaje){
+        ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType si = new ButtonType("Si", ButtonBar.ButtonData.OK_DONE);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, mensaje, no, si);
+        alert.setHeaderText(null);
+        alert.setTitle("Favor Responder");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == no) {
+
+        } else {
+            vboxBusquedaCliente.toFront();
+            llenarDatosDetalleCliente(txtcedulaNuevaRetroventa.getText());
+        }
+    }
+
     @FXML
     public void onClicBorrarArticuloNuevaRetroventa() {
         //Parte información articulo
@@ -429,6 +485,7 @@ public class HomeController implements Initializable {
 
     @FXML
     public void onEnterCedulaNuevaRetroventa(ActionEvent ae) throws Exception {
+        revisarHuellayFoto(1);
         buscarClienteNuevaRetro();
     }
 
@@ -848,8 +905,12 @@ public class HomeController implements Initializable {
         String ArticuloId = InsertarNuevoArticulo();
         SQL_Sentencias sen = new SQL_Sentencias("root", "");
         String precio = txtValorArticulo.getText().replace(".", "");
-        sen.InsertarNuevoContrato(Integer.parseInt(txtcedulaNuevaRetroventa.getText().toString()),ArticuloId,Integer.parseInt(precio),
+        boolean success=sen.InsertarNuevoContrato(Integer.parseInt(txtcedulaNuevaRetroventa.getText().toString()),ArticuloId,Integer.parseInt(precio),
                                 Double.parseDouble(SpinnerPorcentaje.getValue().toString()),vencimiento,sen.getUser());
+        if(success){
+            CambiarCliente();
+            onClicBorrarArticuloNuevaRetroventa();
+        }
     }
 
     @FXML
@@ -914,7 +975,7 @@ public class HomeController implements Initializable {
     }
     @FXML
     public void onClicRefreshFotogradiaDetalleCliente(){
-        byte[] imagen = controlBd.ConsultarFotoVisitante(txtCedulaBusquedaCliente.getText());
+        byte[] imagen = controlBd.ConsultarFotoCliente(txtCedulaBusquedaCliente.getText());
         mostrarFoto(imagen,imageViewBusquedaCliente);
     }
     public void onClicBorrarDatosNuevoCliente(){
@@ -963,6 +1024,7 @@ public class HomeController implements Initializable {
     }
 
     public void llenarDatosDetalleCliente(String cedula){
+        anchorDetallesCliente.toFront();
         Object[][] informacionCliente = controlBd.GetClienteNuevoContrato(cedula);
         txtCedulaBusquedaCliente.setText(cedula);
         txtNombreBusquedaCliente.setText(informacionCliente[0][1].toString());
@@ -974,7 +1036,7 @@ public class HomeController implements Initializable {
         txtCorreoBusquedaCliente.setText(informacionCliente[0][7].toString());
         txtPerfilBusquedaCliente.setText(informacionCliente[0][9].toString());
         txtFechaRegistroBusquedaCliente.setText(informacionCliente[0][10].toString().substring(0,10));
-        byte[] imagen = controlBd.ConsultarFotoVisitante(cedula);
+        byte[] imagen = controlBd.ConsultarFotoCliente(cedula);
         mostrarFoto(imagen,imageViewBusquedaCliente);
     }
 
@@ -1014,7 +1076,7 @@ public class HomeController implements Initializable {
         txtCategoria_DetalleContrato.setText(informacionArticulo[0][2].toString());
         txtSubcategoria_DetalleContrato.setText(informacionArticulo[0][3].toString());
 
-        byte[] imagen = controlBd.ConsultarFotoVisitante(cedula);
+        byte[] imagen = controlBd.ConsultarFotoCliente(cedula);
         mostrarFoto(imagen,imageViewDetalleContrato);
     }
 
@@ -1058,7 +1120,7 @@ public class HomeController implements Initializable {
         txtSubcategoria_DetalleContrato.setText(informacionArticulo[0][3].toString());
         //getClass.getResource("ruta")
 
-        byte[] imagen = controlBd.ConsultarFotoVisitante(Integer.toString(TablaContratos.getSelectionModel().getSelectedItem().getCedula()));
+        byte[] imagen = controlBd.ConsultarFotoCliente(Integer.toString(TablaContratos.getSelectionModel().getSelectedItem().getCedula()));
         mostrarFoto(imagen,imageViewDetalleContrato);
     }
 
@@ -1070,7 +1132,7 @@ public class HomeController implements Initializable {
         txtTelefono1BusquedaCliente.setText(informacionCliente[0][4].toString());
         txtTelefono2BusquedaCliente.setText(informacionCliente[0][5].toString());
         txtCorreoBusquedaCliente.setText(informacionCliente[0][6].toString());
-        byte[] imagen = controlBd.ConsultarFotoVisitante(txtBusquedaCliente.getText());
+        byte[] imagen = controlBd.ConsultarFotoCliente(txtBusquedaCliente.getText());
         mostrarFoto(imagen,imageViewDetalleContrato);
 
     }
@@ -1858,7 +1920,7 @@ public class HomeController implements Initializable {
     @FXML
     public void verDetalleTablaClientes(){
         cedulaSeleccionada = Tabla_BusquedaClientes.getSelectionModel().getSelectedItem().getColumnaCedulaCliente().toString();
-        System.out.println(cedulaSeleccionada);
+        revisarHuellayFoto(2);
         llenarDatosDetalleCliente(cedulaSeleccionada);
         mostrarTablaInicialContratos_BusquedaClientes(cedulaSeleccionada);
         anchorDetallesCliente.toFront();
@@ -1997,7 +2059,7 @@ public class HomeController implements Initializable {
     }
     @FXML
     public void verFoto_NuevaRetroventa(){
-        byte[] imagen = controlBd.ConsultarFotoVisitante(txtcedulaNuevaRetroventa.getText());
+        byte[] imagen = controlBd.ConsultarFotoCliente(txtcedulaNuevaRetroventa.getText());
         if(imagen!=null) {
             mostrarFoto(imagen, imgViewFotoNuevaRetroveta);
             aPimgClienteNuevaRetroventa.setOpacity(1);

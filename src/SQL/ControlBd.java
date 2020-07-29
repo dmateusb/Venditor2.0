@@ -52,6 +52,12 @@ public class ControlBd {
         return resultado;
     }
 
+    public Object getHuella(String cedula){
+        String[] columnas={"Huella"};
+        Object[][] resultado = sen.GetHuella(columnas, "clientes", "select * FROM clientes Where Cedula='"+cedula+"';");
+        return resultado[0][0];
+    }
+
 
 
 
@@ -169,7 +175,7 @@ public class ControlBd {
     
     
 
-    public byte[] ConsultarFotoVisitante(String documento){
+    public byte[] ConsultarFotoCliente(String documento){
         byte[] resultado = sen.GetFoto("Foto", "clientes", "select foto FROM venditor.clientes where Cedula='"+documento+"';");
         return resultado;
     }
