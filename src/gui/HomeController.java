@@ -86,6 +86,7 @@ public class HomeController implements Initializable {
     @FXML private Button btnVerFoto;
     @FXML private Button btnModificarDetalleCliente;
     @FXML private Button btnGuardarDetalleCliente;
+    @FXML private Button btnTomarNuevaHuellaDetalleCliente;
     @FXML private Button btnTomarNuevaFotoDetalleCliente;
     //Ventana Detalle Contrato
     @FXML private TextField txtNumeroContrato_DetalleContrato;
@@ -893,6 +894,23 @@ public class HomeController implements Initializable {
 
         t2.start();
         t1.start();
+    }
+    @FXML
+    public void onClicTomarHuellaDetalleCliente(){
+        Huella_Guardar huella = null;
+        try {
+            huella = new Huella_Guardar();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        huella.setCedula(txtCedulaBusquedaCliente.getText());
+        huella.setVisible(true);
     }
     @FXML
     public void onClicRefreshFotogradiaDetalleCliente(){
@@ -1874,6 +1892,7 @@ public class HomeController implements Initializable {
         txtCorreoBusquedaCliente.setEditable(true);
         btnGuardarDetalleCliente.toFront();
         btnTomarNuevaFotoDetalleCliente.setDisable(false);
+        btnTomarNuevaHuellaDetalleCliente.setDisable(false);
     }
     @FXML
     public void guardarDetalleCLienteOnClic(){
@@ -1894,6 +1913,7 @@ public class HomeController implements Initializable {
         txtCorreoBusquedaCliente.setEditable(false);
         btnTomarNuevaFotoDetalleCliente.setDisable(true);
         btnModificarDetalleCliente.toFront();
+        btnTomarNuevaHuellaDetalleCliente.setDisable(true);
     }
     public void onClicTomarNuevaFotoDetallesCliente(){
 
