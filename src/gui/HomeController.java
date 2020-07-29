@@ -300,7 +300,10 @@ public class HomeController implements Initializable {
 
     }
 
+    //Consulta a la BD los contratos vigentes y si la diferencia entre el día de vencimiento del contrato
+    //y la fecha actual es mayor a 0 días, cambia el estado del contrato a "Vencido"
     public void contratosVencidos(){
+        //Consulta los contratos vigentes
         Object[][] Contratos = control.ConsultarContratosVigentes();
         for(int i=0;i<Contratos.length;i++){
             if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
@@ -311,7 +314,9 @@ public class HomeController implements Initializable {
                 LocalDateTime fechaFinContrato = LocalDateTime.parse(fecha,dtf);
                 LocalDateTime now = LocalDateTime.now();
                 LocalDateTime tempDateTime = LocalDateTime.from(fechaFinContrato);
+                //Calcula la cantidad de días entre la fecha de vencimiento del contrato y el día actual
                 long days = tempDateTime.until(now,ChronoUnit.DAYS );
+                //Si ya pasó al menos un día, el contrato se cambia a "Vencido"
                 if(days>0){
                     control.UpdateEstado_Vencido(numeroContrato);
                 }
