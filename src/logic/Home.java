@@ -13,7 +13,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.BasicConfigurator;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UIManager.*;
 
+import javax.swing.*;
 import java.net.URL;
 
 /**

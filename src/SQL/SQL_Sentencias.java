@@ -26,8 +26,10 @@ public class SQL_Sentencias {
     private final SQL_Conexion con = new SQL_Conexion("root","");
     PreparedStatement ps;
     ResultSet res;
-    private String user="";
+    private String user="root";
     private String pass="";
+
+
     public SQL_Sentencias(String user, String pass) {
         this.user = user;
         this.pass = pass;
@@ -173,6 +175,55 @@ public class SQL_Sentencias {
             con.desconectar();
             Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
             alert1.setContentText("Se creo el nuevo contrato correctamente");
+            alert1.setTitle("Contrato nuevo");
+            alert1.setHeaderText(null);
+            alert1.showAndWait();
+            return true;
+        } catch (SQLException ex) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setContentText("Algo salió mal y no se pudo crear el nuevo contrato."
+                    + " Por favor verifica la información ingresada.");
+            alert1.setTitle("Error al crear el contrato");
+            alert1.setHeaderText(null);
+            alert1.showAndWait();
+            System.err.println("Error al insertar el contrato");
+            return false;
+        } finally {
+            con.desconectar();
+        }
+    }
+
+    public boolean InsertarContratoRenovado(int cedula, String articulo, int valor,Double porcentaje,int renovaciones, String vencimiento, String usuario) throws SQLException{
+        int Id = 0;
+        String[] columnas={"Numero_contrato"};
+        Object[][] resultado = GetTabla(columnas, "contratos", "SELECT Numero_contrato FROM contratos ORDER BY Numero_contrato ASC;");
+        if(resultado.length==0){
+            Id = 1;
+        }else {
+            Id = Integer.parseInt(resultado[resultado.length-1][0].toString().substring(1))+1;
+        }
+        String IdContrato = String.valueOf(Id);
+        while (IdContrato.length()<7){
+            IdContrato = "0"+IdContrato;
+        }
+        IdContrato = "C"+IdContrato;
+        System.out.println(IdContrato);
+
+        try {
+            Connection c = con.conectado();
+            ps = c.prepareStatement("INSERT into venditor.contratos (Numero_contrato,Cedula,Articulo,Valor,Porcentaje,Renovaciones,Fecha_final,Usuario) values (?,?,?,?,?,?,?,?)");
+            ps.setString(1, IdContrato);
+            ps.setInt(2, cedula);
+            ps.setString(3, articulo);
+            ps.setInt(4, valor);
+            ps.setDouble(5, porcentaje);
+            ps.setInt(6,renovaciones);
+            ps.setString(7, vencimiento);
+            ps.setString(8, usuario);
+            ps.execute();
+            con.desconectar();
+            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+            alert1.setContentText("Se renovó el nuevo contrato correctamente");
             alert1.setTitle("Contrato nuevo");
             alert1.setHeaderText(null);
             alert1.showAndWait();

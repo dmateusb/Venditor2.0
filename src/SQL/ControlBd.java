@@ -170,6 +170,26 @@ public class ControlBd {
         Object[][] resultado= sen.GetTabla(columnas,"clientes","select * from clientes where cedula like '%"+cedula+"%';");
         return  resultado;
     }
+
+    public Object[][] consultarIdArticulo(String contrato){
+        System.out.println(contrato);
+        String[] columnas={"Articulo"};
+        Object[][] resultado= sen.GetTabla(columnas,"contratos","select Articulo from contratos where Numero_contrato = '"+contrato+"';");
+        return  resultado;
+    }
+
+    public Object[][] consultarEstado(String contrato){
+        System.out.println(contrato);
+        String[] columnas={"Estado"};
+        Object[][] resultado= sen.GetTabla(columnas,"contratos","select Estado from contratos where Numero_contrato = '"+contrato+"';");
+        return  resultado;
+    }
+
+    public Object[][] consultarRenovaciones(String contrato){
+        String[] columnas={"Renovaciones"};
+        Object[][] resultado= sen.GetTabla(columnas,"contratos","select Renovaciones from contratos where Numero_contrato = '"+contrato+"';");
+        return  resultado;
+    }
     
     
     
@@ -190,9 +210,14 @@ public class ControlBd {
                 " Direccion = ?, Telefono1 = ?, Telefono2 = ? , Correo = ? where Cedula = ?;");
     }
 
-    public boolean UpdateEstado_Vencido(String numeroContrato){
+    public boolean updateEstado_Vencido(String numeroContrato){
         String campos[]={"Vencido",numeroContrato};
         return sen.insertar(campos, "update contratos set Estado = ? where Numero_contrato = ?;");
+    }
+
+    public boolean updateEstado_Retractado(String numeroContrato, String vencimiento){
+        String campos[]={"Retractado",vencimiento,numeroContrato};
+        return sen.insertar(campos, "update contratos set Estado = ?, Fecha_final = ? where Numero_contrato = ?;");
     }
 
 

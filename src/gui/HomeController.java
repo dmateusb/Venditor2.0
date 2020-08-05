@@ -21,19 +21,27 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import logic.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -45,6 +53,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 //import com.twilio.Twilio;
@@ -54,7 +65,8 @@ import java.util.regex.Pattern;
  * @author david
  */
 
-public class HomeController implements Initializable {
+public class HomeController extends Component implements Initializable {
+
     private static Stage stage;
     private String usuario;
     private String pass;
@@ -81,8 +93,6 @@ public class HomeController implements Initializable {
     @FXML private Button btnVerDetalleTablaClientes;
     @FXML private Button btnVerDetallesContratos;
     @FXML private Button btnVerDetalleTablaDetallesClientes;
-    @FXML private Button btnRetractar;
-    @FXML private Button btnRenovar;
     @FXML private Button btnVerFoto;
     @FXML private Button btnModificarDetalleCliente;
     @FXML private Button btnGuardarDetalleCliente;
@@ -165,6 +175,7 @@ public class HomeController implements Initializable {
     @FXML private TableColumn<Contrato,String> columnaEstadoBusquedaClientes;
     @FXML private TableColumn<Cliente, Integer> ColumnaCedulaCliente;
     @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
+    @FXML private Label lblNumeroContrato;
 
     @FXML
     private TableColumn<Cliente, String> ColumnaApellidosCliente;
@@ -184,8 +195,8 @@ public class HomeController implements Initializable {
     @FXML private Contrato contratoEscogidoTabla;
     @FXML private Contrato contratoEscogidoTablaDetalles;
 
-
     SQL_Sentencias bd = new SQL_Sentencias("root", "");
+    SQL_Sentencias sen = new SQL_Sentencias("root", "");
     ControlBd control = new ControlBd("root", "");
 
 
@@ -301,7 +312,10 @@ public class HomeController implements Initializable {
 
     }
 
+    //Consulta a la BD los contratos vigentes y si la diferencia entre el día de vencimiento del contrato
+    //y la fecha actual es mayor a 0 días, cambia el estado del contrato a "Vencido"
     public void contratosVencidos(){
+        //Consulta los contratos vigentes
         Object[][] Contratos = control.ConsultarContratosVigentes();
         for(int i=0;i<Contratos.length;i++){
             if (Contratos[i][0] != null && Contratos[i][1] != null && Contratos[i][2] != null) {
@@ -312,10 +326,135 @@ public class HomeController implements Initializable {
                 LocalDateTime fechaFinContrato = LocalDateTime.parse(fecha,dtf);
                 LocalDateTime now = LocalDateTime.now();
                 LocalDateTime tempDateTime = LocalDateTime.from(fechaFinContrato);
+                //Calcula la cantidad de días entre la fecha de vencimiento del contrato y el día actual
                 long days = tempDateTime.until(now,ChronoUnit.DAYS );
+                //Si ya pasó al menos un día, el contrato se cambia a "Vencido"
                 if(days>0){
-                    control.UpdateEstado_Vencido(numeroContrato);
+                    control.updateEstado_Vencido(numeroContrato);
                 }
+            }
+        }
+    }
+
+    //Método para crear páneles con una información
+    public static void mostrarInformacion(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    //Método para crear páneles con una alerta
+    public static void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    //Método para mostrar páneles de confirmación
+    public static final String OK = "OK";
+    public static final String CANCEL = "Cancelar";
+
+    public static String mostrarConfirmacion(String titulo,String mensaje, String... options) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.DECORATED);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+
+        //To make enter key press the actual focused button, not the first one. Just like pressing "space".
+        alert.getDialogPane().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                event.consume();
+                try {
+                    Robot r = new Robot();
+                    r.keyPress(java.awt.event.KeyEvent.VK_SPACE);
+                    r.keyRelease(java.awt.event.KeyEvent.VK_SPACE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        if (options == null || options.length == 0) {
+            options = new String[]{OK, CANCEL};
+        }
+
+        List<ButtonType> buttons = new ArrayList<>();
+        for (String option : options) {
+            buttons.add(new ButtonType(option));
+        }
+
+        alert.getButtonTypes().setAll(buttons);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (!result.isPresent()) {
+            return CANCEL;
+        } else {
+            return result.get().getText();
+        }
+    }
+
+    public void retractarContrato(){
+        Object[][] contrato = control.consultarEstado(txtNumeroContrato_DetalleContrato.getText());
+        String estadoContrato = contrato[0][0].toString();
+
+        if (estadoContrato.equals("Retractado")){
+            mostrarAlerta("Contrato retractado","El contrato que intentas retractar ya está retractado.");
+            return;
+        }
+
+        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se retractará con la fecha de hoy. " +
+                "¿Estás seguro de retractar el contrato?");
+
+        if(confirmacion.equals("OK")){
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime hoy = LocalDateTime.now();
+            String fechaHoy = hoy.toString();
+            control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
+            mostrarInformacion("Contrato retractado", "El contrato se retractó de forma correcta");
+            txtEstado_DetalleContrato.setText("Retractado");
+        }
+    }
+
+    public void renovarContrato() throws SQLException {
+        Object[][] contrato = control.consultarEstado(txtNumeroContrato_DetalleContrato.getText());
+        String estadoContrato = contrato[0][0].toString();
+
+        if (estadoContrato.equals("Retractado")){
+            mostrarAlerta("Contrato retractado","El contrato que intentas renovar ya está retractado. Es necesario crear un nuevo contrato.");
+            return;
+        }
+
+        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por 3 meses a partir de la fecha de hoy. " +
+                "¿Estás seguro de renovar el contrato?");
+        if(confirmacion.equals("OK")){
+            Object[][] renovacion = control.consultarRenovaciones(txtNumeroContrato_DetalleContrato.getText());
+
+            int renovaciones = Integer.parseInt(renovacion[0][0].toString())+1;
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime fechaFinal = LocalDateTime.now().plusMonths(3);
+            LocalDateTime hoy = LocalDateTime.now();
+            String vencimiento = fechaFinal.toString();
+            String fechaHoy = hoy.toString();
+
+            Object[][] articulo = control.consultarIdArticulo(txtNumeroContrato_DetalleContrato.getText());
+
+            String valor = txtValor_DetalleContrato.getText();
+            String precio = valor.replace(".", "");
+
+            boolean success = sen.InsertarContratoRenovado(Integer.parseInt(txtCedula_DetalleContrato.getText()),articulo[0][0].toString(),Integer.parseInt(precio),
+                    Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
+            if(success){
+                control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
+
+            }else{
+                mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
             }
         }
     }
@@ -354,7 +493,7 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    public void buscarClienteNuevaRetro() {
+    public boolean buscarClienteNuevaRetro() {
         Object[][] Responsables = controlBd.GetClienteNuevoContrato(txtcedulaNuevaRetroventa.getText());
         if (Responsables[0][0] != null) {
             txtnombreNuevaRetroventa.setText(Responsables[0][1].toString());
@@ -366,6 +505,8 @@ public class HomeController implements Initializable {
             txtcedulaNuevaRetroventa.setEditable(false);
             btnVerFoto.setDisable(false);
             btnCambiarCliente.setDisable(false);
+            revisarHuellayFoto(1);
+            return true;
         } else {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setContentText("No hay ningún cliente creado con ese número de cédula, "
@@ -376,6 +517,7 @@ public class HomeController implements Initializable {
             txtcedulaNuevaRetroventa.setText("");
             txtcedulaNuevaRetroventa.requestFocus();
             txtcedulaNuevaRetroventa.selectAll();
+            return false;
         }
     }
 
@@ -485,7 +627,6 @@ public class HomeController implements Initializable {
 
     @FXML
     public void onEnterCedulaNuevaRetroventa(ActionEvent ae) throws Exception {
-        revisarHuellayFoto(1);
         buscarClienteNuevaRetro();
     }
 
@@ -517,9 +658,27 @@ public class HomeController implements Initializable {
 
     }
 
+    public void calcularNumeroContrato(){
+        int Id = 0;
+        String[] columnas={"Numero_contrato"};
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "SELECT Numero_contrato FROM contratos ORDER BY Numero_contrato ASC;");
+        if(resultado.length==0){
+            Id = 1;
+        }else {
+            Id = Integer.parseInt(resultado[resultado.length-1][0].toString().substring(1))+1;
+        }
+        String IdContrato = String.valueOf(Id);
+        while (IdContrato.length()<7){
+            IdContrato = "0"+IdContrato;
+        }
+        IdContrato = "C"+IdContrato;
+        lblNumeroContrato.setText(IdContrato);
+    }
+
     @FXML
     public void botonesHandle(ActionEvent event) {
         if (event.getSource() == btnnuevaretro) {
+            calcularNumeroContrato();
             vboxNuevaRetroventa.toFront();
             if(pantallaActiva != 1){
                 new FadeIn(vboxNuevaRetroventa).play();
@@ -527,6 +686,8 @@ public class HomeController implements Initializable {
             aPimgClienteNuevaRetroventa.setOpacity(0);
             aPimgClienteNuevaRetroventa.toBack();
             pantallaActiva = 1;
+
+
 
         } else if (event.getSource() == btnventa) {
 
@@ -898,18 +1059,42 @@ public class HomeController implements Initializable {
 
 
     @FXML protected void InsertarNuevoContrato() throws SQLException {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now().plusMonths(3);
-        String vencimiento = now.toString();
-        //System.out.println(dtf.format(now));
-        String ArticuloId = InsertarNuevoArticulo();
-        SQL_Sentencias sen = new SQL_Sentencias("root", "");
-        String precio = txtValorArticulo.getText().replace(".", "");
-        boolean success=sen.InsertarNuevoContrato(Integer.parseInt(txtcedulaNuevaRetroventa.getText().toString()),ArticuloId,Integer.parseInt(precio),
-                                Double.parseDouble(SpinnerPorcentaje.getValue().toString()),vencimiento,sen.getUser());
-        if(success){
-            CambiarCliente();
-            onClicBorrarArticuloNuevaRetroventa();
+        if(txtcedulaNuevaRetroventa.getText().length()==0){
+            mostrarAlerta(" Información incompleta","No has seleccionado el cliente responsable del nuevo contrato.");
+            return;
+        }
+
+        if(txtValorArticulo.getText().length()==0){
+            mostrarAlerta(" Información incompleta","No has escrito el valor por el que se hará el contrato.");
+            return;
+        }
+
+        if(txtDescripcionArticulo.getText().length()==0){
+            mostrarAlerta(" Información incompleta","No has escrito la descripción del artículo con el que se hará el contrato.");
+            return;
+        }
+
+
+
+
+        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se creará con las datos que se llenaron. ¿Estás seguro que quieres crear el contrato?");
+
+        if(confirmacion.equals("OK")) {
+
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now().plusMonths(3);
+            String vencimiento = now.toString();
+            //System.out.println(dtf.format(now));
+            String ArticuloId = InsertarNuevoArticulo();
+            SQL_Sentencias sen = new SQL_Sentencias("root", "");
+            String precio = txtValorArticulo.getText().replace(".", "");
+            boolean success = sen.InsertarNuevoContrato(Integer.parseInt(txtcedulaNuevaRetroventa.getText().toString()), ArticuloId, Integer.parseInt(precio),
+                    Double.parseDouble(SpinnerPorcentaje.getValue().toString()), vencimiento, sen.getUser());
+            if (success) {
+                CambiarCliente();
+                onClicBorrarArticuloNuevaRetroventa();
+            }
         }
     }
 
@@ -1823,8 +2008,6 @@ public class HomeController implements Initializable {
         contratoEscogidoTabla=TablaContratos.getSelectionModel().getSelectedItem();
         if(contratoEscogidoTabla!=null){
             btnVerDetallesContratos.setDisable(false);
-            btnRetractar.setDisable(false);
-            btnRenovar.setDisable(false);
         }
         Contrato row = TablaContratos.getSelectionModel().getSelectedItem();
         if (row == null) return;
@@ -1842,6 +2025,82 @@ public class HomeController implements Initializable {
         }
     }
 
+
+    @FXML
+    public void duplicarDocumento() throws IOException, DocumentException {
+
+        /* example inspired from "iText in action" (2006), chapter 2 */
+
+        PdfReader reader = new PdfReader("/im/CONTRATO DUPLICADO OFICIO.pdf"); // input PDF
+        File f = new File("program.txt");
+
+        // Get the absolute path of file f
+        String absolute = f.getAbsolutePath();
+        String address = absolute.substring(0,absolute.length()-11);
+        String direccion = address.replace("\\", "/");
+        System.out.println("address: "+address);
+        System.out.println("direccion:"+direccion);
+        String cedulaImprimir = txtCedula_DetalleContrato.getText();
+        String contratoImprimir = txtNumeroContrato_DetalleContrato.getText();
+        PdfStamper stamper = new PdfStamper(reader,
+                new FileOutputStream(direccion+"CONTRATO DUPLICADO "+contratoImprimir+".pdf")); // output PDF
+        BaseFont bf = BaseFont.createFont(
+                BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED); // set font
+
+
+
+        //loop on pages (1-based)
+        for (int i=1; i<=reader.getNumberOfPages(); i++){
+
+            // get object for writing over the existing content;
+            // you can also use getUnderContent for writing in the bottom layer
+            PdfContentByte over = stamper.getOverContent(i);
+
+            // write text
+            over.beginText();
+            over.setFontAndSize(bf, 10);    // set font and size
+            over.setTextMatrix(539, 970);   // set x,y position (0,0 is at the bottom left)
+            over.showText(contratoImprimir);  // set text
+            over.endText();
+
+            over.beginText();
+            over.setFontAndSize(bf, 10);    // set font and size
+            over.setTextMatrix(338, 907);   // set x,y position (0,0 is at the bottom left)
+            over.showText(cedulaImprimir);  // set text
+            over.endText();
+
+
+            // draw a red circle
+//            over.setRGBColorStroke(0xFF, 0x00, 0x00);
+//            over.setLineWidth(5f);
+//            over.ellipse(250, 450, 350, 550);
+//            over.stroke();
+        }
+
+        stamper.close();
+
+        try {
+
+            if ((new File(direccion+"CONTRATO DUPLICADO "+contratoImprimir+".pdf")).exists()) {
+
+                Process p = Runtime
+                        .getRuntime()
+                        .exec("rundll32 url.dll,FileProtocolHandler "+direccion+"CONTRATO DUPLICADO "+contratoImprimir+".pdf");
+                p.waitFor();
+
+            } else {
+
+                System.out.println("File doesn't exists");
+
+            }
+
+            System.out.println("Done");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @FXML
     public void generarDocumento() throws IOException, DocumentException {
 
@@ -1854,8 +2113,8 @@ public class HomeController implements Initializable {
         String absolute = f.getAbsolutePath();
         String address = absolute.substring(0,absolute.length()-11);
         String direccion = address.replace("\\", "/");
-        System.out.println(address);
-        System.out.println(direccion);
+//        System.out.println("address: "+address);
+//        System.out.println("direccion:"+direccion);
         String cedulaImprimir = txtCedula_DetalleContrato.getText();
         String contratoImprimir = txtNumeroContrato_DetalleContrato.getText();
         PdfStamper stamper = new PdfStamper(reader,
@@ -1906,7 +2165,7 @@ public class HomeController implements Initializable {
 
             } else {
 
-                System.out.println("File is not exists");
+                System.out.println("File doesn't exists");
 
             }
 
@@ -1941,8 +2200,6 @@ public class HomeController implements Initializable {
         llenarDatos_DetalleContrato();
         anchorDetallesContrato.toFront();
         btnVerDetallesContratos.setDisable(true);
-        btnRetractar.setDisable(true);
-        btnRenovar.setDisable(true);
     }
     @FXML
     public void modificarDetalleCLienteOnClic(){
