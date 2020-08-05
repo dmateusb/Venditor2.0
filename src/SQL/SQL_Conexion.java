@@ -67,6 +67,7 @@ public class SQL_Conexion {
     public Connection conectado(){
       return con;
     }
+
     public void desconectar(){
       con = null;
       System.out.println("conexion terminada");
