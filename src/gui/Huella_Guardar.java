@@ -207,7 +207,9 @@ public class Huella_Guardar extends JFrame {
         EnviarTexto("Utilizando el Lector de Huella Dactilar ");
     }
     public void stop(){
+        System.out.println("Estoy cerrando el lector 1");
         Lector.stopCapture();
+        System.out.println("Estoy cerrando el lector 2");
         EnviarTexto("No se está usando el Lector de Huella Dactilar ");
     }
 

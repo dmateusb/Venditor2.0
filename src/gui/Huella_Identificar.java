@@ -45,7 +45,7 @@ public class Huella_Identificar extends JFrame implements Runnable{
     private String cedula;
     private SQL_Conexion con=new SQL_Conexion("root","");
     private int operacion=0;
-//    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    //    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
 //        final Object lock=new Object();
 //        Huella_Identificar huella = new Huella_Identificar();
 //        huella.setVisible(true);
@@ -54,11 +54,11 @@ public class Huella_Identificar extends JFrame implements Runnable{
 //        UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
         this.home=home;
         run();
-        try {
-            identificarHuella();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            identificarHuella();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         setSize(600,400);
         setContentPane(mainPane);
         try {
@@ -183,7 +183,9 @@ public class Huella_Identificar extends JFrame implements Runnable{
         EnviarTexto("Utilizando el Lector de Huella Dactilar ");
     }
     public void stop(){
+        System.out.println("Estoy cerrando 1");
         Lector.stopCapture();
+        System.out.println("Estoy cerrando 2");
         EnviarTexto("No se está usando el Lector de Huella Dactilar ");
     }
 
@@ -237,17 +239,17 @@ public class Huella_Identificar extends JFrame implements Runnable{
         EstadoHuellas();
         btnIdentificar.setEnabled(false);
         btnSalir.grabFocus();
-            btnIdentificar.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        identificarHuella();
-                        Reclutador.clear();
-                    } catch (IOException ex) {
+        btnIdentificar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    identificarHuella();
+                    Reclutador.clear();
+                } catch (IOException ex) {
 
-                    }
                 }
-            });
+            }
+        });
 
 
     }
@@ -303,20 +305,26 @@ public class Huella_Identificar extends JFrame implements Runnable{
                     //compara las plantilas (actual vs bd)
                     //Si encuentra correspondencia dibuja el mapa
                     //e indica el nombre de la persona que coincidió.
+
                     if (result.isVerified()){
                         //crea la imagen de los datos guardado de las huellas guardadas en la base de datos
                         JOptionPane.showMessageDialog(null, "La huella corresponde al numero" +
                                 "de cédula: "+cedula,"Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
-                        if(operacion==1) {
-                            home.setTxtcedulaNuevaRetroventa(cedula);
-                            home.buscarClienteNuevaRetro();
-                        }else{
-                            home.setTxtBusquedaCliente(cedula);
-                            home.buscarClienteBusquedaCliente();
+                        try{
+                            if(operacion==1) {
+                                home.setTxtcedulaNuevaRetroventa(cedula);
+                                home.buscarClienteNuevaRetro();
+                            }else{
+                                home.setTxtBusquedaCliente(cedula);
+                                home.buscarClienteBusquedaCliente();
+                            }
+                        }catch(Exception e){
+                            System.out.println("Hubo un problema en la interfaz");
+                        }finally{
+                            operacion=0;
+                            stop();
+                            this.dispose();
                         }
-                        operacion=0;
-                        stop();
-                        this.dispose();
                         return ;
                     }
                 }
