@@ -211,7 +211,8 @@ public class SQL_Sentencias {
 
         try {
             Connection c = con.conectado();
-            ps = c.prepareStatement("INSERT into venditor.contratos (Numero_contrato,Cedula,Articulo,Valor,Porcentaje,Renovaciones,Fecha_final,Usuario) values (?,?,?,?,?,?,?,?)");
+            ps = c.prepareStatement("INSERT into venditor.contratos (Numero_contrato,Cedula,Articulo,Valor,Porcentaje,Renovaciones,Fecha_final,Usuario) " +
+                    "values (?,?,?,?,?,?,?,?)");
             ps.setString(1, IdContrato);
             ps.setInt(2, cedula);
             ps.setString(3, articulo);

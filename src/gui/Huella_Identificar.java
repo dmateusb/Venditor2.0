@@ -54,6 +54,11 @@ public class Huella_Identificar extends JFrame implements Runnable{
 //        UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
         this.home=home;
         run();
+        try {
+            identificarHuella();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setSize(600,400);
         setContentPane(mainPane);
         try {
@@ -271,6 +276,7 @@ public class Huella_Identificar extends JFrame implements Runnable{
     }
 
     public void identificarHuella() throws IOException {
+
         try {
             //Establece los valores para la sentencia SQL
             Connection c = con.conectado();
@@ -322,6 +328,9 @@ public class Huella_Identificar extends JFrame implements Runnable{
             //Si ocurre un error lo indica en la consola
             System.err.println("Error al identificar huella dactilar."+e.getMessage());
         }
+
+      /*  home.setTxtBusquedaCliente("5");
+        home.buscarClienteBusquedaCliente();*/
     }
 
     public int getOperacion() {
