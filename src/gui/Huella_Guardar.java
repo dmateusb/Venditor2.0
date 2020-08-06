@@ -37,7 +37,7 @@ public class Huella_Guardar extends JFrame {
     private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
     private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
     private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
-    private DPFPTemplate template;
+    private DPFPTemplate template, templatetmp;
     public static String TEMPLATE_PROPERTY = "template";
     public DPFPFeatureSet featuresinscripcion;
     public DPFPFeatureSet featuresverificacion;
@@ -48,8 +48,7 @@ public class Huella_Guardar extends JFrame {
         huella.setVisible(true);
     }
     public Huella_Guardar() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-
-//        UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+//      UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
         run();
         setSize(600,400);
         setContentPane(mainPane);
@@ -106,7 +105,6 @@ public class Huella_Guardar extends JFrame {
             System.err.println("Error al guardar los datos de la huella.");
         }
         return successful;
-
     }
 
     protected void Iniciar() {
@@ -264,13 +262,23 @@ public class Huella_Guardar extends JFrame {
 
 
     public DPFPTemplate getTemplate() {
-        return template;
+        return this.template;
+    }
+
+    public DPFPTemplate getTemplateTmp() {
+        return this.templatetmp;
     }
 
     public void setTemplate(DPFPTemplate template) {
         DPFPTemplate old = this.template;
         this.template = template;
         firePropertyChange(TEMPLATE_PROPERTY, old, template);
+    }
+
+    public void setTemplateTmp(DPFPTemplate templatetmp) {
+        DPFPTemplate old = this.templatetmp;
+        this.templatetmp = templatetmp;
+        firePropertyChange(TEMPLATE_PROPERTY, old, templatetmp);
     }
 
     public String getCedula() {
@@ -299,11 +307,11 @@ public class Huella_Guardar extends JFrame {
                     //Crea una nueva plantilla a partir de la guardada en la base de datos
                     DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
                     //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
-                    setTemplate(referenceTemplate);
-
+                    //setTemplate(referenceTemplate);
+                    setTemplateTmp(referenceTemplate);
                     // Compara las caracteriticas de la huella recientemente capturda con la
                     // alguna plantilla guardada en la base de datos que coincide con ese tipo
-                    DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
+                    DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplateTmp());
 
                     //compara las plantilas (actual vs bd)
                     //Si encuentra correspondencia dibuja el mapa
