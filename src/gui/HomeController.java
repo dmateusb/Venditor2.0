@@ -448,11 +448,12 @@ public class HomeController extends Component implements Initializable {
             String valor = txtValor_DetalleContrato.getText();
             String precio = valor.replace(".", "");
 
+            SQL_Sentencias sen = new SQL_Sentencias("root", "");
+
             boolean success = sen.InsertarContratoRenovado(Integer.parseInt(txtCedula_DetalleContrato.getText()),articulo[0][0].toString(),Integer.parseInt(precio),
                     Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
             if(success){
                 control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
-
             }else{
                 mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
             }
@@ -1197,6 +1198,7 @@ public class HomeController extends Component implements Initializable {
     public void buscarClienteBusquedaCliente() {
         llenarDatosDetalleCliente(txtBusquedaCliente.getText());
     }
+
     @FXML
     public void habilitarCambioPorcentaje(){
         if(btnCambiarPorcentaje.getText().equals("Cambiar")){

@@ -95,12 +95,13 @@ public class Huella_Guardar extends JFrame {
 
     public boolean guardarHuella(){
         //Obtiene los datos del template de la huella actual
-        ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
-        Integer tamañoHuella = template.serialize().length;
+
+        ByteArrayInputStream datosHuella = new ByteArrayInputStream(this.template.serialize());
+        Integer tamanoHuella = this.template.serialize().length;
         boolean successful = false;
         try {
             SQL_Sentencias con = new SQL_Sentencias("root","");
-            successful=con.InsertarHuellaCliente(cedula,datosHuella,tamañoHuella);
+            successful=con.InsertarHuellaCliente(cedula,datosHuella,tamanoHuella);
         } catch (SQLException ex) {
             //Si ocurre un error lo indica en la consola
             System.err.println("Error al guardar los datos de la huella.");
@@ -236,7 +237,8 @@ public class Huella_Guardar extends JFrame {
                 switch (Reclutador.getTemplateStatus()) {
                     case TEMPLATE_STATUS_READY: // informe de Ã©xito y detiene la captura de huellas
                         stop();
-                        setTemplate(Reclutador.getTemplate());
+                        this.template = Reclutador.getTemplate();
+                        //setTemplate(Reclutador.getTemplate());
                         EnviarTexto("La Plantilla de la Huella ha Sido Creada, ya puede Verificarla o Identificarla");
                         btnGuardar.setEnabled(true);
                         btnGuardar.grabFocus();
