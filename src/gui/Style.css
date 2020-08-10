@@ -1,4 +1,4 @@
-.menu-button{
+.btnMenu{
     -fx-background-color: #255958;
     -fx-background-radius:  0em;
 }
@@ -11,7 +11,45 @@
     -fx-font-family: "Open Sans Semibold";
     -fx-font-size:14px;
 }
+.btnRenovar:openvertically{
+    -fx-cursor: HAND;
+    -fx-background-color: #0F4C81;
+}
+.btnRenovar:openvertically .label{
+    -fx-background-color: #0F4C81;
 
+    -fx-alignment: center;
+}
+.btnRenovar:openvertically .arrow-button{
+    -fx-background-color:#0F4C81 ;
+}
+.itemRenovar{
+    -fx-text-fill: white;
+    -fx-background-color: #0F4C81;
+}
+.itemRenovar:hover{
+    -fx-cursor: HAND;
+}
+
+.btnRenovar:openvertically .label {
+    -fx-background-color: #0F4C81;
+}
+.btnRenovar:openvertically .label .text{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-font-size:14px;
+}
+
+.btnRenovar:openvertically .arrow-button .arrow{
+    -fx-background-color: white;
+    -fx-fill: white;
+}
+
+.btnRenovar:openvertically .label .text{
+    -fx-fill:white;
+   // -fx-background-color:#0F4C81 ;
+}
 .achPaneGris {
     -fx-background-color: #e2e2e2;
 
@@ -90,24 +128,24 @@
     -fx-font-size:20px ;
     -fx-font-family: "Open Sans Semibold";
 }
-.menu-button .arrow-button{
+.btnMenu .arrow-button{
     -fx-opacity: 0;
 }
-.menu-item .label{
+.itemMenu .label{
     -fx-font-size: 20px;
 }
-.menu-button:hover{
+.btnMenu:hover{
     -fx-background-color:  #35A6A4;
 
 }
 
-.menu-button:pressed{
+.btnMenu:pressed{
     -fx-font-size:16px;
 
 }
 
 
-.menu-button:focused{
+.btnMenu:focused{
     -fx-background-color: #35A6A4;
     -fx-text-fill: #FFFFFF;
 }

@@ -101,6 +101,10 @@ public class Huella_Guardar extends JFrame {
         try {
             SQL_Sentencias con = new SQL_Sentencias("root","");
             successful=con.InsertarHuellaCliente(cedula,datosHuella,tamanoHuella);
+            if(successful){
+                JOptionPane.showMessageDialog(null, "La huella ha sido guardada con éxito",
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
         } catch (SQLException ex) {
             //Si ocurre un error lo indica en la consola
             System.err.println("Error al guardar los datos de la huella.");

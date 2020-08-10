@@ -18,6 +18,9 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
@@ -31,9 +34,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -176,6 +181,7 @@ public class HomeController extends Component implements Initializable {
     @FXML private TableColumn<Cliente, Integer> ColumnaCedulaCliente;
     @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
     @FXML private Label lblNumeroContrato;
+    private int meses;
 
     @FXML
     private TableColumn<Cliente, String> ColumnaApellidosCliente;
@@ -430,15 +436,16 @@ public class HomeController extends Component implements Initializable {
             mostrarAlerta("Contrato retractado","El contrato que intentas renovar ya está retractado. Es necesario crear un nuevo contrato.");
             return;
         }
-
-        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por 3 meses a partir de la fecha de hoy. " +
+        preguntarMesesRenovacion();
+        if(getMeses()==-1) return;
+        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
                 "¿Estás seguro de renovar el contrato?");
         if(confirmacion.equals("OK")){
             Object[][] renovacion = control.consultarRenovaciones(txtNumeroContrato_DetalleContrato.getText());
 
             int renovaciones = Integer.parseInt(renovacion[0][0].toString())+1;
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime fechaFinal = LocalDateTime.now().plusMonths(3);
+            LocalDateTime fechaFinal = LocalDateTime.now().plusMonths(getMeses());
             LocalDateTime hoy = LocalDateTime.now();
             String vencimiento = fechaFinal.toString();
             String fechaHoy = hoy.toString();
@@ -458,6 +465,40 @@ public class HomeController extends Component implements Initializable {
                 mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
             }
         }
+    }
+
+    public int  preguntarMesesRenovacion() {
+        setMeses(-1);
+        Stage popupwindow=new Stage();
+        popupwindow.initModality(Modality.APPLICATION_MODAL);
+        popupwindow.initStyle(StageStyle.UTILITY);
+        popupwindow.setTitle("Tiempo renovacion");
+        Button button1= new Button("Confirmar");
+        Label label1= new Label("Meses a renovar");
+        label1.setWrapText(true);
+        Spinner<Integer> spinner= new Spinner<>(1,100,3);
+        button1.setOnAction(e -> {
+            setMeses(spinner.getValue());
+            popupwindow.close();
+        });
+        VBox layout= new VBox(10);
+        layout.setPadding(new Insets(10,10,10,10));
+        layout.getChildren().addAll(label1,spinner, button1);
+        layout.setAlignment(Pos.CENTER);
+        Scene scene1= new Scene(layout);
+        popupwindow.setScene(scene1);
+        popupwindow.showAndWait();
+        return meses;
+    }
+
+    private void setMeses(int meses) {
+        this.meses=meses;
+    }
+    private int getMeses(){
+        return this.meses;
+    }
+    public void btnEditaryRenovar(){
+
     }
 
 
