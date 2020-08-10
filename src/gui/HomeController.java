@@ -1134,8 +1134,6 @@ public class HomeController extends Component implements Initializable {
             InteresOro();
             txtPesoArticulo.setDisable(false);
             comboSubcategoria.getSelectionModel().select(0);
-
-
         }else{
             comboSubcategoria.getItems().removeAll();
             comboSubcategoria.setItems(subElectrodomesticos);

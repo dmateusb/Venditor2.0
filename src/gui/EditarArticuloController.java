@@ -51,7 +51,7 @@ public class EditarArticuloController  {
         }else{
             comboSubcategoria.getItems().removeAll();
             comboSubcategoria.setItems(homeController.getSubElectrodomesticos());
-            comboSubcategoria.setValue("Cámaras");
+            comboSubcategoria.getSelectionModel().select(0);
             InteresElectrodomesticos();
             txtPesoArticulo.setText("");
             txtPesoArticulo.setDisable(true);
