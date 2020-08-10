@@ -20,6 +20,10 @@
 
     -fx-alignment: center;
 }
+.btnRenovar.label{
+
+     -fx-alignment: center;
+ }
 .btnRenovar:openvertically .arrow-button{
     -fx-background-color:#0F4C81 ;
 }

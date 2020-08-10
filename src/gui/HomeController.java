@@ -17,9 +17,11 @@ import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -475,6 +477,7 @@ public class HomeController extends Component implements Initializable {
         popupwindow.setTitle("Tiempo renovacion");
         Button button1= new Button("Confirmar");
         Label label1= new Label("Meses a renovar");
+
         label1.setWrapText(true);
         Spinner<Integer> spinner= new Spinner<>(1,100,3);
         button1.setOnAction(e -> {
@@ -497,8 +500,65 @@ public class HomeController extends Component implements Initializable {
     private int getMeses(){
         return this.meses;
     }
-    public void btnEditaryRenovar(){
+    public void btnEditaryRenovar() throws SQLException {
+        String idArticulo = null;
+        Object[][] contrato = control.consultarEstado(txtNumeroContrato_DetalleContrato.getText());
+        String estadoContrato = contrato[0][0].toString();
 
+        if (estadoContrato.equals("Retractado")){
+            mostrarAlerta("Contrato retractado","El contrato que intentas retractar ya está retractado.");
+            return;
+        }
+        try {
+            idArticulo=popUpEditarArticulo();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(idArticulo.equals("-1")) return;
+        preguntarMesesRenovacion();
+        if(getMeses()==-1) return;
+        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
+                "¿Estás seguro de renovar el contrato?");
+        if(confirmacion.equals("OK")){
+            Object[][] renovacion = control.consultarRenovaciones(txtNumeroContrato_DetalleContrato.getText());
+
+            int renovaciones = Integer.parseInt(renovacion[0][0].toString())+1;
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime fechaFinal = LocalDateTime.now().plusMonths(getMeses());
+            LocalDateTime hoy = LocalDateTime.now();
+            String vencimiento = fechaFinal.toString();
+            String fechaHoy = hoy.toString();
+
+            Object[][] articulo = control.consultarIdArticulo(idArticulo);
+
+            String valor = txtValor_DetalleContrato.getText();
+            String precio = valor.replace(".", "");
+
+            SQL_Sentencias sen = new SQL_Sentencias("root", "");
+
+            boolean success = sen.InsertarContratoRenovado(Integer.parseInt(txtCedula_DetalleContrato.getText()),idArticulo,Integer.parseInt(precio),
+                    Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
+            if(success){
+                control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
+            }else{
+                mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
+            }
+        }
+    }
+
+    private String popUpEditarArticulo() throws IOException {
+        FXMLLoader loader= new FXMLLoader(getClass().getResource("/gui/EditarArticulo.fxml"));
+        Parent root=loader.load();
+        EditarArticuloController controller=loader.getController();
+        controller.setHomeController(this);
+        controller.inicializar();
+        Scene scene= new Scene(root);
+        Stage stage= new Stage();
+        stage.resizableProperty().setValue(Boolean.FALSE);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();
+        return controller.getIdArticulo();
     }
 
 
@@ -1079,21 +1139,26 @@ public class HomeController extends Component implements Initializable {
         }else{
             comboSubcategoria.getItems().removeAll();
             comboSubcategoria.setItems(subElectrodomesticos);
+            comboSubcategoria.setValue("Cámaras");
             InteresElectrodomesticos();
             txtPesoArticulo.setText("");
             txtPesoArticulo.setDisable(true);
         }
     }
 
-    @FXML protected String InsertarNuevoArticulo() throws SQLException{
+
+    public String InsertarNuevoArticulo(ComboBox<String> categoria,ComboBox<String> subCategoria,
+                                                 TextArea descripccion, TextField peso,TextField valorArticulo) throws SQLException{
         String IdArticulo;
         SQL_Sentencias sen = new SQL_Sentencias("root", "");
-        String precio = txtValorArticulo.getText().replace(".", "");
-        if(comboCategoria.getValue().toString() =="Oro"){
-            IdArticulo = sen.InsertarNuevoArticulo(comboCategoria.getValue().toString(),comboSubcategoria.getValue().toString(),txtDescripcionArticulo.getText(),
-                    Double.parseDouble(txtPesoArticulo.getText()),Integer.parseInt(precio),sen.getUser());
+        String precio = valorArticulo.getText().replace(".", "");
+        if(categoria.getValue().toString() =="Oro"){
+            IdArticulo = sen.InsertarNuevoArticulo(categoria.getValue().toString(),subCategoria.getValue().toString(),
+                    descripccion.getText(),
+                    Double.parseDouble(peso.getText()),Integer.parseInt(precio),sen.getUser());
         }else{
-            IdArticulo = sen.InsertarNuevoArticulo(comboCategoria.getValue().toString(),comboSubcategoria.getValue().toString(),txtDescripcionArticulo.getText(),
+            IdArticulo = sen.InsertarNuevoArticulo(categoria.getValue().toString(),subCategoria.getValue().toString(),
+                    descripccion.getText(),
                    Integer.parseInt(precio),sen.getUser());
         }
         return IdArticulo;
@@ -1128,7 +1193,8 @@ public class HomeController extends Component implements Initializable {
             LocalDateTime now = LocalDateTime.now().plusMonths(3);
             String vencimiento = now.toString();
             //System.out.println(dtf.format(now));
-            String ArticuloId = InsertarNuevoArticulo();
+            String ArticuloId = InsertarNuevoArticulo(comboCategoria,comboSubcategoria,txtDescripcionArticulo,
+                    txtPeso_DetalleContrato,txtValorArticulo);
             SQL_Sentencias sen = new SQL_Sentencias("root", "");
             String precio = txtValorArticulo.getText().replace(".", "");
             boolean success = sen.InsertarNuevoContrato(Integer.parseInt(txtcedulaNuevaRetroventa.getText().toString()), ArticuloId, Integer.parseInt(precio),
@@ -2421,5 +2487,25 @@ public class HomeController extends Component implements Initializable {
             panelImagen.setImage(image);
 
         }
+    }
+
+    public ObservableList<String> getSubElectrodomesticos() {
+        return subElectrodomesticos;
+    }
+
+    public void setSubElectrodomesticos(ObservableList<String> subElectrodomesticos) {
+        this.subElectrodomesticos = subElectrodomesticos;
+    }
+
+    public ObservableList<String> getSubOro() {
+        return subOro;
+    }
+
+    public void setSubOro(ObservableList<String> subOro) {
+        this.subOro = subOro;
+    }
+
+    public ObservableList<String> getCategorias() {
+        return categorias;
     }
 }
