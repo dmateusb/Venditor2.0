@@ -1,16 +1,10 @@
 package gui;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import logic.Home;
 
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 public class EditarArticuloController  {
     private String idArticulo="-1";
@@ -89,8 +83,7 @@ public class EditarArticuloController  {
     }
 
     public void inicializar() {
-        comboCategoria.setValue("Oro");
-        cambioSubcategorias();
+//        cambioSubcategorias();
         SpinnerPorcentaje.setEditable(false);
         SpinnerPorcentaje.setDisable(true);
         comboCategoria.setItems(homeController.getCategorias());
@@ -129,5 +122,61 @@ public class EditarArticuloController  {
 
     public void setIdArticulo(String idArticulo) {
         this.idArticulo = idArticulo;
+    }
+
+    public Button getBtnCambiarPorcentaje() {
+        return btnCambiarPorcentaje;
+    }
+
+    public void setBtnCambiarPorcentaje(Button btnCambiarPorcentaje) {
+        this.btnCambiarPorcentaje = btnCambiarPorcentaje;
+    }
+
+    public TextArea getTxtDescripcionArticulo() {
+        return txtDescripcionArticulo;
+    }
+
+    public void setTxtDescripcionArticulo(TextArea txtDescripcionArticulo) {
+        this.txtDescripcionArticulo = txtDescripcionArticulo;
+    }
+
+    public Spinner<Double> getSpinnerPorcentaje() {
+        return SpinnerPorcentaje;
+    }
+
+    public void setSpinnerPorcentaje(Spinner<Double> spinnerPorcentaje) {
+        SpinnerPorcentaje = spinnerPorcentaje;
+    }
+
+    public ComboBox<String> getComboCategoria() {
+        return comboCategoria;
+    }
+
+    public void setComboCategoria(ComboBox<String> comboCategoria) {
+        this.comboCategoria = comboCategoria;
+    }
+
+    public ComboBox<String> getComboSubcategoria() {
+        return comboSubcategoria;
+    }
+
+    public void setComboSubcategoria(ComboBox<String> comboSubcategoria) {
+        this.comboSubcategoria = comboSubcategoria;
+    }
+
+    public TextField getTxtPesoArticulo() {
+        return txtPesoArticulo;
+    }
+
+    public void setTxtPesoArticulo(TextField txtPesoArticulo) {
+        this.txtPesoArticulo = txtPesoArticulo;
+    }
+
+    public TextField getTxtValorArticulo() {
+        return txtValorArticulo;
+    }
+
+    public void setTxtValorArticulo(TextField txtValorArticulo) {
+        this.txtValorArticulo = txtValorArticulo;
     }
 }

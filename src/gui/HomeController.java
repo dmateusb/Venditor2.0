@@ -550,10 +550,19 @@ public class HomeController extends Component implements Initializable {
         FXMLLoader loader= new FXMLLoader(getClass().getResource("/gui/EditarArticulo.fxml"));
         Parent root=loader.load();
         EditarArticuloController controller=loader.getController();
+        controller.getComboCategoria().setValue(txtCategoria_DetalleContrato.getText());
+        controller.getComboSubcategoria().setValue(txtSubcategoria_DetalleContrato.getText());
+        controller.getTxtPesoArticulo().setText(txtPeso_DetalleContrato.getText());
+        controller.getTxtValorArticulo().setText(txtValor_DetalleContrato.getText());
+        controller.getTxtDescripcionArticulo().setText(txtDescripcion_DetalleContrato.getText());
+        SpinnerValueFactory<Double> valor= new SpinnerValueFactory.DoubleSpinnerValueFactory(
+                3,5,Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),0.5);
+        controller.getSpinnerPorcentaje().setValueFactory(valor);
         controller.setHomeController(this);
         controller.inicializar();
         Scene scene= new Scene(root);
         Stage stage= new Stage();
+        stage.setTitle("Editar artículo");
         stage.resizableProperty().setValue(Boolean.FALSE);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);

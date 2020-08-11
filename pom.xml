@@ -32,11 +32,6 @@
             <version>7.47.1</version>
         </dependency>
         <dependency>
-            <groupId>de.jensd</groupId>
-            <artifactId>fontawesomefx-fontawesome</artifactId>
-            <version>4.7.0-9.1.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.jclarion</groupId>
             <artifactId>image4j</artifactId>
             <version>0.7</version>
@@ -64,6 +59,12 @@
             <version>1.2.1</version>
             <type>pom</type>
         </dependency>
+
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>9.0.0</version>
+        </dependency>
         <dependency>
             <groupId>io.github.typhon0</groupId>
             <artifactId>AnimateFX</artifactId>
@@ -73,11 +74,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.39</version>
-        </dependency>
-        <dependency>
-            <groupId>de.jensd</groupId>
-            <artifactId>fontawesomefx</artifactId>
-            <version>8.1</version>
         </dependency>
         <dependency>
             <groupId>com.github.sarxos</groupId>

@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.BasicConfigurator;
@@ -55,8 +56,9 @@ public class Home extends Application {
         /*Class clazz=Home.class;
         URL url = clazz.getResource("../img/tempphoto.jpg");
         */
-        Parent root = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.getIcons().add(new Image("/im/favicon.png"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

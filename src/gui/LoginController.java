@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -75,6 +76,7 @@ public class LoginController implements Initializable {
         stage.initStyle(StageStyle.DECORATED);
         Parent root = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
         Scene scene = new Scene(root);
+        stage.getIcons().add(new Image("/im/favicon.png"));
         stage.setResizable(false);
         stage.setScene(scene);
         Screen screen = Screen.getPrimary();

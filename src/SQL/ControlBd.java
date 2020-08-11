@@ -185,6 +185,13 @@ public class ControlBd {
         return  resultado;
     }
 
+    public Object[][] consultarProcentaje(String contrato){
+        System.out.println(contrato);
+        String[] columnas={"Porcentaje"};
+        Object[][] resultado= sen.GetTabla(columnas,"contratos","select Porcentaje from contratos where Numero_contrato = '"+contrato+"';");
+        return  resultado;
+    }
+
     public Object[][] consultarRenovaciones(String contrato){
         String[] columnas={"Renovaciones"};
         Object[][] resultado= sen.GetTabla(columnas,"contratos","select Renovaciones from contratos where Numero_contrato = '"+contrato+"';");
