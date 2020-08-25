@@ -145,8 +145,10 @@ public class SQL_Sentencias {
         return IdArticulo;
     }
 
-    public boolean InsertarNuevoContrato(int cedula, String articulo, int valor,Double porcentaje, String vencimiento, String usuario) throws SQLException{
+    public boolean InsertarNuevoContrato(String cedulaString, String articulo, int valor,Double porcentaje, String vencimiento, String usuario) throws SQLException{
         int Id = 0;
+        String cedulaInt = cedulaString.replace(".", "");
+        int cedula = Integer.valueOf(cedulaInt);
         String[] columnas={"Numero_contrato"};
         Object[][] resultado = GetTabla(columnas, "contratos", "SELECT Numero_contrato FROM contratos ORDER BY Numero_contrato ASC;");
         if(resultado.length==0){
@@ -193,8 +195,11 @@ public class SQL_Sentencias {
         }
     }
 
-    public boolean InsertarContratoRenovado(int cedula, String articulo, int valor,Double porcentaje,int renovaciones, String vencimiento, String usuario) throws SQLException{
+    public boolean InsertarContratoRenovado(String cedulaString, String articulo, int valor,Double porcentaje,int renovaciones, String vencimiento, String usuario) throws SQLException{
         int Id = 0;
+        String cedulaInt = cedulaString.replace(".", "");
+        int cedula = Integer.valueOf(cedulaInt);
+
         String[] columnas={"Numero_contrato"};
         Object[][] resultado = GetTabla(columnas, "contratos", "SELECT Numero_contrato FROM contratos ORDER BY Numero_contrato ASC;");
         if(resultado.length==0){
@@ -243,8 +248,14 @@ public class SQL_Sentencias {
         }
     }
     
-    public boolean InsertarNuevoCliente(int cedula, String nombre, String apellidos, String direccion, String barrio, String telefono1, String telefono2, String correo, String usuario) throws SQLException{
+    public boolean InsertarNuevoCliente(String cedulaString, String nombre, String apellidos, String direccion, String barrio, String telefono1, String telefono2, String correo, String usuario) throws SQLException{
         try {
+
+            String cedulaInt = cedulaString.replace(".", "");
+            int cedula = Integer.valueOf(cedulaInt);
+
+
+
             Connection c = con.conectado();
             ps = c.prepareStatement("INSERT into venditor.clientes (Cedula,Nombre,Apellidos,Direccion,Barrio,Telefono1,Telefono2,Correo,Usuario) values (?,?,?,?,?,?,?,?,?)");
             ps.setInt(1, cedula);
@@ -300,7 +311,11 @@ public class SQL_Sentencias {
     }
     
     
-    public boolean InsertarFotoCliente(byte[] foto, int cedula) throws SQLException{
+    public boolean InsertarFotoCliente(byte[] foto, String cedulaString) throws SQLException{
+
+        String cedulaInt = cedulaString.replace(".", "");
+        int cedula = Integer.valueOf(cedulaInt);
+
         try {
             Connection c = con.conectado();
             PreparedStatement ps = c.prepareStatement("UPDATE venditor.clientes SET Foto=? WHERE Cedula = ?;");
@@ -318,7 +333,8 @@ public class SQL_Sentencias {
         }
     }
 
-    public boolean InsertarHuellaCliente(String cedula, ByteArrayInputStream huella, Integer tamañoHuella) throws SQLException {
+    public boolean InsertarHuellaCliente(String cedulaString, ByteArrayInputStream huella, Integer tamañoHuella) throws SQLException {
+        String cedula = cedulaString.replace(".","");
         try {
             Connection c = con.conectado();
             //ingresando huella

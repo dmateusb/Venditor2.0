@@ -253,7 +253,7 @@ public class jFrameWindow extends JFrame  {
                     ex.printStackTrace();
                 }
                 try {
-                    sen.InsertarFotoCliente(data, Integer.parseInt(cedula));
+                    sen.InsertarFotoCliente(data, cedula);
                     JOptionPane.showMessageDialog(null,"Foto insertada exitosamente");
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null,"Error en la conexión con la base de datos");

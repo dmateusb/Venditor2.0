@@ -218,7 +218,7 @@ public class HomeController extends Component implements Initializable {
     ObservableList<String> estados = FXCollections.observableArrayList("Todos","Vigentes","Retractados","Vencidos"); //Estados de los contratos
     ObservableList<String> subElectrodomesticos = FXCollections.observableArrayList(
             "Cámaras","Deportes","Herramientas","Hogar","Industria","Instrumentos",
-            "Portatil","Reloj","Sonido","Televisores","Videojuegos", "Otros");
+            "Portatil","Reloj","Sonido","Televisores","Videojuegos", "Varios Artículos","Otros");
     ObservableList<String> subOro = FXCollections.observableArrayList("Oro");
     @FXML private Spinner SpinnerPorcentaje;
     @FXML private VBox vboxnuevocliente;
@@ -417,16 +417,35 @@ public class HomeController extends Component implements Initializable {
             return;
         }
 
-        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se retractará con la fecha de hoy. " +
-                "¿Estás seguro de retractar el contrato?");
 
+        String numeroContrato = txtNumeroContrato_DetalleContrato.getText();
+        Object[][] informacionContrato = controlBd.GetContrato(numeroContrato);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+        String fecha = informacionContrato[0][5].toString().substring(0,19).replace(' ','T');
+        LocalDateTime fechaInicioContrato = LocalDateTime.parse(fecha,dtf);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tempDateTime = LocalDateTime.from(fechaInicioContrato);
+        //Calcula la cantidad de días entre la fecha de vencimiento del contrato y el día actual
+        long meses = tempDateTime.until(now,ChronoUnit.MONTHS);
+        if(meses==0){meses=1;}
+        long diasAdicionales = fechaInicioContrato.plusMonths(meses).until(now,ChronoUnit.DAYS);
+        if(diasAdicionales>5){meses = meses+1;}
+        int valor = Integer.parseInt(informacionContrato[0][8].toString());
+        double porcentaje = Double.parseDouble(informacionContrato[0][9].toString());
+        System.out.println(valor);
+        System.out.println(porcentaje);
+        double cobroMes = valor*porcentaje/100;
+        double utilidad = cobroMes*meses;
+        double cobroTotal = valor+utilidad;
+
+        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se retractará con la fecha de hoy y el cobro total a cobrar es: $"+ (int)cobroTotal +
+                " ¿Estás seguro de retractar el contrato?");
         if(confirmacion.equals("OK")){
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime hoy = LocalDateTime.now();
-            String fechaHoy = hoy.toString();
+            String fechaHoy = now.toString();
             control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
             mostrarInformacion("Contrato retractado", "El contrato se retractó de forma correcta");
             txtEstado_DetalleContrato.setText("Retractado");
+            mostrarTablaInicial();
         }
     }
 
@@ -440,8 +459,16 @@ public class HomeController extends Component implements Initializable {
         }
         preguntarMesesRenovacion();
         if(getMeses()==-1) return;
-        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
-                "¿Estás seguro de renovar el contrato?");
+        String confirmacion;
+        if(getMeses()==1){
+            confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por 1 mes a partir de la fecha de hoy. " +
+                    "¿Estás seguro de renovar el contrato?");
+        }else{
+            confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
+                    "¿Estás seguro de renovar el contrato?");
+        }
+
+
         if(confirmacion.equals("OK")){
             Object[][] renovacion = control.consultarRenovaciones(txtNumeroContrato_DetalleContrato.getText());
 
@@ -459,10 +486,12 @@ public class HomeController extends Component implements Initializable {
 
             SQL_Sentencias sen = new SQL_Sentencias("root", "");
 
-            boolean success = sen.InsertarContratoRenovado(Integer.parseInt(txtCedula_DetalleContrato.getText()),articulo[0][0].toString(),Integer.parseInt(precio),
+            boolean success = sen.InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo[0][0].toString(),Integer.parseInt(precio),
                     Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
             if(success){
                 control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
+                mostrarTablaInicial();
+                txtEstado_DetalleContrato.setText("Retractado");
             }else{
                 mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
             }
@@ -500,6 +529,7 @@ public class HomeController extends Component implements Initializable {
     private int getMeses(){
         return this.meses;
     }
+
     public void btnEditaryRenovar() throws SQLException {
         String idArticulo = null;
         Object[][] contrato = control.consultarEstado(txtNumeroContrato_DetalleContrato.getText());
@@ -514,11 +544,22 @@ public class HomeController extends Component implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         if(idArticulo.equals("-1")) return;
         preguntarMesesRenovacion();
         if(getMeses()==-1) return;
-        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
-                "¿Estás seguro de renovar el contrato?");
+
+        String confirmacion;
+
+        if(getMeses()==1){
+            confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por 1 mes a partir de la fecha de hoy. " +
+                    "¿Estás seguro de renovar el contrato?");
+
+        }else{
+            confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
+                    "¿Estás seguro de renovar el contrato?");
+        }
+
         if(confirmacion.equals("OK")){
             Object[][] renovacion = control.consultarRenovaciones(txtNumeroContrato_DetalleContrato.getText());
 
@@ -536,10 +577,11 @@ public class HomeController extends Component implements Initializable {
 
             SQL_Sentencias sen = new SQL_Sentencias("root", "");
 
-            boolean success = sen.InsertarContratoRenovado(Integer.parseInt(txtCedula_DetalleContrato.getText()),idArticulo,Integer.parseInt(precio),
+            boolean success = sen.InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),idArticulo,Integer.parseInt(precio),
                     Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
             if(success){
                 control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
+                mostrarTablaInicial();
             }else{
                 mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
             }
@@ -563,19 +605,28 @@ public class HomeController extends Component implements Initializable {
         Scene scene= new Scene(root);
         Stage stage= new Stage();
         stage.setTitle("Editar artículo");
-        stage.resizableProperty().setValue(Boolean.FALSE);
+        stage.resizableProperty().setValue(Boolean.TRUE);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.showAndWait();
         return controller.getIdArticulo();
     }
-
+    public void formatoDeTextos(){
+        TextFormater(txtValorArticulo);
+        TextFormater(txtValor_DetalleContrato);
+        TextFormater(txtCedula_DetalleContrato);
+        TextFormater(txtCedulaBusquedaCliente);
+        TextFormater(txtcedula);
+        TextFormater(txtCedulaConfirmacionNuevoCLiente);
+        TextFormater(txtcedulaNuevaRetroventa);
+        TextFormater(txtBusquedaCliente);
+        TextFormater(txtCedulaContratos);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         contratosVencidos();
-        TextFormater(txtValorArticulo);
-        TextFormater(txtValor_DetalleContrato);
+        formatoDeTextos();
         mostrarTablaInicial();
         SpinnerPorcentaje.setEditable(false);
         SpinnerPorcentaje.setDisable(true);
@@ -863,7 +914,7 @@ public class HomeController extends Component implements Initializable {
             SQL_Sentencias bd = new SQL_Sentencias("root", "");
             ControlBd control = new ControlBd("root", "");
 
-            Boolean isCreado = bd.InsertarNuevoCliente((Integer.parseInt(txtcedula.getText())),
+            Boolean isCreado = bd.InsertarNuevoCliente((txtcedula.getText()),
                     txtnombre.getText(), txtapellido.getText(), txtdireccion.getText(),txtbarrio.getText(),
                     txttelefono1.getText(), txttelefono2.getText(), txtcorreo.getText(), bd.getUser());
             if (isCreado) {
@@ -906,7 +957,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -964,7 +1015,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1023,7 +1074,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1082,7 +1133,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1171,6 +1222,31 @@ public class HomeController extends Component implements Initializable {
         return IdArticulo;
     }
 
+    public int  preguntarMesesNuevoContrato() {
+        setMeses(-1);
+        Stage popupwindow= new Stage();
+        popupwindow.initModality(Modality.APPLICATION_MODAL);
+        popupwindow.initStyle(StageStyle.UTILITY);
+        popupwindow.setTitle("Tiempo para el contrato");
+        Button button1= new Button("Confirmar");
+        Label label1= new Label("Meses ");
+
+        label1.setWrapText(true);
+        Spinner<Integer> spinner= new Spinner<>(1,3,3);
+        button1.setOnAction(e -> {
+            setMeses(spinner.getValue());
+            popupwindow.close();
+        });
+        VBox layout= new VBox(10);
+        layout.setPadding(new Insets(10,10,10,10));
+        layout.getChildren().addAll(label1,spinner, button1);
+        layout.setAlignment(Pos.CENTER);
+        Scene scene1= new Scene(layout);
+        popupwindow.setScene(scene1);
+        popupwindow.showAndWait();
+        return meses;
+    }
+
 
     @FXML protected void InsertarNuevoContrato() throws SQLException {
         if(txtcedulaNuevaRetroventa.getText().length()==0){
@@ -1190,21 +1266,30 @@ public class HomeController extends Component implements Initializable {
 
 
 
+        int meses=preguntarMesesNuevoContrato();
+        String confirmacion;
 
-        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se creará con las datos que se llenaron. ¿Estás seguro que quieres crear el contrato?");
+        if(meses==1){
+            confirmacion = mostrarConfirmacion("Confirmación","El contrato se creará con las datos que se llenaron y a un término de 1 mes a partir de la fecha de hoy. ¿Estás seguro que quieres crear el contrato?");
+        }else{
+            confirmacion = mostrarConfirmacion("Confirmación","El contrato se creará con las datos que se llenaron y a un término de "+String.valueOf(meses)+" meses. ¿Estás seguro que quieres crear el contrato?");
+        }
+
 
         if(confirmacion.equals("OK")) {
 
 
+
+
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime now = LocalDateTime.now().plusMonths(3);
+            LocalDateTime now = LocalDateTime.now().plusMonths(meses);
             String vencimiento = now.toString();
             //System.out.println(dtf.format(now));
             String ArticuloId = InsertarNuevoArticulo(comboCategoria,comboSubcategoria,txtDescripcionArticulo,
-                    txtPeso_DetalleContrato,txtValorArticulo);
+                    txtPesoArticulo,txtValorArticulo);
             SQL_Sentencias sen = new SQL_Sentencias("root", "");
             String precio = txtValorArticulo.getText().replace(".", "");
-            boolean success = sen.InsertarNuevoContrato(Integer.parseInt(txtcedulaNuevaRetroventa.getText().toString()), ArticuloId, Integer.parseInt(precio),
+            boolean success = sen.InsertarNuevoContrato(txtcedulaNuevaRetroventa.getText(), ArticuloId, Integer.parseInt(precio),
                     Double.parseDouble(SpinnerPorcentaje.getValue().toString()), vencimiento, sen.getUser());
             if (success) {
                 CambiarCliente();
@@ -1450,7 +1535,7 @@ public class HomeController extends Component implements Initializable {
                 contrato.setEstado(Contratos[i][4].toString());
                 Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                 contrato.setDescripcion(articulo[0][0].toString());
-                Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                 contrato.setNombre(clientes[0][0].toString());
                 contrato.setApellidos(clientes[0][1].toString());
                 arrayContratos.add(contrato);
@@ -1518,7 +1603,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1576,7 +1661,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1635,7 +1720,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(Contratos[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1693,7 +1778,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(Contratos[i][7].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1761,7 +1846,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(ContratosLikeContrato[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(ContratosLikeContrato[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(ContratosLikeContrato[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(ContratosLikeContrato[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1819,7 +1904,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(ContratosLikeContrato[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(ContratosLikeContrato[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(ContratosLikeContrato[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(ContratosLikeContrato[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1878,7 +1963,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(ContratosLikeContrato[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(ContratosLikeContrato[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(ContratosLikeContrato[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(ContratosLikeContrato[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -1936,7 +2021,7 @@ public class HomeController extends Component implements Initializable {
                     contrato.setEstado(ContratosLikeContrato[i][4].toString());
                     Object[][] articulo = control.ConsultarDescripcionArticulo(ContratosLikeContrato[i][2].toString());
                     contrato.setDescripcion(articulo[0][0].toString());
-                    Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(ContratosLikeContrato[i][1].toString()));
+                    Object[][] clientes = control.ConsultarNombresCliente(ContratosLikeContrato[i][1].toString());
                     contrato.setNombre(clientes[0][0].toString());
                     contrato.setApellidos(clientes[0][1].toString());
                     arrayContratos.add(contrato);
@@ -2047,7 +2132,7 @@ public class HomeController extends Component implements Initializable {
                 contrato.setEstado(Contratos[i][7].toString());
                 Object[][] articulo = control.ConsultarDescripcionArticulo(Contratos[i][2].toString());
                 contrato.setDescripcion(articulo[0][0].toString());
-                Object[][] clientes = control.ConsultarNombresCliente(Integer.parseInt(Contratos[i][1].toString()));
+                Object[][] clientes = control.ConsultarNombresCliente(Contratos[i][1].toString());
                 contrato.setNombre(clientes[0][0].toString());
                 contrato.setApellidos(clientes[0][1].toString());
                 arrayContratos.add(contrato);

@@ -25,7 +25,8 @@ public class ControlBd {
     }
     //Existencias
     //Para comprobar si algún valor específico existe en la tabla buscada. Todas retornan un Boolean
-    public boolean ExisteCliente(String cedula){
+    public boolean ExisteCliente(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         return sen.existencias(cedula, " from clientes where Cedula="+cedula+"';");
     }
     public boolean ExisteContrato(String numeroContrato){
@@ -36,7 +37,8 @@ public class ControlBd {
     }
 
      //Consultas
-    public Object[][] GetClienteNuevoContrato(String cedula){
+    public Object[][] GetClienteNuevoContrato(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         String[] columnas={"Cedula","Nombre", "Apellidos","Direccion","Barrio","Telefono1","Telefono2", "Correo","Foto","Perfil","Fecha_registro"};
         Object[][] resultado = sen.GetTabla(columnas, "clientes", "select Cedula, Nombre, Apellidos, Direccion, Barrio, Telefono1, Telefono2, Correo, Foto, Perfil, Fecha_registro FROM clientes Where Cedula='"+cedula+"';");
         return resultado;
@@ -52,7 +54,8 @@ public class ControlBd {
         return resultado;
     }
 
-    public Object getHuella(String cedula){
+    public Object getHuella(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         String[] columnas={"Huella"};
         Object[][] resultado = sen.GetHuella(columnas, "clientes", "select * FROM clientes Where Cedula='"+cedula+"';");
         return resultado[0][0];
@@ -89,31 +92,35 @@ public class ControlBd {
 
 
 
-    public Object[][] ConsultarContratosVencidosLikeCedula(String entrada){
+    public Object[][] ConsultarContratosVencidosLikeCedula(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Vencido' and Cedula like '%"+entrada+"%';");
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Vencido' and Cedula like '%"+cedula+"%';");
         return resultado;
     }
-    public Object[][] ConsultarContratosVigentesLikeCedula(String entrada){
+    public Object[][] ConsultarContratosVigentesLikeCedula(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Vigente' and Cedula like '%"+entrada+"%';");
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Vigente' and Cedula like '%"+cedula+"%';");
         return resultado;
     }
-    public Object[][] ConsultarContratosRetractadosLikeCedula(String entrada){
+    public Object[][] ConsultarContratosRetractadosLikeCedula(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Retractado' and Cedula like '%"+entrada+"%';");
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Estado = 'Retractado' and Cedula like '%"+cedula+"%';");
         return resultado;
     }
-    public Object[][] ConsultarContratosLikeCedula(String entrada){
+    public Object[][] ConsultarContratosLikeCedula(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Valor","Porcentaje","Renovaciones","Estado"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Cedula like '%"+entrada+"%';");
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Cedula like '%"+cedula+"%';");
         return resultado;
     }
 
-    public Object[][] ConsultarContratosWithCedula(String entrada){
-        System.out.println(entrada);
+    public Object[][] ConsultarContratosWithCedula(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Valor","Porcentaje","Renovaciones","Estado"};
-        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Cedula = "+entrada+";");
+        Object[][] resultado = sen.GetTabla(columnas, "contratos", "select * from contratos where Cedula = "+cedula+";");
 
         return resultado;
     }
@@ -151,7 +158,9 @@ public class ControlBd {
         return resultado;
     }
 
-    public Object[][] ConsultarNombresCliente(int cedula){
+    public Object[][] ConsultarNombresCliente(String cedulaString){
+        String cedulaInt = cedulaString.replace(".", "");
+        int cedula = Integer.valueOf(cedulaInt);
         String[] columnas={"Nombre","Apellidos"};
         Object[][] resultado = sen.GetTabla(columnas, "clientes", "select Nombre, Apellidos from clientes where Cedula='"+cedula+"';");
         return resultado;
@@ -164,7 +173,8 @@ public class ControlBd {
         return resultado;
     }
 
-    public Object[][] ConsultarClientesLikeCedula(String cedula){
+    public Object[][] ConsultarClientesLikeCedula(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         String[] columnas={"Cedula","Nombre","Apellidos","Direccion","Telefono1","Telefono2",
                 "Correo","Perfil","Fecha_registro","Usuario"};
         Object[][] resultado= sen.GetTabla(columnas,"clientes","select * from clientes where cedula like '%"+cedula+"%';");
@@ -211,7 +221,8 @@ public class ControlBd {
 //---------------------------UPDATE----------------------///-----------------------///--------
 
     public boolean UpdateCliente(String nombre, String apellidos, String direccion,
-                                 String telefono1, String telefono2, String correo,String cedula){
+                                 String telefono1, String telefono2, String correo,String cedulaString){
+        String cedula = cedulaString.replace(".","");
         String campos[]={nombre,apellidos,direccion,telefono1,telefono2,correo,cedula};
         return sen.insertar(campos, "update clientes set Nombre = ?, Apellidos = ? ," +
                 " Direccion = ?, Telefono1 = ?, Telefono2 = ? , Correo = ? where Cedula = ?;");
