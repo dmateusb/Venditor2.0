@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
+import logic.Caja;
+import logic.Descuentos;
 
 /**
  *
@@ -283,16 +285,42 @@ public class SQL_Sentencias {
             con.desconectar();
         }
     }
-    
-    public boolean InsertarNuevoMovimientoCaja(String tipo, String descripcion, int valor, String usuario, int total) throws SQLException{
+
+    public boolean insertarDescuento(Descuentos descuentos) throws SQLException{
         try {
             Connection c = con.conectado();
-            ps = c.prepareStatement("INSERT into venditor.caja (Tipo,Descripcion,Valor,Usuario,Total) values (?,?,?,?,?)");
-            ps.setString(1, tipo);
-            ps.setString(2, descripcion);
-            ps.setInt(3, valor);
-            ps.setString(4, usuario);
-            ps.setInt(5, total);
+            ps = c.prepareStatement("INSERT into venditor.descuentos (Numero_contrato,Precio_real,Precio_cobrado,Razon,Usuario) values (?,?,?,?,?)");
+            ps.setString(1, descuentos.getNumero_contrato());
+            ps.setFloat(2,Float.parseFloat(descuentos.getPrecio_real()));
+            ps.setFloat(3,Float.parseFloat(descuentos.getPrecio_cobrado()));
+            ps.setString(4,descuentos.getRazon());
+            ps.setString(5,user);
+            ps.execute();
+            con.desconectar();
+            return true;
+        } catch (SQLException ex) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setContentText("Algo salió mal en la conexion a la base de datos");
+            alert1.setTitle("Error al crear el usuario");
+            alert1.setHeaderText(null);
+            alert1.showAndWait();
+            System.err.println(ex.getMessage());
+            return false;
+        } finally {
+            con.desconectar();
+        }
+    }
+
+    public boolean InsertarRetractoCaja(Caja caja) throws SQLException{
+        try {
+            Connection c = con.conectado();
+            ps = c.prepareStatement("INSERT into venditor.caja (Descripcion, Ingreso, Egreso, Utilidad, Total, Usuario) values (?,?,?,?,?,?) ");
+            ps.setString(1, caja.getDescripcion());
+            ps.setFloat(2, caja.getIngreso());
+            ps.setFloat(3,0);
+            ps.setFloat(4, caja.getUtilidad());
+            ps.setFloat(5, caja.getTotal());
+            ps.setString(6, user);
             ps.execute();
             con.desconectar();
             return true;
@@ -619,4 +647,5 @@ public class SQL_Sentencias {
     public void setPass(String pass) {
         this.pass = pass;
     }
+
 }

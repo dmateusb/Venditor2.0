@@ -5,6 +5,8 @@
  */
 package SQL;
 
+import logic.Descuentos;
+
 /**
  *
  * @author Ingeniería
@@ -32,11 +34,20 @@ public class ControlBd {
     public boolean ExisteContrato(String numeroContrato){
         return sen.existencias(numeroContrato, " from contratos where Numero_contrato='"+numeroContrato+"';");
     }
+
     public boolean ExisteMovimiento(String id){
         return sen.existencias(id, " from caja where Id='"+id+"';");
     }
 
      //Consultas
+     public float ConsultarTotalCaja(){
+         String[] columnas={"Total"};
+         Object[][] resultado = sen.GetTabla(columnas, "caja",
+                 "select Total FROM caja ORDER BY id DESC LIMIT 1;");
+         if(resultado.length==0) return 0;
+         String aux= (String) resultado[0][0];
+         return Float.parseFloat(aux);
+     }
     public Object[][] GetClienteNuevoContrato(String cedulaString){
         String cedula = cedulaString.replace(".","");
         String[] columnas={"Cedula","Nombre", "Apellidos","Direccion","Barrio","Telefono1","Telefono2", "Correo","Foto","Perfil","Fecha_registro"};
@@ -53,7 +64,6 @@ public class ControlBd {
         Object[][] resultado = sen.GetTabla(columnas, "articulos", "select * FROM articulos Where Id='"+numeroArticulo+"';");
         return resultado;
     }
-
     public Object getHuella(String cedulaString){
         String cedula = cedulaString.replace(".","");
         String[] columnas={"Huella"};
@@ -246,6 +256,4 @@ public class ControlBd {
         return sen.insertar(campos, "update contratos set Sobreprecio_real = ?, Sobreprecio_cobrado = ? where Numero_contrato = ?;");
     }
 
-
-    
 }

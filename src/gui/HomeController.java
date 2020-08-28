@@ -434,9 +434,9 @@ public class HomeController extends Component implements Initializable {
         stage.setScene(scene);
         stage.show();
         FinalizarRetractoController finalizarController = loader.getController();
+        finalizarController.setControlBd(controlBd);
+        finalizarController.setSen(sen);
         finalizarController.setNumeroContrato(txtNumeroContrato_DetalleContrato.getText());
-        finalizarController.setPassword(usuario);
-        finalizarController.setUser(pass);
         finalizarController.getTxtCedula().setText(txtCedula_DetalleContrato.getText());
         finalizarController.getTxtNombre().setText(txtNombre_DetalleContrato.getText());
         finalizarController.getTxtFechaInicio().setText(txtFechaInicio_DetalleContrato.getText());
@@ -1294,7 +1294,7 @@ public class HomeController extends Component implements Initializable {
 
         int meses=preguntarMesesNuevoContrato();
         String confirmacion;
-
+        if(meses==-1) return;
         if(meses==1){
             confirmacion = mostrarConfirmacion("Confirmación","El contrato se creará con las datos que se llenaron y a un término de 1 mes a partir de la fecha de hoy. ¿Estás seguro que quieres crear el contrato?");
         }else{

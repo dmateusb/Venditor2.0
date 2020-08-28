@@ -1,23 +1,32 @@
 package gui;
 
 import SQL.ControlBd;
+import SQL.SQL_Sentencias;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import logic.Caja;
+import logic.Descuentos;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import static gui.HomeController.mostrarConfirmacion;
 
 public class FinalizarRetractoController implements Initializable {
+    private String valorCobro;
     @FXML private TextField txtNombre;
     @FXML private TextField txtCedula;
     @FXML private TextField txtFechaInicio;
@@ -27,21 +36,14 @@ public class FinalizarRetractoController implements Initializable {
     @FXML private TextField txtValorCobrar;
     @FXML private TextField txtValorCobrado;
     @FXML private Text txtContrato;
+    private SQL_Sentencias sen;
+    private ControlBd controlBd;
     private String numeroContrato;
-    private String user;
-    private String password;
     private double utilidad;
-    private int cobro;
+    private float cobro;
     long meses;
     long dias;
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public void setNumeroContrato(String contrato){
         this.numeroContrato = contrato;
@@ -146,7 +148,6 @@ public class FinalizarRetractoController implements Initializable {
     }
 
     public void calcularTiempo(){
-        ControlBd controlBd = new ControlBd(user, password);
         Object[][] informacionContrato = controlBd.GetContrato(numeroContrato);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
         String fecha = informacionContrato[0][5].toString().substring(0,19).replace(' ','T');
@@ -177,13 +178,10 @@ public class FinalizarRetractoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         TextFormater(txtValorCobrado);
         TextFormater(txtValorCobrar);
-
-
     }
 
 
     public void cobrar() {
-        ControlBd controlBd = new ControlBd(user, password);
         Object[][] informacionContrato = controlBd.GetContrato(numeroContrato);
         if(meses==0){meses=1;}
         if(dias>5){meses = meses+1;}
@@ -192,30 +190,65 @@ public class FinalizarRetractoController implements Initializable {
         double cobroMes = valor*porcentaje/100;
         this.utilidad = cobroMes*meses;
         double cobroTotal = valor+utilidad;
-        this.cobro = (int)cobroTotal;
-        txtValorCobrar.setText(String.valueOf(cobro));
-
+        this.cobro = (float)cobroTotal;
+        if(cobro%50!=0){
+            float residuo=cobro%50;
+            if(residuo<25){
+                cobro-=residuo;
+            }else {
+                cobro+=(50-residuo);
+            }
+        }
+        valorCobro=String.format("%.0f",cobro);
+        txtValorCobrar.setText( valorCobro);
     }
 
     @FXML public void retractar() {
+        SQL_Sentencias sentencias= new SQL_Sentencias("root","");
+        String valorCobrado=txtValorCobrado.getText().replace(".","");
+        String valorCobrar=txtValorCobrar.getText().replace(".","");
         if(txtValorCobrado.getText().length()==0){
             homeController.mostrarAlerta(" Información incompleta","No has escrito el valor cobrado");
             return;
         }
-        String valorCobrar = txtValorCobrado.getText().replace(".","");
-        if(Integer.parseInt(valorCobrar)%10!=0){
-            homeController.mostrarAlerta(" Información erronea","Escribiste un valor cobrado que no es válido");
+        if(Double.parseDouble(valorCobrado)-Double.parseDouble(txtValorInicial.getText().replace(".",""))<0){
+            homeController.mostrarAlerta(" Información erronea","No se puede cobrar un valor menor al costo inicial");
+            return;
+        }
+        if(Double.parseDouble(valorCobrado)-Double.parseDouble(valorCobrar)>0){
+            homeController.mostrarAlerta(" Información erronea","No se puede cobrar un valor mayor al cobro esperado");
             return;
         }
         LocalDateTime now = LocalDateTime.now();
         String confirmacion = mostrarConfirmacion("Confirmación", "El contrato se retractará con la fecha de hoy ¿Estás seguro de retractar el contrato?");
 
         if (confirmacion.equals("OK")) {
-            ControlBd control = new ControlBd(user, password);
+            if(Double.parseDouble(valorCobrado)-Double .parseDouble(valorCobrar)<0){
+                Descuentos descuento= new Descuentos(numeroContrato,String.valueOf(valorCobro),valorCobrado,textInput());
+                try {
+                    sentencias.insertarDescuento(descuento);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
             String fechaHoy = now.toString();
-            control.updateEstado_Retractado(numeroContrato, fechaHoy);
-            control.updateSobreprecio(numeroContrato,String.valueOf(cobro),txtValorCobrado.getText());
-
+            controlBd.updateEstado_Retractado(numeroContrato, fechaHoy);
+            controlBd.updateSobreprecio(numeroContrato,String.valueOf(valorCobro),txtValorCobrado.getText());
+            float totalCaja=controlBd.ConsultarTotalCaja();
+            Caja caja= new Caja();
+            caja.setDescripcion("Retracto");
+            float ingreso=Float.parseFloat(txtValorInicial.getText().replace(".",""));
+            caja.setIngreso(ingreso);
+            float valoriniciolaala=Float.parseFloat(txtValorInicial.getText().replace(".",""));
+            float utilidad=Float.parseFloat(valorCobrado)-Float.parseFloat(txtValorInicial.getText().replace(".",""));
+            caja.setUtilidad(utilidad);
+            caja.setTotal(totalCaja+ingreso+utilidad);
+            SQL_Sentencias sentencias2= new SQL_Sentencias("root","");
+            try {
+                sentencias2.InsertarRetractoCaja(caja);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             homeController.mostrarInformacion("Contrato retractado", "El contrato se retractó de forma correcta");
             homeController.getTxtEstado_DetalleContrato().setText("Retractado");
             homeController.mostrarTablaInicial();//
@@ -223,10 +256,37 @@ public class FinalizarRetractoController implements Initializable {
             stage.close();
         }
     }
-
+    public String textInput(){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Favor completar");
+        dialog.setHeaderText("Motivo del descuento");
+// Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        String motivo = "";
+        if (result.isPresent()){
+            motivo=result.get();
+        }
+        return motivo;
+    }
     @FXML public void cancelar(){
         Stage stage = (Stage) txtNombre.getScene().getWindow();
         stage.close();
+    }
+
+    public ControlBd getControlBd() {
+        return controlBd;
+    }
+
+    public void setControlBd(ControlBd controlBd) {
+        this.controlBd = controlBd;
+    }
+
+    public SQL_Sentencias getSen() {
+        return sen;
+    }
+
+    public void setSen(SQL_Sentencias sen) {
+        this.sen = sen;
     }
 }
 
