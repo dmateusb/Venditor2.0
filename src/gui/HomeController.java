@@ -40,6 +40,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -75,8 +76,8 @@ import java.util.regex.Pattern;
 public class HomeController extends Component implements Initializable {
 
     private static Stage stage;
-    private String usuario;
-    private String pass;
+    private String usuario="root";
+    private String pass="";
     private String cedulaSeleccionada;
     private ControlBd controlBd = new ControlBd("root", "");
     @FXML private ImageView imageViewBusquedaCliente;
@@ -184,6 +185,10 @@ public class HomeController extends Component implements Initializable {
     @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
     @FXML private Label lblNumeroContrato;
     private int meses;
+
+    public TextField getTxtEstado_DetalleContrato() {
+        return txtEstado_DetalleContrato;
+    }
 
     @FXML
     private TableColumn<Cliente, String> ColumnaApellidosCliente;
@@ -408,7 +413,8 @@ public class HomeController extends Component implements Initializable {
         }
     }
 
-    public void retractarContrato(){
+    public void retractarContrato() throws IOException{
+        //Confirma que el contrato no esté retractado
         Object[][] contrato = control.consultarEstado(txtNumeroContrato_DetalleContrato.getText());
         String estadoContrato = contrato[0][0].toString();
 
@@ -417,36 +423,56 @@ public class HomeController extends Component implements Initializable {
             return;
         }
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/FinalizarRetracto.fxml"));
+        Parent root = loader.load();
+        Stage stage= new Stage();
+        stage.initStyle(StageStyle.DECORATED);
+        stage.getIcons().add(new Image("/im/favicon.png"));
+        stage.setTitle("Finalizar Retracto");
+        stage.resizableProperty().setValue(Boolean.TRUE);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        FinalizarRetractoController finalizarController = loader.getController();
+        finalizarController.setNumeroContrato(txtNumeroContrato_DetalleContrato.getText());
+        finalizarController.setPassword(usuario);
+        finalizarController.setUser(pass);
+        finalizarController.getTxtCedula().setText(txtCedula_DetalleContrato.getText());
+        finalizarController.getTxtNombre().setText(txtNombre_DetalleContrato.getText());
+        finalizarController.getTxtFechaInicio().setText(txtFechaInicio_DetalleContrato.getText());
+        finalizarController.getTxtPorcentaje().setText(txtPorcentaje_DetalleContrato.getText());
+        finalizarController.getTxtValorInicial().setText(txtValor_DetalleContrato.getText());
+        finalizarController.calcularTiempo();
+        finalizarController.cobrar();
+        finalizarController.setHomeController(this);
 
-        String numeroContrato = txtNumeroContrato_DetalleContrato.getText();
-        Object[][] informacionContrato = controlBd.GetContrato(numeroContrato);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
-        String fecha = informacionContrato[0][5].toString().substring(0,19).replace(' ','T');
-        LocalDateTime fechaInicioContrato = LocalDateTime.parse(fecha,dtf);
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime tempDateTime = LocalDateTime.from(fechaInicioContrato);
-        //Calcula la cantidad de días entre la fecha de vencimiento del contrato y el día actual
-        long meses = tempDateTime.until(now,ChronoUnit.MONTHS);
-        if(meses==0){meses=1;}
-        long diasAdicionales = fechaInicioContrato.plusMonths(meses).until(now,ChronoUnit.DAYS);
-        if(diasAdicionales>5){meses = meses+1;}
-        int valor = Integer.parseInt(informacionContrato[0][8].toString());
-        double porcentaje = Double.parseDouble(informacionContrato[0][9].toString());
-        System.out.println(valor);
-        System.out.println(porcentaje);
-        double cobroMes = valor*porcentaje/100;
-        double utilidad = cobroMes*meses;
-        double cobroTotal = valor+utilidad;
+        //finalizarController.inicializar();
 
-        String confirmacion = mostrarConfirmacion("Confirmación","El contrato se retractará con la fecha de hoy y el cobro total a cobrar es: $"+ (int)cobroTotal +
-                " ¿Estás seguro de retractar el contrato?");
-        if(confirmacion.equals("OK")){
-            String fechaHoy = now.toString();
-            control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
-            mostrarInformacion("Contrato retractado", "El contrato se retractó de forma correcta");
-            txtEstado_DetalleContrato.setText("Retractado");
-            mostrarTablaInicial();
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        if(diasAdicionales>5){meses = meses+1;}
+//        int valor = Integer.parseInt(informacionContrato[0][8].toString());
+//        double porcentaje = Double.parseDouble(informacionContrato[0][9].toString());
+//        System.out.println(valor);
+//        System.out.println(porcentaje);
+//        double cobroMes = valor*porcentaje/100;
+//        double utilidad = cobroMes*meses;
+//        double cobroTotal = valor+utilidad;
+//
+
     }
 
     public void renovarContrato() throws SQLException {

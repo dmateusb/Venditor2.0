@@ -238,6 +238,14 @@ public class ControlBd {
         return sen.insertar(campos, "update contratos set Estado = ?, Fecha_final = ? where Numero_contrato = ?;");
     }
 
+    public boolean updateSobreprecio(String numeroContrato, String SobrePrecioRealPuntos, String SobrePrecioCobradoPuntos){
+        String SobrePrecioReal = SobrePrecioRealPuntos.replace(".","");
+        String SobrePrecioCobrado = SobrePrecioCobradoPuntos.replace(".","");
+
+        String campos[]={SobrePrecioReal,SobrePrecioCobrado,numeroContrato};
+        return sen.insertar(campos, "update contratos set Sobreprecio_real = ?, Sobreprecio_cobrado = ? where Numero_contrato = ?;");
+    }
+
 
     
 }
