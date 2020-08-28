@@ -505,14 +505,14 @@ public class HomeController extends Component implements Initializable {
             String vencimiento = fechaFinal.toString();
             String fechaHoy = hoy.toString();
 
-            Object[][] articulo = control.consultarIdArticulo(txtNumeroContrato_DetalleContrato.getText());
+            String articulo = control.consultarIdArticulo(txtNumeroContrato_DetalleContrato.getText());
 
             String valor = txtValor_DetalleContrato.getText();
             String precio = valor.replace(".", "");
 
             SQL_Sentencias sen = new SQL_Sentencias("root", "");
 
-            boolean success = sen.InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo[0][0].toString(),Integer.parseInt(precio),
+            boolean success = sen.InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo,Integer.parseInt(precio),
                     Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
             if(success){
                 control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
@@ -596,7 +596,7 @@ public class HomeController extends Component implements Initializable {
             String vencimiento = fechaFinal.toString();
             String fechaHoy = hoy.toString();
 
-            Object[][] articulo = control.consultarIdArticulo(idArticulo);
+            String articulo = control.consultarIdArticulo(idArticulo);
 
             String valor = txtValor_DetalleContrato.getText();
             String precio = valor.replace(".", "");
@@ -1317,8 +1317,13 @@ public class HomeController extends Component implements Initializable {
             String precio = txtValorArticulo.getText().replace(".", "");
             boolean success = sen.InsertarNuevoContrato(txtcedulaNuevaRetroventa.getText(), ArticuloId, Integer.parseInt(precio),
                     Double.parseDouble(SpinnerPorcentaje.getValue().toString()), vencimiento, sen.getUser());
-            if (success) {
+            if (success && ArticuloId!=null) {
+                float egreso=redondearA50(Float.parseFloat(precio));
+                Caja caja = new Caja("Retroventa "+comboSubcategoria.getValue(),0,-egreso,
+                        0,control.ConsultarTotalCaja()-egreso);
+                control.insertEgresoRetroventa(caja);
                 CambiarCliente();
+
                 onClicBorrarArticuloNuevaRetroventa();
             }
         }
@@ -1344,6 +1349,18 @@ public class HomeController extends Component implements Initializable {
         }else if(pantallaActiva==18){
             tomarFotografia(txtCedulaBusquedaCliente.getText());
         }
+    }
+
+    public float redondearA50(float cobro){
+        if(cobro%50!=0){
+            float residuo=cobro%50;
+            if(residuo<25){
+                cobro-=residuo;
+            }else {
+                cobro+=(50-residuo);
+            }
+        }
+        return cobro;
     }
 
     public void tomarFotografia(String cedula) {

@@ -53,7 +53,29 @@ public class SQL_Sentencias {
         }
         return estado;
     }
-
+    public boolean insertarEgresoRetroventa(String[] datos, String insert) {
+        String descripcion=datos[0];
+        float ingreso=Float.parseFloat(datos[1]);
+        float egreso=Float.parseFloat(datos[2]);
+        float utilidad=Float.parseFloat(datos[3]);
+        float total=Float.parseFloat(datos[4]);
+        boolean estado = false;
+        try {
+            ps = con.conectado().prepareStatement(insert);
+            ps.setString(1,descripcion);
+            ps.setFloat(2,ingreso);
+            ps.setFloat(3,egreso);
+            ps.setFloat(4,utilidad);
+            ps.setFloat(5,total);
+            ps.setString(6,user);
+            ps.execute();
+            ps.close();
+            estado = true;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return estado;
+    }
     //Método de inserción para los artículos de Oro
     //Este método inserta la variable peso
     public String InsertarNuevoArticulo(String categoria, String subcategoria, String descripcion, Double peso,
@@ -647,5 +669,6 @@ public class SQL_Sentencias {
     public void setPass(String pass) {
         this.pass = pass;
     }
+
 
 }

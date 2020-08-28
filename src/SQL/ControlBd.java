@@ -5,6 +5,7 @@
  */
 package SQL;
 
+import logic.Caja;
 import logic.Descuentos;
 
 /**
@@ -24,6 +25,14 @@ public class ControlBd {
         con = new SQL_Conexion(user, pass);
         sen = new SQL_Sentencias (user, pass);
         
+    }
+    //INSERTS
+    public boolean insertEgresoRetroventa(Caja caja){
+        String campos[]={caja.getDescripcion(),String.valueOf(caja.getIngreso()),
+        String.valueOf(caja.getEgreso()),String.valueOf(caja.getUtilidad()),
+        String.valueOf(caja.getTotal())};
+        return sen.insertarEgresoRetroventa(campos, "insert into Caja (descripcion,ingreso,egreso,utilidad,total,usuario)" +
+                " VALUES (?,?,?,?,?,?);");
     }
     //Existencias
     //Para comprobar si algún valor específico existe en la tabla buscada. Todas retornan un Boolean
@@ -191,11 +200,11 @@ public class ControlBd {
         return  resultado;
     }
 
-    public Object[][] consultarIdArticulo(String contrato){
+    public String consultarIdArticulo(String contrato){
         System.out.println(contrato);
         String[] columnas={"Articulo"};
         Object[][] resultado= sen.GetTabla(columnas,"contratos","select Articulo from contratos where Numero_contrato = '"+contrato+"';");
-        return  resultado;
+        return  resultado[0][0].toString();
     }
 
     public Object[][] consultarEstado(String contrato){
@@ -203,6 +212,13 @@ public class ControlBd {
         String[] columnas={"Estado"};
         Object[][] resultado= sen.GetTabla(columnas,"contratos","select Estado from contratos where Numero_contrato = '"+contrato+"';");
         return  resultado;
+    }
+
+    public String consultarSubcategoria(String idarticulo){
+        String[] columnas={"Subcategoria"};
+        Object[][] resultado= sen.GetTabla(columnas,"articulos","select Subcategoria from articulos" +
+                " where id= '"+idarticulo+"';");
+        return  resultado[0][0].toString();
     }
 
     public Object[][] consultarProcentaje(String contrato){

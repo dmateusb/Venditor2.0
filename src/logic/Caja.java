@@ -7,7 +7,16 @@ public class Caja {
     private float utilidad;
     private float total;
 
+    public Caja() {
+    }
 
+    public Caja(String descripcion, float ingreso, float egreso, float utilidad, float total) {
+        this.descripcion = descripcion;
+        this.ingreso = ingreso;
+        this.egreso = egreso;
+        this.utilidad = utilidad;
+        this.total = total;
+    }
 
     public String getDescripcion() {
         return descripcion;

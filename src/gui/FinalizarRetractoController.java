@@ -235,8 +235,10 @@ public class FinalizarRetractoController implements Initializable {
             controlBd.updateEstado_Retractado(numeroContrato, fechaHoy);
             controlBd.updateSobreprecio(numeroContrato,String.valueOf(valorCobro),txtValorCobrado.getText());
             float totalCaja=controlBd.ConsultarTotalCaja();
+            String idArticulo=controlBd.consultarIdArticulo(numeroContrato);
+            String subCategoria = controlBd.consultarSubcategoria(idArticulo);
             Caja caja= new Caja();
-            caja.setDescripcion("Retracto");
+            caja.setDescripcion("Retracto "+subCategoria);
             float ingreso=Float.parseFloat(txtValorInicial.getText().replace(".",""));
             caja.setIngreso(ingreso);
             float valoriniciolaala=Float.parseFloat(txtValorInicial.getText().replace(".",""));
