@@ -243,8 +243,7 @@ public class jFrameWindow extends JFrame  {
             public void actionPerformed(ActionEvent e) {
                 byte[] data = null;
                 try {
-                    ImageIO.write(image, "PNG", new File("./temp/fotocedula.PNG"));
-                    BufferedImage bImage = ImageIO.read(new File("./temp/fotocedula.PNG"));
+                    BufferedImage bImage = image;
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     ImageIO.write(bImage, "jpg", bos);
                     data = bos.toByteArray();
