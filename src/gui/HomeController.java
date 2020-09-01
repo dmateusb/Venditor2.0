@@ -92,6 +92,8 @@ public class HomeController extends Component implements Initializable {
     @FXML private AnchorPane anchorDetallesContrato;
     @FXML private AnchorPane anchorTablaContratos;
     @FXML private AnchorPane aPimgClienteNuevaRetroventa;
+    @FXML private AnchorPane anchorCaja;
+    @FXML private AnchorPane anchorPrincipal;
     @FXML private Button btnFotoNuevoCliente;
     @FXML private Button btnCrearRetroventa;
     @FXML private Button btnBorrarDatosCliente;
@@ -183,6 +185,7 @@ public class HomeController extends Component implements Initializable {
     @FXML private TableColumn<Contrato,String> columnaEstadoBusquedaClientes;
     @FXML private TableColumn<Cliente, Integer> ColumnaCedulaCliente;
     @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
+
     @FXML private Label lblNumeroContrato;
     private int meses;
 
@@ -255,8 +258,7 @@ public class HomeController extends Component implements Initializable {
     @FXML private Button btn2;
     @FXML private Button btnCambiarCliente;
     @FXML private Button btnBorrarTodoNuevaRetro;
-
-    Contrato contrato;
+    private CajaController cajaController;
     private Integer cedulaContrato;
     ArrayList<Contrato> arrayContratos = new ArrayList();
     ArrayList<Cliente> arrayClientes = new ArrayList();
@@ -438,6 +440,7 @@ public class HomeController extends Component implements Initializable {
         finalizarController.setSen(sen);
         finalizarController.setNumeroContrato(txtNumeroContrato_DetalleContrato.getText());
         finalizarController.getTxtCedula().setText(txtCedula_DetalleContrato.getText());
+        finalizarController.getTxtNombre().setText(txtNombre_DetalleContrato.getText());
         finalizarController.getTxtNombre().setText(txtNombre_DetalleContrato.getText());
         finalizarController.getTxtFechaInicio().setText(txtFechaInicio_DetalleContrato.getText());
         finalizarController.getTxtPorcentaje().setText(txtPorcentaje_DetalleContrato.getText());
@@ -663,7 +666,16 @@ public class HomeController extends Component implements Initializable {
         InteresOro();
         //mostrarTablaInicial();
         vboxHome.toFront();
+        try {
+            FXMLLoader loader= new FXMLLoader(getClass().getResource("/gui/Caja.fxml"));
+            anchorCaja= loader.load();
+            cajaController= loader.getController();
+            cajaController.setHomeController(this);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        anchorPrincipal.getChildren().add(anchorCaja);
     }
 
     //Método para actualizar la gráfica con los datos requeridos
@@ -914,8 +926,11 @@ public class HomeController extends Component implements Initializable {
 
         } else if (event.getSource() == btnbackup) {
 
-        } else if (event.getSource() == btncaja) {
-
+        } else if (event.getSource() == btncaja && pantallaActiva!=16) {
+            pantallaActiva=16;
+            anchorPrincipal.toFront();
+            anchorCaja.toFront();
+            cajaController.llenarTabla();
         } else if (event.getSource() == btnnuevocliente && pantallaActiva != 17) {
             pantallaActiva = 17;
             vboxnuevocliente.toFront();
@@ -2642,5 +2657,13 @@ public class HomeController extends Component implements Initializable {
 
     public ObservableList<String> getCategorias() {
         return categorias;
+    }
+
+    public ControlBd getControl() {
+        return control;
+    }
+
+    public void setControl(ControlBd control) {
+        this.control = control;
     }
 }

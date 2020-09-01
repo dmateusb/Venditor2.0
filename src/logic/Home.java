@@ -56,7 +56,7 @@ public class Home extends Application {
         /*Class clazz=Home.class;
         URL url = clazz.getResource("../img/tempphoto.jpg");
         */
-        Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
         stage.initStyle(StageStyle.UNDECORATED);
         stage.getIcons().add(new Image("/im/favicon.png"));
         Scene scene = new Scene(root);

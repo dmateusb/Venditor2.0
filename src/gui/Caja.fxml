@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="720.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CajaController">
+   <children>
+      <TableView fx:id="TablaCaja" layoutX="47.0" layoutY="95.0" prefHeight="548.0" prefWidth="942.0">
+        <columns>
+            <TableColumn fx:id="id" prefWidth="43.666664123535156" text="ID" />
+          <TableColumn fx:id="fecha" prefWidth="121.66667175292969" text="Fecha" />
+          <TableColumn fx:id="descripcion" prefWidth="186.3333282470703" text="Descripción" />
+            <TableColumn fx:id="ingreso" prefWidth="117.0" text="Ingreso" />
+            <TableColumn fx:id="egreso" prefWidth="117.0" text="Egreso" />
+            <TableColumn fx:id="utilidad" prefWidth="117.0" text="Utilidad" />
+            <TableColumn fx:id="total" prefWidth="117.0" text="Total" />
+            <TableColumn fx:id="usuario" prefWidth="117.0" text="Usuario" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

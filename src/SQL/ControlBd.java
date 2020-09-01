@@ -49,6 +49,13 @@ public class ControlBd {
     }
 
      //Consultas
+     public Object[][] consultarCaja(){
+         String[] columnas={"Id","Fecha","Descripcion","Ingreso","Egreso","Utilidad","Total","Usuario"};
+         Object[][] resultado = sen.GetTabla(columnas, "caja",
+                 "select Id,Fecha,Descripcion,Ingreso,Egreso,Utilidad,Total,Usuario FROM caja;");
+         return  resultado;
+     }
+
      public float ConsultarTotalCaja(){
          String[] columnas={"Total"};
          Object[][] resultado = sen.GetTabla(columnas, "caja",
