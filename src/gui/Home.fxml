@@ -856,7 +856,7 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <MenuButton id="itemMenu" fx:id="mbtnclientes" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#handleButtonAction" popupSide="RIGHT" prefHeight="127.0" prefWidth="320.0" styleClass="btnMenu" text="Cientes" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <MenuButton id="itemMenu" fx:id="mbtnclientes" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#handleButtonAction" popupSide="RIGHT" prefHeight="127.0" prefWidth="320.0" styleClass="btnMenu" text="Clientes" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <items>
                               <MenuItem fx:id="btnnuevocliente" mnemonicParsing="false" onAction="#botonesHandle" styleClass="itemMenu" text="Nuevo cliente" />
                               <MenuItem fx:id="btnbusquedacliente" mnemonicParsing="false" onAction="#botonesHandle" styleClass="itemMenu" text="Búsqueda de clientes" />
