@@ -143,8 +143,6 @@ public class FinalizarRetractoController implements Initializable {
 
             return c;
         }));
-
-
     }
 
     public void calcularTiempo(){
@@ -238,7 +236,7 @@ public class FinalizarRetractoController implements Initializable {
             String idArticulo=controlBd.consultarIdArticulo(numeroContrato);
             String subCategoria = controlBd.consultarSubcategoria(idArticulo);
             Caja caja= new Caja();
-            caja.setDescripcion("Retracto "+subCategoria);
+            caja.setDescripcion("Retracto " + numeroContrato);
             float ingreso=Float.parseFloat(txtValorInicial.getText().replace(".",""));
             caja.setIngreso(ingreso);
             float valoriniciolaala=Float.parseFloat(txtValorInicial.getText().replace(".",""));

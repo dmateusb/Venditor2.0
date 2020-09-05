@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="720.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CajaController">
+<AnchorPane prefHeight="720.0" prefWidth="1020.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CajaController">
    <children>
-      <TableView fx:id="TablaCaja" layoutX="47.0" layoutY="95.0" prefHeight="548.0" prefWidth="942.0">
+      <TableView fx:id="TablaCaja" layoutX="46.0" layoutY="108.0" prefHeight="516.0" prefWidth="942.0">
         <columns>
             <TableColumn fx:id="id" prefWidth="43.666664123535156" text="ID" />
-          <TableColumn fx:id="fecha" prefWidth="121.66667175292969" text="Fecha" />
-          <TableColumn fx:id="descripcion" prefWidth="186.3333282470703" text="Descripción" />
-            <TableColumn fx:id="ingreso" prefWidth="117.0" text="Ingreso" />
-            <TableColumn fx:id="egreso" prefWidth="117.0" text="Egreso" />
-            <TableColumn fx:id="utilidad" prefWidth="117.0" text="Utilidad" />
-            <TableColumn fx:id="total" prefWidth="117.0" text="Total" />
-            <TableColumn fx:id="usuario" prefWidth="117.0" text="Usuario" />
+          <TableColumn fx:id="fecha" prefWidth="161.60000610351562" text="Fecha" />
+          <TableColumn fx:id="descripcion" prefWidth="148.8000030517578" text="Descripción" />
+            <TableColumn fx:id="ingreso" prefWidth="128.00006103515625" text="Ingreso" />
+            <TableColumn fx:id="egreso" prefWidth="123.199951171875" text="Egreso" />
+            <TableColumn fx:id="utilidad" prefWidth="108.79998779296875" text="Utilidad" />
+            <TableColumn fx:id="total" prefWidth="116.800048828125" text="Total" />
+            <TableColumn fx:id="usuario" prefWidth="111.9998779296875" text="Usuario" />
         </columns>
       </TableView>
+      <Text layoutX="473.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="CAJA" />
+      <Button layoutX="46.0" layoutY="654.0" mnemonicParsing="false" onAction="#IngresoCapital" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Ingreso de capital" />
+      <Button layoutX="221.0" layoutY="654.0" mnemonicParsing="false" onAction="#AgregarGasto" prefWidth="150.0" styleClass="btnNaranja" text="Agregar gasto" />
    </children>
 </AnchorPane>

@@ -1334,11 +1334,10 @@ public class HomeController extends Component implements Initializable {
                     Double.parseDouble(SpinnerPorcentaje.getValue().toString()), vencimiento, sen.getUser());
             if (success && ArticuloId!=null) {
                 float egreso=redondearA50(Float.parseFloat(precio));
-                Caja caja = new Caja("Retroventa "+comboSubcategoria.getValue(),0,-egreso,
+                Caja caja = new Caja("Retroventa "+lblNumeroContrato.getText(),0,egreso,
                         0,control.ConsultarTotalCaja()-egreso);
                 control.insertEgresoRetroventa(caja);
                 CambiarCliente();
-
                 onClicBorrarArticuloNuevaRetroventa();
             }
         }
