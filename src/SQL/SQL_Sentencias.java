@@ -219,7 +219,7 @@ public class SQL_Sentencias {
         }
     }
 
-    public boolean InsertarContratoRenovado(String cedulaString, String articulo, int valor,Double porcentaje,int renovaciones, String vencimiento, String usuario) throws SQLException{
+    public String InsertarContratoRenovado(String cedulaString, String articulo, int valor,Double porcentaje,int renovaciones, String vencimiento, String usuario) throws SQLException{
         int Id = 0;
         String cedulaInt = cedulaString.replace(".", "");
         int cedula = Integer.valueOf(cedulaInt);
@@ -236,7 +236,7 @@ public class SQL_Sentencias {
             IdContrato = "0"+IdContrato;
         }
         IdContrato = "C"+IdContrato;
-        System.out.println(IdContrato);
+        //System.out.println(IdContrato);
 
         try {
             Connection c = con.conectado();
@@ -257,7 +257,7 @@ public class SQL_Sentencias {
             alert1.setTitle("Contrato nuevo");
             alert1.setHeaderText(null);
             alert1.showAndWait();
-            return true;
+            return IdContrato;
         } catch (SQLException ex) {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setContentText("Algo salió mal y no se pudo crear el nuevo contrato."
@@ -266,7 +266,7 @@ public class SQL_Sentencias {
             alert1.setHeaderText(null);
             alert1.showAndWait();
             System.err.println("Error al insertar el contrato");
-            return false;
+            return "";
         } finally {
             con.desconectar();
         }
@@ -359,7 +359,33 @@ public class SQL_Sentencias {
             con.desconectar();
         }
     }
-    
+
+    public boolean InsertarIngresoCaja(Caja caja) throws SQLException{
+        try {
+            Connection c = con.conectado();
+            ps = c.prepareStatement("INSERT into venditor.caja (Descripcion, Ingreso, Egreso, Utilidad, Total, Usuario) values (?,?,?,?,?,?) ");
+            ps.setString(1, caja.getDescripcion());
+            ps.setFloat(2, caja.getIngreso());
+            ps.setFloat(3,caja.getEgreso());
+            ps.setFloat(4, caja.getUtilidad());
+            ps.setFloat(5, caja.getTotal());
+            ps.setString(6, user);
+            ps.execute();
+            con.desconectar();
+            return true;
+        } catch (SQLException ex) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setContentText("Algo salió mal y no se pudo crear el nuevo movimiento de caja."
+                    + " Por favor verifica tus datos.");
+            alert1.setTitle("Error al crear el movimiento de caja");
+            alert1.setHeaderText(null);
+            alert1.showAndWait();
+            System.err.println("Error al insertar el movimiento de caja");
+            return false;
+        } finally {
+            con.desconectar();
+        }
+    }
     
     public boolean InsertarFotoCliente(byte[] foto, String cedulaString) throws SQLException{
 

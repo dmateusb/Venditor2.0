@@ -154,4 +154,14 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.titulos{
+    -fx-font-size:36px;
+    -fx-font-weight: bold;
+}
+
+.subTitulos{
+    -fx-font-size:26px;
+    -fx-font-weight: bold;
+}
+
 

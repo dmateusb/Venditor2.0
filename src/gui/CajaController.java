@@ -4,14 +4,21 @@ import SQL.ControlBd;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import logic.Caja;
 import logic.Cliente;
 import logic.Contrato;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -39,6 +46,9 @@ public class CajaController {
     private TableColumn<Caja, Integer> id;
     private HomeController homeController;
     ArrayList<Caja> arrayCajas= new ArrayList<>();
+
+    String usuarioBD ="root";
+    String passwordBD ="";
 
     public ObservableList<Caja> listaCajas;
 
@@ -70,6 +80,46 @@ public class CajaController {
         listaCajas.removeAll();
         arrayCajas.removeAll(listaCajas);
     }
+
+    @FXML public void IngresoCapital() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/IngresoCapital.fxml"));
+        Parent root = loader.load();
+        Stage stage= new Stage();
+        stage.initStyle(StageStyle.DECORATED);
+        stage.getIcons().add(new Image("/im/favicon.png"));
+        stage.setTitle("Ingresar Capital");
+        stage.resizableProperty().setValue(Boolean.TRUE);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        IngresoCapitalController ingresarCapital  = loader.getController();
+        ingresarCapital.setHomeController(homeController);
+        ingresarCapital.setCajaController(this);
+        ingresarCapital.setUsuario(usuarioBD);
+        ingresarCapital.setPassword(passwordBD);
+    }
+
+    @FXML public void AgregarGasto() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/AgregarGasto.fxml"));
+        Parent root = loader.load();
+        Stage stage= new Stage();
+        stage.initStyle(StageStyle.DECORATED);
+        stage.getIcons().add(new Image("/im/favicon.png"));
+        stage.setTitle("Ingresar Capital");
+        stage.resizableProperty().setValue(Boolean.TRUE);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        AgregarGastoController agregarGasto  = loader.getController();
+        agregarGasto.setHomeController(homeController);
+        agregarGasto.setCajaController(this);
+        agregarGasto.setUsuario(usuarioBD);
+        agregarGasto.setPassword(passwordBD);
+    }
+
+
+
+
 
     public HomeController getHomeController() {
         return homeController;
