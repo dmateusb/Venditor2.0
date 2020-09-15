@@ -515,12 +515,12 @@ public class HomeController extends Component implements Initializable {
 
             SQL_Sentencias sen = new SQL_Sentencias("root", "");
 
-            boolean success = sen.InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo,Integer.parseInt(precio),
+            String contratoNuevo = sen.InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo,Integer.parseInt(precio),
                     Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
-            if(success){
+            if(contratoNuevo.length()!=0){
                 control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
                 mostrarTablaInicial();
-                txtEstado_DetalleContrato.setText("Retractado");
+                llenarDatos_DetalleContrato(contratoNuevo,txtCedula_DetalleContrato.getText());
             }else{
                 mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
             }
@@ -606,9 +606,9 @@ public class HomeController extends Component implements Initializable {
 
             SQL_Sentencias sen = new SQL_Sentencias("root", "");
 
-            boolean success = sen.InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),idArticulo,Integer.parseInt(precio),
+            String nuevoContrato = sen.InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),idArticulo,Integer.parseInt(precio),
                     Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
-            if(success){
+            if(nuevoContrato.length()!=0){
                 control.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
                 mostrarTablaInicial();
             }else{
@@ -1466,7 +1466,8 @@ public class HomeController extends Component implements Initializable {
         }
     }
 
-    public void llenarDatosDetalleCliente(String cedula){
+    public void llenarDatosDetalleCliente(String cedulaString){
+        String cedula = cedulaString.replace(".","");
         anchorDetallesCliente.toFront();
         Object[][] informacionCliente = controlBd.GetClienteNuevoContrato(cedula);
         txtCedulaBusquedaCliente.setText(cedula);
@@ -1483,7 +1484,8 @@ public class HomeController extends Component implements Initializable {
         mostrarFoto(imagen,imageViewBusquedaCliente);
     }
 
-    public void llenarDatos_DetalleContrato(String numeroContrato, String cedula){
+    public void llenarDatos_DetalleContrato(String numeroContrato, String cedulaString){
+        String cedula = cedulaString.replace(".","");
         Object[][] informacionCliente = controlBd.GetClienteNuevoContrato(cedula);
         txtCedula_DetalleContrato.setText(cedula);
         txtNombre_DetalleContrato.setText(informacionCliente[0][1].toString());
