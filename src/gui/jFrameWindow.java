@@ -291,6 +291,7 @@ public class jFrameWindow extends JFrame  {
         jFrame.setSize(720,480);
         jFrame.setContentPane(new   jFrameWindow().main);
         jFrame.setVisible(true);
+        jFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
     public String getCedula() {

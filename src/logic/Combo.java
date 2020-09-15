@@ -13,7 +13,7 @@ import java.util.Stack;
 public class Combo implements Runnable, ItemListener {
     private String nombre;
     private JComboBox combo;
-    private JFrame v;
+    private JFrame v= new JFrame();
     private  Object lock = new Object();
     private Stack<String> nombrescamaras=new Stack<>();
 
@@ -56,6 +56,7 @@ public class Combo implements Runnable, ItemListener {
 
         // Creacion de la ventana con los componentes
         v = new JFrame();
+        v.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         v.getContentPane().setLayout(new FlowLayout());
         v.getContentPane().add(combo);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -66,7 +67,6 @@ public class Combo implements Runnable, ItemListener {
         //v.getContentPane().add(tf);
         v.pack();
         v.setVisible(true);
-        v.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public Stack<String> getNombrescamaras() {

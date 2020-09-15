@@ -2,6 +2,8 @@ package logic;
 
 import gui.jFrameWindow;
 
+import javax.swing.*;
+
 public class Detener implements Runnable {
     private  Object lock;
     private String cedula;
@@ -20,6 +22,7 @@ public class Detener implements Runnable {
             e.printStackTrace();
         }
         jFrameWindow window = new jFrameWindow();
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         window.setCedula(cedula);
         window.run();
     }
