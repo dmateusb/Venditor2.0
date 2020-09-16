@@ -537,7 +537,7 @@ public class HomeController extends Component implements Initializable {
         Label label1= new Label("Meses a renovar");
 
         label1.setWrapText(true);
-        Spinner<Integer> spinner= new Spinner<>(1,100,3);
+        Spinner<Integer> spinner= new Spinner<>(1,mesesPlazo(txtSubcategoria_DetalleContrato),3);
         button1.setOnAction(e -> {
             setMeses(spinner.getValue());
             popupwindow.close();
@@ -627,7 +627,7 @@ public class HomeController extends Component implements Initializable {
         controller.getTxtValorArticulo().setText(txtValor_DetalleContrato.getText());
         controller.getTxtDescripcionArticulo().setText(txtDescripcion_DetalleContrato.getText());
         SpinnerValueFactory<Double> valor= new SpinnerValueFactory.DoubleSpinnerValueFactory(
-                3,5,Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),0.5);
+                3,mesesPlazo(txtSubcategoria_DetalleContrato),Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),0.5);
         controller.getSpinnerPorcentaje().setValueFactory(valor);
         controller.setHomeController(this);
         controller.inicializar();
@@ -1273,7 +1273,7 @@ public class HomeController extends Component implements Initializable {
         Label label1= new Label("Meses ");
 
         label1.setWrapText(true);
-        Spinner<Integer> spinner= new Spinner<>(1,3,3);
+        Spinner<Integer> spinner= new Spinner<>(1,mesesPlazo(comboSubcategoria),3);
         button1.setOnAction(e -> {
             setMeses(spinner.getValue());
             popupwindow.close();
@@ -1286,6 +1286,22 @@ public class HomeController extends Component implements Initializable {
         popupwindow.setScene(scene1);
         popupwindow.showAndWait();
         return meses;
+    }
+
+    public int mesesPlazo(ComboBox combo){
+        if(combo.getValue()=="Oro"){
+            return 6;
+        }else{
+            return 3;
+        }
+    }
+
+    public int mesesPlazo(TextField textField){
+        if(textField.getText().equals("Oro")){
+            return 6;
+        }else{
+            return 3;
+        }
     }
 
 
