@@ -327,6 +327,8 @@ public class HomeController extends Component implements Initializable {
 
     }
 
+
+
     //Consulta a la BD los contratos vigentes y si la diferencia entre el día de vencimiento del contrato
     //y la fecha actual es mayor a 0 días, cambia el estado del contrato a "Vencido"
     public void contratosVencidos(){
@@ -1350,8 +1352,8 @@ public class HomeController extends Component implements Initializable {
                     Double.parseDouble(SpinnerPorcentaje.getValue().toString()), vencimiento, sen.getUser());
             if (success && ArticuloId!=null) {
                 float egreso=redondearA50(Float.parseFloat(precio));
-                Caja caja = new Caja("Retroventa "+lblNumeroContrato.getText(),0,egreso,
-                        0,control.ConsultarTotalCaja()-egreso);
+                Caja caja = new Caja("Retroventa "+lblNumeroContrato.getText(),"0",String.valueOf(egreso),
+                        "0",String.valueOf(control.ConsultarTotalCaja()-egreso));
                 control.insertEgresoRetroventa(caja);
                 CambiarCliente();
                 onClicBorrarArticuloNuevaRetroventa();

@@ -5,15 +5,19 @@ public class Caja {
     private String fecha;
     private String usuario;
     private String descripcion;
-    private float ingreso;
-    private float egreso;
-    private float utilidad;
-    private float total;
+    private String ingreso;
+    private String egreso;
+    private String utilidad;
+    private String total;
 
     public Caja() {
+        this.ingreso="0";
+        this.egreso="0";
+        this.utilidad="0";
+        this.total="0";
     }
 
-    public Caja(int id,String fecha, String descripcion, float ingreso, float egreso, float utilidad, float total,
+    public Caja(int id,String fecha, String descripcion, String ingreso, String egreso, String utilidad, String total,
                 String usuario) {
         this.id=id;
         this.fecha=fecha;
@@ -26,7 +30,7 @@ public class Caja {
     }
 
 
-    public Caja(String descripcion, float ingreso, float egreso, float utilidad, float total) {
+    public Caja(String descripcion, String ingreso, String egreso, String utilidad, String total) {
         this.descripcion = descripcion;
         this.ingreso = ingreso;
         this.egreso = egreso;
@@ -42,35 +46,35 @@ public class Caja {
         this.descripcion = descripcion;
     }
 
-    public float getIngreso() {
+    public String getIngreso() {
         return ingreso;
     }
 
-    public void setIngreso(float ingreso) {
+    public void setIngreso(String ingreso) {
         this.ingreso = ingreso;
     }
 
-    public float getEgreso() {
+    public String getEgreso() {
         return egreso;
     }
 
-    public void setEgreso(float egreso) {
+    public void setEgreso(String egreso) {
         this.egreso = egreso;
     }
 
-    public float getUtilidad() {
+    public String getUtilidad() {
         return utilidad;
     }
 
-    public void setUtilidad(float utilidad) {
+    public void setUtilidad(String utilidad) {
         this.utilidad = utilidad;
     }
 
-    public float getTotal() {
+    public String getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(String total) {
         this.total = total;
     }
 

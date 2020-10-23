@@ -6,7 +6,6 @@
 package SQL;
 
 import logic.Caja;
-import logic.Descuentos;
 
 /**
  *

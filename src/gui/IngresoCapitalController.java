@@ -131,8 +131,8 @@ public class IngresoCapitalController implements Initializable {
 
         Caja caja= new Caja();
         caja.setDescripcion("Ingreso Capital");
-        caja.setIngreso(Float.valueOf(dinero));
-        caja.setTotal(totalCaja+Float.valueOf(dinero));
+        caja.setIngreso(dinero);
+        caja.setTotal(String.valueOf(totalCaja+Float.valueOf(dinero)));
         caja.setUsuario(usuario);
 
         SQL_Sentencias sentencias2= new SQL_Sentencias("root","");

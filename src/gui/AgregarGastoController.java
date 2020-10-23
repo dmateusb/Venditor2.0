@@ -8,7 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import logic.Caja;
-
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -129,8 +128,8 @@ public class AgregarGastoController implements Initializable{
 
         Caja caja= new Caja();
         caja.setDescripcion("Retiro Capital");
-        caja.setEgreso(Float.valueOf(dinero));
-        caja.setTotal(totalCaja-Float.valueOf(dinero));
+        caja.setEgreso(dinero);
+        caja.setTotal(String.valueOf(totalCaja-Float.valueOf(dinero)));
         caja.setUsuario(usuario);
 
         SQL_Sentencias sentencias2= new SQL_Sentencias("root","");

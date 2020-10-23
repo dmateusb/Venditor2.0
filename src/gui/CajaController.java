@@ -17,6 +17,7 @@ import javafx.stage.StageStyle;
 import logic.Caja;
 import logic.Cliente;
 import logic.Contrato;
+import logic.Procedimientos;
 
 import java.io.IOException;
 import java.net.URL;
@@ -59,10 +60,13 @@ public class CajaController {
             if (Cajas[i][0] != null && Cajas[i][1] != null && Cajas[i][2] != null&& Cajas[i][3] != null
                     && Cajas[i][4] != null&& Cajas[i][5] != null&& Cajas[i][6] != null
                     && Cajas[i][7] !=null) {
+                String ingreso= Procedimientos.setPuntosDecimales(Cajas[i][3].toString());
+                String egreso=Procedimientos.setPuntosDecimales(Cajas[i][4].toString());
+                String utilidad=Procedimientos.setPuntosDecimales(Cajas[i][5].toString());
+                String total=Procedimientos.setPuntosDecimales(Cajas[i][6].toString());
                 Caja caja= new Caja(Integer.parseInt(Cajas[i][0].toString()),Cajas[i][1].toString(),
-                        Cajas[i][2].toString(),Float.parseFloat(Cajas[i][3].toString()),
-                Float.parseFloat(Cajas[i][4].toString()),Float.parseFloat(Cajas[i][5].toString()),
-                Float.parseFloat(Cajas[i][6].toString()),Cajas[i][7].toString());
+                        Cajas[i][2].toString(),ingreso,egreso,utilidad,
+                        total,Cajas[i][7].toString());
                 arrayCajas.add(caja);
             }
         }

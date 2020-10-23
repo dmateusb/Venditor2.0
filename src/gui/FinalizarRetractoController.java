@@ -14,8 +14,6 @@ import logic.Descuentos;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -238,11 +236,11 @@ public class FinalizarRetractoController implements Initializable {
             Caja caja= new Caja();
             caja.setDescripcion("Retracto " + numeroContrato);
             float ingreso=Float.parseFloat(txtValorInicial.getText().replace(".",""));
-            caja.setIngreso(ingreso);
+            caja.setIngreso(String.valueOf(ingreso));
             float valoriniciolaala=Float.parseFloat(txtValorInicial.getText().replace(".",""));
             float utilidad=Float.parseFloat(valorCobrado)-Float.parseFloat(txtValorInicial.getText().replace(".",""));
-            caja.setUtilidad(utilidad);
-            caja.setTotal(totalCaja+ingreso+utilidad);
+            caja.setUtilidad(String.valueOf(utilidad));
+            caja.setTotal(String.valueOf(totalCaja+ingreso+utilidad));
             SQL_Sentencias sentencias2= new SQL_Sentencias("root","");
             try {
                 sentencias2.InsertarRetractoCaja(caja);
