@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,26 +26,14 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CajaController {
-    @FXML
-    private TableView<Caja> TablaCaja;
-
-    @FXML
-    private TableColumn<Caja, String> fecha;
-
-    @FXML
-    private TableColumn<Caja, String> descripcion;
-    @FXML
-    private TableColumn<Caja, String> usuario;
-    @FXML
-    private TableColumn<Caja, Float> ingreso;
-    @FXML
-    private TableColumn<Caja, Float> egreso;
-    @FXML
-    private TableColumn<Caja, Float> utilidad;
-    @FXML
-    private TableColumn<Caja, Float> total;
-    @FXML
-    private TableColumn<Caja, Integer> id;
+    @FXML private TableView<Caja> TablaCaja;
+    @FXML private TableColumn<Caja, String> fecha;
+    @FXML private TableColumn<Caja, String> descripcion;
+    @FXML private TableColumn<Caja, Float> ingreso;
+    @FXML private TableColumn<Caja, Float> egreso;
+    @FXML private TableColumn<Caja, Float> utilidad;
+    @FXML private TableColumn<Caja, Integer> id;
+    @FXML private DatePicker selectorFecha;
     private HomeController homeController;
     ArrayList<Caja> arrayCajas= new ArrayList<>();
 
@@ -78,12 +67,44 @@ public class CajaController {
         ingreso.setCellValueFactory(new PropertyValueFactory<Caja, Float>("ingreso"));
         egreso.setCellValueFactory(new PropertyValueFactory<Caja, Float>("egreso"));
         utilidad.setCellValueFactory(new PropertyValueFactory<Caja, Float>("utilidad"));
-        total.setCellValueFactory(new PropertyValueFactory<Caja, Float>("total"));
-        usuario.setCellValueFactory(new PropertyValueFactory<Caja, String>("usuario"));
         TablaCaja.setItems(listaCajas);
         listaCajas.removeAll();
         arrayCajas.removeAll(listaCajas);
     }
+
+    public void llenarTabla(String fechaCaja){
+
+
+        ControlBd control=homeController.getControl();
+        Object[][] Cajas=control.consultarCaja();
+        for(int i=0;i<Cajas.length;i++){
+            if (Cajas[i][0] != null && Cajas[i][1] != null && Cajas[i][2] != null&& Cajas[i][3] != null
+                    && Cajas[i][4] != null&& Cajas[i][5] != null&& Cajas[i][6] != null
+                    && Cajas[i][7] !=null) {
+                String ingreso= Procedimientos.setPuntosDecimales(Cajas[i][3].toString());
+                String egreso=Procedimientos.setPuntosDecimales(Cajas[i][4].toString());
+                String utilidad=Procedimientos.setPuntosDecimales(Cajas[i][5].toString());
+                String total=Procedimientos.setPuntosDecimales(Cajas[i][6].toString());
+                Caja caja= new Caja(Integer.parseInt(Cajas[i][0].toString()),Cajas[i][1].toString(),
+                        Cajas[i][2].toString(),ingreso,egreso,utilidad,
+                        total,Cajas[i][7].toString());
+                arrayCajas.add(caja);
+            }
+        }
+
+        listaCajas = FXCollections.observableArrayList(arrayCajas);
+        id.setCellValueFactory(new PropertyValueFactory<Caja, Integer>("id"));
+        fecha.setCellValueFactory(new PropertyValueFactory<Caja, String>("fecha"));
+        descripcion.setCellValueFactory(new PropertyValueFactory<Caja, String>("descripcion"));
+        ingreso.setCellValueFactory(new PropertyValueFactory<Caja, Float>("ingreso"));
+        egreso.setCellValueFactory(new PropertyValueFactory<Caja, Float>("egreso"));
+        utilidad.setCellValueFactory(new PropertyValueFactory<Caja, Float>("utilidad"));
+        TablaCaja.setItems(listaCajas);
+        listaCajas.removeAll();
+        arrayCajas.removeAll(listaCajas);
+    }
+
+
 
     @FXML public void IngresoCapital() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/IngresoCapital.fxml"));

@@ -26,7 +26,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 
 public class Huella_Guardar extends JFrame {
-
     private JPanel mainPane;
     private JPanel panHuellas;
     private JPanel panBtns;
