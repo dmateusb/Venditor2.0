@@ -601,7 +601,7 @@ public class HomeController extends Component implements Initializable {
             String vencimiento = fechaFinal.toString();
             String fechaHoy = hoy.toString();
 
-            String articulo = control.consultarIdArticulo(idArticulo);
+           // String articulo = control.consultarIdArticulo(idArticulo);
 
             String valor = txtValor_DetalleContrato.getText();
             String precio = valor.replace(".", "");
