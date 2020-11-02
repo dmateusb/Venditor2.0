@@ -11,6 +11,7 @@ import logic.Caja;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -142,8 +143,9 @@ public class IngresoCapitalController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        cajaController.llenarTabla();
+        LocalDate now = LocalDate.now();
+        String fechaHoy = String.valueOf(now);
+        cajaController.llenarTabla(fechaHoy);
         Stage stage = (Stage) txtDinero.getScene().getWindow();
         stage.close();
     }

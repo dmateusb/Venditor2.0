@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -22,6 +23,8 @@ import logic.Procedimientos;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -35,6 +38,10 @@ public class CajaController {
     @FXML private TableColumn<Caja, Integer> id;
     @FXML private DatePicker selectorFecha;
     private HomeController homeController;
+    @FXML private TextField txtIngresos;
+    @FXML private TextField txtEgresos;
+    @FXML private TextField txtUtilidades;
+    @FXML private TextField txtEfectivo;
     ArrayList<Caja> arrayCajas= new ArrayList<>();
 
     String usuarioBD ="root";
@@ -70,13 +77,22 @@ public class CajaController {
         TablaCaja.setItems(listaCajas);
         listaCajas.removeAll();
         arrayCajas.removeAll(listaCajas);
+        LocalDate now = LocalDate.now();
+        if (selectorFecha.getValue()==null){
+            selectorFecha.setValue(now);
+        }
+
+        System.out.println(selectorFecha.getValue());
     }
 
     public void llenarTabla(String fechaCaja){
-
+        LocalDate now = LocalDate.parse(fechaCaja);
+        if (selectorFecha.getValue()==null){
+            selectorFecha.setValue(now);
+        }
 
         ControlBd control=homeController.getControl();
-        Object[][] Cajas=control.consultarCaja();
+        Object[][] Cajas=control.consultarCajaFecha(fechaCaja);
         for(int i=0;i<Cajas.length;i++){
             if (Cajas[i][0] != null && Cajas[i][1] != null && Cajas[i][2] != null&& Cajas[i][3] != null
                     && Cajas[i][4] != null&& Cajas[i][5] != null&& Cajas[i][6] != null
@@ -92,6 +108,30 @@ public class CajaController {
             }
         }
 
+        long ingresos=0;
+        long egresos=0;
+        long utilidades=0;
+        for(int i=0;i<Cajas.length;i++){
+            if(Cajas[i][3]!=null){
+                ingresos=ingresos+Long.valueOf(Cajas[i][3].toString());
+            }
+            if(Cajas[i][4]!=null){
+                egresos=egresos+Long.valueOf(Cajas[i][4].toString());
+            }
+            if(Cajas[i][4]!=null){
+                utilidades=utilidades+Long.valueOf(Cajas[i][5].toString());
+            }
+
+
+        }
+
+
+        txtEgresos.setText(Procedimientos.setPuntosDecimales(String.valueOf(egresos)));
+        txtIngresos.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos)));
+        txtUtilidades.setText(Procedimientos.setPuntosDecimales(String.valueOf(utilidades)));
+        txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos+utilidades-egresos)));
+
+
         listaCajas = FXCollections.observableArrayList(arrayCajas);
         id.setCellValueFactory(new PropertyValueFactory<Caja, Integer>("id"));
         fecha.setCellValueFactory(new PropertyValueFactory<Caja, String>("fecha"));
@@ -102,6 +142,13 @@ public class CajaController {
         TablaCaja.setItems(listaCajas);
         listaCajas.removeAll();
         arrayCajas.removeAll(listaCajas);
+    }
+
+    @FXML public void CambioFecha(){
+        String fechaNueva= String.valueOf(selectorFecha.getValue());
+        System.out.println(fechaNueva+" Fecha nueva");
+        llenarTabla(fechaNueva);
+
     }
 
 
@@ -122,6 +169,7 @@ public class CajaController {
         ingresarCapital.setCajaController(this);
         ingresarCapital.setUsuario(usuarioBD);
         ingresarCapital.setPassword(passwordBD);
+
     }
 
     @FXML public void AgregarGasto() throws IOException {

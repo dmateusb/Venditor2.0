@@ -132,6 +132,12 @@
     -fx-font-size:20px ;
     -fx-font-family: "Open Sans Semibold";
 }
+.textosCaja{
+    -fx-fill: #000;
+    -fx-font-size:20px ;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-pref-width:100px;
+}
 .btnMenu .arrow-button{
     -fx-opacity: 0;
 }

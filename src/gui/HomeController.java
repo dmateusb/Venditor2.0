@@ -57,6 +57,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -929,10 +930,14 @@ public class HomeController extends Component implements Initializable {
         } else if (event.getSource() == btnbackup) {
 
         } else if (event.getSource() == btncaja && pantallaActiva!=16) {
+
             pantallaActiva=16;
             anchorPrincipal.toFront();
             anchorCaja.toFront();
-            cajaController.llenarTabla();
+            LocalDate now = LocalDate.now();
+            String fechaHoy = String.valueOf(now);
+            cajaController.llenarTabla(fechaHoy);
+            System.out.println(fechaHoy+" HomeController");
         } else if (event.getSource() == btnnuevocliente && pantallaActiva != 17) {
             pantallaActiva = 17;
             vboxnuevocliente.toFront();
