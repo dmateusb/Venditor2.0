@@ -60,6 +60,13 @@ public class ControlBd {
                 "select Id,Fecha,Descripcion,Ingreso,Egreso,Utilidad,Total,Usuario FROM caja WHERE DATE(Fecha) = '"+fecha+"' ;");
         return  resultado;
     }
+    public Object[][] consultarCajaId(String id){
+        String[] columnas={"Id","Fecha","Descripcion","Ingreso","Egreso","Utilidad","Total","Usuario"};
+        Object[][] resultado = sen.GetTabla(columnas, "caja",
+                "select Id,Fecha,Descripcion,Ingreso,Egreso,Utilidad,Total,Usuario FROM caja WHERE Id= "+id+" ;");
+        return  resultado;
+    }
+
 
      public float ConsultarTotalCaja(){
          String[] columnas={"Total"};

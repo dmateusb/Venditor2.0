@@ -42,6 +42,7 @@ public class CajaController {
     @FXML private TextField txtEgresos;
     @FXML private TextField txtUtilidades;
     @FXML private TextField txtEfectivo;
+    @FXML private TextField txtInicioCaja;
     ArrayList<Caja> arrayCajas= new ArrayList<>();
 
     String usuarioBD ="root";
@@ -90,9 +91,33 @@ public class CajaController {
         if (selectorFecha.getValue()==null){
             selectorFecha.setValue(now);
         }
+        long inicioCaja=0;
 
         ControlBd control=homeController.getControl();
         Object[][] Cajas=control.consultarCajaFecha(fechaCaja);
+        Object[][] CajasTotal=control.consultarCaja();
+
+
+        if(Cajas[0][0] == null && Cajas[0][1] == null){
+            txtEgresos.setText("0");
+            txtIngresos.setText("0");
+            txtUtilidades.setText("0");
+            if(CajasTotal[0][0] == null && CajasTotal[0][1] == null){
+                txtInicioCaja.setText("0");
+                txtEfectivo.setText("0");
+            }else{
+
+            }
+
+
+            return;
+        }else{
+            int lastId = Integer.parseInt(Cajas[0][0].toString())-1;
+            Object[][] cajaParaTotal = control.consultarCajaId(String.valueOf(lastId));
+            inicioCaja = Long.valueOf(cajaParaTotal[0][6].toString());
+            txtInicioCaja.setText(String.valueOf(inicioCaja));
+        }
+
         for(int i=0;i<Cajas.length;i++){
             if (Cajas[i][0] != null && Cajas[i][1] != null && Cajas[i][2] != null&& Cajas[i][3] != null
                     && Cajas[i][4] != null&& Cajas[i][5] != null&& Cajas[i][6] != null
@@ -113,7 +138,7 @@ public class CajaController {
         long utilidades=0;
         for(int i=0;i<Cajas.length;i++){
             if(Cajas[i][3]!=null){
-                ingresos=ingresos+Long.valueOf(Cajas[i][3].toString());
+                ingresos=ingresos+Long.valueOf(Cajas[i][3].toString())+inicioCaja;
             }
             if(Cajas[i][4]!=null){
                 egresos=egresos+Long.valueOf(Cajas[i][4].toString());
@@ -125,12 +150,11 @@ public class CajaController {
 
         }
 
-
+        txtInicioCaja.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
         txtEgresos.setText(Procedimientos.setPuntosDecimales(String.valueOf(egresos)));
         txtIngresos.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos)));
         txtUtilidades.setText(Procedimientos.setPuntosDecimales(String.valueOf(utilidades)));
         txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos+utilidades-egresos)));
-
 
         listaCajas = FXCollections.observableArrayList(arrayCajas);
         id.setCellValueFactory(new PropertyValueFactory<Caja, Integer>("id"));
