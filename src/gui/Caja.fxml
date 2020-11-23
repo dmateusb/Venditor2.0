@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1020.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CajaController">
+<AnchorPane prefHeight="720.0" prefWidth="1020.0" styleClass="achPaneGris" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CajaController">
    <children>
       <TableView fx:id="TablaCaja" layoutX="46.0" layoutY="180.0" prefHeight="417.0" prefWidth="942.0">
         <columns>
@@ -20,9 +20,9 @@
             <TableColumn fx:id="utilidad" prefWidth="170.0" text="(3)" />
         </columns>
       </TableView>
-      <Text layoutX="473.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="CAJA" />
-      <Button layoutX="46.0" layoutY="615.0" mnemonicParsing="false" onAction="#IngresoCapital" prefHeight="30.0" prefWidth="150.0" styleClass="btnVerde" text="Ingreso de capital" />
-      <Button layoutX="221.0" layoutY="615.0" mnemonicParsing="false" onAction="#AgregarGasto" prefWidth="150.0" styleClass="btnNaranja" text="Retiro de Capital" />
+      <Text layoutX="473.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="CAJA" />
+      <Button fx:id="btnIngresoCapital" layoutX="46.0" layoutY="615.0" mnemonicParsing="false" onAction="#IngresoCapital" prefHeight="30.0" prefWidth="150.0" styleClass="btnVerde" text="Ingreso de capital" />
+      <Button fx:id="btnRetiroCapital" layoutX="221.0" layoutY="615.0" mnemonicParsing="false" onAction="#AgregarGasto" prefWidth="150.0" styleClass="btnNaranja" text="Retiro de Capital" />
       <DatePicker fx:id="selectorFecha" layoutX="106.0" layoutY="140.0" onAction="#CambioFecha" />
       <TextField fx:id="txtEgresos" alignment="CENTER" editable="false" layoutX="473.0" layoutY="617.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
       <TextField fx:id="txtIngresos" alignment="CENTER" editable="false" layoutX="646.0" layoutY="617.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
@@ -30,5 +30,7 @@
       <TextField fx:id="txtEfectivo" alignment="CENTER" editable="false" layoutX="646.0" layoutY="664.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
       <TextField fx:id="txtInicioCaja" alignment="CENTER" editable="false" layoutX="643.0" layoutY="138.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
       <Text layoutX="46.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Fecha" />
+      <Button fx:id="btnCerrarCaja" layoutX="46.0" layoutY="664.0" mnemonicParsing="false" onAction="#CerrarCaja" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Cerrar Caja" />
+      <Button fx:id="btnAbrirCaja" layoutX="221.0" layoutY="664.0" mnemonicParsing="false" onAction="#AbrirCaja" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzulClaro" text="Abrir Caja" />
    </children>
 </AnchorPane>

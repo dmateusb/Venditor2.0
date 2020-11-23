@@ -1,6 +1,7 @@
 package gui;
 
 import SQL.ControlBd;
+import SQL.SQL_Sentencias;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,10 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -28,6 +26,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static gui.HomeController.mostrarConfirmacion;
+
 public class CajaController {
     @FXML private TableView<Caja> TablaCaja;
     @FXML private TableColumn<Caja, String> fecha;
@@ -43,6 +43,10 @@ public class CajaController {
     @FXML private TextField txtUtilidades;
     @FXML private TextField txtEfectivo;
     @FXML private TextField txtInicioCaja;
+    @FXML public Button btnIngresoCapital;
+    @FXML public Button btnRetiroCapital;
+    @FXML public Button btnCerrarCaja;
+    @FXML public Button btnAbrirCaja;
     ArrayList<Caja> arrayCajas= new ArrayList<>();
 
     String usuarioBD ="root";
@@ -106,11 +110,16 @@ public class CajaController {
                 txtInicioCaja.setText("0");
                 txtEfectivo.setText("0");
             }else{
-
+                Object[][] cajaAntesDeFecha = control.consultarCajaAntesDeFecha(fechaCaja);
+                int cota = cajaAntesDeFecha.length-1;
+                while(cajaAntesDeFecha[cota][6]==null){
+                    cota=cota-1;
+                }
+                inicioCaja = Long.valueOf(cajaAntesDeFecha[cota][6].toString());
+                txtInicioCaja.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
+                txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
             }
 
-
-            return;
         }else{
             int lastId = Integer.parseInt(Cajas[0][0].toString())-1;
             Object[][] cajaParaTotal = control.consultarCajaId(String.valueOf(lastId));
@@ -138,7 +147,7 @@ public class CajaController {
         long utilidades=0;
         for(int i=0;i<Cajas.length;i++){
             if(Cajas[i][3]!=null){
-                ingresos=ingresos+Long.valueOf(Cajas[i][3].toString())+inicioCaja;
+                ingresos=ingresos+Long.valueOf(Cajas[i][3].toString());
             }
             if(Cajas[i][4]!=null){
                 egresos=egresos+Long.valueOf(Cajas[i][4].toString());
@@ -152,9 +161,9 @@ public class CajaController {
 
         txtInicioCaja.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
         txtEgresos.setText(Procedimientos.setPuntosDecimales(String.valueOf(egresos)));
-        txtIngresos.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos)));
+        txtIngresos.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos+inicioCaja)));
         txtUtilidades.setText(Procedimientos.setPuntosDecimales(String.valueOf(utilidades)));
-        txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos+utilidades-egresos)));
+        txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos+utilidades-egresos+inicioCaja)));
 
         listaCajas = FXCollections.observableArrayList(arrayCajas);
         id.setCellValueFactory(new PropertyValueFactory<Caja, Integer>("id"));
@@ -195,6 +204,39 @@ public class CajaController {
         ingresarCapital.setPassword(passwordBD);
 
     }
+    @FXML public void CerrarCaja()throws IOException {
+        String confirmacion = homeController.mostrarConfirmacion("Confirmación", "La caja se cerrará y" +
+                " no se podrán hacer más transacciones. ¿Estás seguro que quieres cerrar la caja?");
+        if (confirmacion.equals("OK")) {
+            SQL_Sentencias sen = new SQL_Sentencias(usuarioBD,passwordBD);
+            if(sen.InsertarEstadoCaja("Cerrada",usuarioBD)){
+                btnCerrarCaja.setDisable(true);
+                btnIngresoCapital.setDisable(true);
+                btnRetiroCapital.setDisable(true);
+                btnAbrirCaja.setVisible(true);
+                homeController.btnRenovarContrato.setDisable(true);
+                homeController.btnRetractarContrato.setDisable(true);
+                homeController.mostrarInformacion("Caja cerrada", "La caja se cerró correctamente. Para abrirla de nuevo es necesario la aprobación del administrador.");
+            }
+            sen=null;
+        }
+
+    }
+
+    @FXML public void AbrirCaja(){
+        SQL_Sentencias sen = new SQL_Sentencias(usuarioBD,passwordBD);
+        if(sen.InsertarEstadoCaja("Abierta",usuarioBD)){
+
+            System.out.println("Se abre la caja");
+            btnCerrarCaja.setDisable(false);
+            btnIngresoCapital.setDisable(false);
+            btnRetiroCapital.setDisable(false);
+            btnAbrirCaja.setVisible(false);
+            homeController.btnRetractarContrato.setDisable(false);
+            homeController.btnRenovarContrato.setDisable(false);
+        }
+        sen=null;
+    }
 
     @FXML public void AgregarGasto() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/AgregarGasto.fxml"));
@@ -202,7 +244,7 @@ public class CajaController {
         Stage stage= new Stage();
         stage.initStyle(StageStyle.DECORATED);
         stage.getIcons().add(new Image("/im/favicon.png"));
-        stage.setTitle("Ingresar Capital");
+        stage.setTitle("Retirar Capital");
         stage.resizableProperty().setValue(Boolean.TRUE);
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -213,6 +255,7 @@ public class CajaController {
         agregarGasto.setUsuario(usuarioBD);
         agregarGasto.setPassword(passwordBD);
     }
+
 
 
 

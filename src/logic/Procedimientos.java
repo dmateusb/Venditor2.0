@@ -1,20 +1,29 @@
 package logic;
 
+import SQL.ControlBd;
+import gui.CajaController;
+import gui.HomeController;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
- public  class Procedimientos {
+public class Procedimientos {
     BufferedImage imagen;
     private static String nombreCamara;
     private static String cedula;
+    private static String usuario="root";
+    private static String password="";
+    private static HomeController homeController;
+
+
 
      public static void main(String[] args) {
          Procedimientos procedimientos= new Procedimientos();
-         System.out.println(procedimientos.setPuntosDecimales("543"));
-         System.out.println(procedimientos.setPuntosDecimales("134543"));
-
      }
     public static String setPuntosDecimales(String text){
         if(text.length()>3){
@@ -30,6 +39,43 @@ import java.io.IOException;
         }
         return text;
     }
+
+    //Evalúa el estado de la caja y devuelve su resultado
+    public static String estadoCaja(HomeController HC){
+        LocalDate hoy = LocalDate.now();
+        String fechaHoy = hoy.toString();
+        Object[][] Cajas=HC.getControl().consultarEstadoCaja(fechaHoy);
+        //Si la caja nunca ha sido abierta, la abre por primera vez
+        if(Cajas.length==0){
+            HC.getSentencias().InsertarEstadoCaja("Abierta",usuario);
+            return "Abierta";
+        }
+        //Si la caja no se ha abierto con la fecha de hoy, la abre y retorna "Abierta" como estado
+        if(Cajas[0][0]==null && Cajas[0][1]==null){
+            HC.getSentencias().InsertarEstadoCaja("Abierta",usuario);
+            return "Abierta";
+        }
+        //Si la caja ya ha sido abierta hoy, muestra su último estado
+        else{
+            int i=0;
+            while(Cajas[i][0]!=null){
+                i=i+1;
+            }
+            if(Cajas[i-1][2].toString().equals("Cerrada")){
+                return "Cerrada";
+            }else
+                return "Abierta";
+        }
+    }
+
+
+     public HomeController getHomeController() {
+         return homeController;
+     }
+
+     public void setHomeController(HomeController homeController) {
+         this.homeController = homeController;
+     }
 
     public static byte[] convertToBytes(BufferedImage originalImage) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

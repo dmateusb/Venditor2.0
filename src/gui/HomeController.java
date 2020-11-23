@@ -94,6 +94,8 @@ public class HomeController extends Component implements Initializable {
     @FXML private AnchorPane anchorTablaContratos;
     @FXML private AnchorPane aPimgClienteNuevaRetroventa;
     @FXML private AnchorPane anchorCaja;
+    @FXML private AnchorPane anchorImpresion;
+    @FXML private AnchorPane anchorDescuentos;
     @FXML private AnchorPane anchorPrincipal;
     @FXML private Button btnFotoNuevoCliente;
     @FXML private Button btnCrearRetroventa;
@@ -251,15 +253,20 @@ public class HomeController extends Component implements Initializable {
     @FXML private MenuItem btnaportesoretiro;
     @FXML private MenuItem btnestadistica;
     @FXML private MenuItem btnhistorialcorreciones;
-    @FXML private MenuItem btnlibrocaja;
-    @FXML private MenuItem btncorreciones;
+    @FXML private MenuItem btnImpresion;
+    @FXML private MenuItem btnDescuentos;
     @FXML private MenuItem btnbackup;
     @FXML private MenuItem btncaja;
     @FXML private Button btn1;
     @FXML private Button btn2;
     @FXML private Button btnCambiarCliente;
     @FXML private Button btnBorrarTodoNuevaRetro;
+    @FXML public SplitMenuButton btnRenovarContrato;
+    @FXML public Button btnRetractarContrato;
+
     private CajaController cajaController;
+    private ImpresionController impresionController;
+    private DescuentosController descuentosController;
     private Integer cedulaContrato;
     ArrayList<Contrato> arrayContratos = new ArrayList();
     ArrayList<Cliente> arrayClientes = new ArrayList();
@@ -657,6 +664,11 @@ public class HomeController extends Component implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        System.out.println(Procedimientos.estadoCaja(this));
+        if(Procedimientos.estadoCaja(this).equals("Cerrada")){
+            btnRenovarContrato.setDisable(true);
+            btnRetractarContrato.setDisable(true);
+        }
         contratosVencidos();
         formatoDeTextos();
         mostrarTablaInicial();
@@ -669,16 +681,55 @@ public class HomeController extends Component implements Initializable {
         InteresOro();
         //mostrarTablaInicial();
         vboxHome.toFront();
+
+        cargarCaja();
+        cargarImpresion();
+        cargarDescuentos();
+        anchorPrincipal.getChildren().add(anchorCaja);
+        anchorPrincipal.getChildren().add(anchorImpresion);
+        anchorPrincipal.getChildren().add(anchorDescuentos);
+    }
+    private void cargarCaja(){
         try {
             FXMLLoader loader= new FXMLLoader(getClass().getResource("/gui/Caja.fxml"));
             anchorCaja= loader.load();
             cajaController= loader.getController();
             cajaController.setHomeController(this);
+            if (Procedimientos.estadoCaja(this).equals("Cerrada")) {
+                cajaController.btnRetiroCapital.setDisable(true);
+                cajaController.btnIngresoCapital.setDisable(true);
+                cajaController.btnCerrarCaja.setDisable(true);
+            } else {
+                cajaController.btnAbrirCaja.setVisible(false);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void cargarImpresion() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Impresion.fxml"));
+            anchorImpresion = loader.load();
+            impresionController = loader.getController();
+            impresionController.setHomeController(this);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        anchorPrincipal.getChildren().add(anchorCaja);
+    }
+
+    private void cargarDescuentos() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Descuentos.fxml"));
+            anchorDescuentos = loader.load();
+            descuentosController = loader.getController();
+            descuentosController.setHomeController(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Método para actualizar la gráfica con los datos requeridos
@@ -923,9 +974,18 @@ public class HomeController extends Component implements Initializable {
 
         } else if (event.getSource() == btnhistorialcorreciones) {
 
-        } else if (event.getSource() == btnlibrocaja) {
+        } else if (event.getSource() == btnImpresion && pantallaActiva!=13) {
+            pantallaActiva = 13;
+            anchorPrincipal.toFront();
+            anchorImpresion.toFront();
 
-        } else if (event.getSource() == btncorreciones) {
+
+
+        } else if (event.getSource() == btnDescuentos && pantallaActiva!=14) {
+            pantallaActiva = 14;
+            anchorPrincipal.toFront();
+            anchorDescuentos.toFront();
+
 
         } else if (event.getSource() == btnbackup) {
 
@@ -937,7 +997,7 @@ public class HomeController extends Component implements Initializable {
             LocalDate now = LocalDate.now();
             String fechaHoy = String.valueOf(now);
             cajaController.llenarTabla(fechaHoy);
-            System.out.println(fechaHoy+" HomeController");
+
         } else if (event.getSource() == btnnuevocliente && pantallaActiva != 17) {
             pantallaActiva = 17;
             vboxnuevocliente.toFront();
@@ -2686,6 +2746,11 @@ public class HomeController extends Component implements Initializable {
     public ControlBd getControl() {
         return control;
     }
+
+    public SQL_Sentencias getSentencias() {
+        return sen;
+    }
+
 
     public void setControl(ControlBd control) {
         this.control = control;

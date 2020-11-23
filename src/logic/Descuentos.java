@@ -1,6 +1,7 @@
 package logic;
 
 public class Descuentos {
+
     private String Numero_contrato;
     private String Precio_real;
     private String Precio_cobrado;

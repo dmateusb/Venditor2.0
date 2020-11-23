@@ -115,6 +115,18 @@ CREATE TABLE IF NOT EXISTS `venditor`.`descuentos` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
+-- -----------------------------------------------------
+-- Table `venditor`.`estado_caja`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `venditor`.`estado_caja` (
+                                                       `Id` INT(11) NULL AUTO_INCREMENT,
+                                                       `Fecha` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
+                                                       `Estado` VARCHAR(45) NOT NULL,
+                                                       `Usuario` VARCHAR(45) NOT NULL,
+                                                       PRIMARY KEY (`Id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
 
 -- -----------------------------------------------------
 -- Table `venditor`.`registro_adicion`

@@ -60,22 +60,32 @@ public class ControlBd {
                 "select Id,Fecha,Descripcion,Ingreso,Egreso,Utilidad,Total,Usuario FROM caja WHERE DATE(Fecha) = '"+fecha+"' ;");
         return  resultado;
     }
+    public Object[][] consultarCajaAntesDeFecha(String fecha){
+        String[] columnas={"Id","Fecha","Descripcion","Ingreso","Egreso","Utilidad","Total","Usuario"};
+        Object[][] resultado = sen.GetTabla(columnas, "caja",
+                "select Id,Fecha,Descripcion,Ingreso,Egreso,Utilidad,Total,Usuario FROM caja WHERE DATE(Fecha) < '"+fecha+"' ;");
+        return  resultado;
+    }
     public Object[][] consultarCajaId(String id){
         String[] columnas={"Id","Fecha","Descripcion","Ingreso","Egreso","Utilidad","Total","Usuario"};
         Object[][] resultado = sen.GetTabla(columnas, "caja",
                 "select Id,Fecha,Descripcion,Ingreso,Egreso,Utilidad,Total,Usuario FROM caja WHERE Id= "+id+" ;");
         return  resultado;
     }
-
-
-     public float ConsultarTotalCaja(){
+    public float ConsultarTotalCaja(){
          String[] columnas={"Total"};
          Object[][] resultado = sen.GetTabla(columnas, "caja",
                  "select Total FROM caja ORDER BY id DESC LIMIT 1;");
          if(resultado.length==0) return 0;
          String aux= (String) resultado[0][0];
          return Float.parseFloat(aux);
-     }
+    }
+    public Object[][] consultarEstadoCaja(String fecha){
+        String[] columnas={"Id","Fecha","Estado","Usuario"};
+        Object[][] resultado = sen.GetTabla(columnas, "estado_caja",
+                "select Id,Fecha,Estado,Usuario FROM estado_caja WHERE DATE(Fecha) = '"+fecha+"' ;");
+        return  resultado;
+    }
     public Object[][] GetClienteNuevoContrato(String cedulaString){
         String cedula = cedulaString.replace(".","");
         String[] columnas={"Cedula","Nombre", "Apellidos","Direccion","Barrio","Telefono1","Telefono2", "Correo","Foto","Perfil","Fecha_registro"};
@@ -203,6 +213,13 @@ public class ControlBd {
         Object[][] resultado = sen.GetTabla(columnas, "clientes", "select Nombre, Apellidos from clientes where Cedula='"+cedula+"';");
         return resultado;
     }
+
+    public Object[][] ConsultarDescuentos(){
+        String[] columnas={"Id","Numero_contrato","Precio_real","Precio_cobrado","Razon","Usuario"};
+        Object[][] resultado = sen.GetTabla(columnas, "descuentos", "select * FROM descuentos");
+        return resultado;
+    }
+
 
     public Object[][] ConsultarCliente(){
         String[] columnas={"Cedula","Nombre","Apellidos","Direccion","Telefono1","Telefono2",

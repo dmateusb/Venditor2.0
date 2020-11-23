@@ -218,6 +218,39 @@ public class SQL_Sentencias {
         }
     }
 
+    public boolean InsertarEstadoCaja(String Estado, String usuario){
+        try {
+            Connection c = con.conectado();
+            ps = c.prepareStatement("INSERT into venditor.estado_caja (Estado,Usuario) " +
+                    "values (?,?)");
+            ps.setString(1, Estado);
+            ps.setString(2, usuario);
+            ps.execute();
+            con.desconectar();
+            System.out.println("Inserta el nuevo estado de la caja");
+//            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+//            alert1.setContentText("Se renovó el nuevo contrato correctamente");
+//            alert1.setTitle("Contrato nuevo");
+//            alert1.setHeaderText(null);
+//            alert1.showAndWait();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println("algo salió mal con el nuevo estado de la caja");
+            return false;
+        } finally {
+            con.desconectar();
+            return true;
+        }
+
+
+
+
+
+    }
+
+
+
+
     public String InsertarContratoRenovado(String cedulaString, String articulo, int valor,Double porcentaje,int renovaciones, String vencimiento, String usuario) throws SQLException{
         int Id = 0;
         String cedulaInt = cedulaString.replace(".", "");
