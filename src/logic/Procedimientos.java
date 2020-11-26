@@ -58,8 +58,9 @@ public class Procedimientos {
         //Si la caja ya ha sido abierta hoy, muestra su último estado
         else{
             int i=0;
-            while(Cajas[i][0]!=null){
+            while(Cajas[i][0]!=null ){
                 i=i+1;
+                if (i<=Cajas.length) break;
             }
             if(Cajas[i-1][2].toString().equals("Cerrada")){
                 return "Cerrada";

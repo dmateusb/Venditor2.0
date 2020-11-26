@@ -102,11 +102,11 @@ public class CajaController {
         Object[][] CajasTotal=control.consultarCaja();
 
 
-        if(Cajas[0][0] == null && Cajas[0][1] == null){
+        if(Cajas.length==0){
             txtEgresos.setText("0");
             txtIngresos.setText("0");
             txtUtilidades.setText("0");
-            if(CajasTotal[0][0] == null && CajasTotal[0][1] == null){
+            if(CajasTotal.length==0){
                 txtInicioCaja.setText("0");
                 txtEfectivo.setText("0");
             }else{
@@ -121,7 +121,7 @@ public class CajaController {
             }
 
         }else{
-            int lastId = Integer.parseInt(Cajas[0][0].toString())-1;
+            int lastId = Integer.parseInt(Cajas[0][0].toString());
             Object[][] cajaParaTotal = control.consultarCajaId(String.valueOf(lastId));
             inicioCaja = Long.valueOf(cajaParaTotal[0][6].toString());
             txtInicioCaja.setText(String.valueOf(inicioCaja));
