@@ -21,11 +21,16 @@ public class ControlBd {
     public ControlBd(String user, String pass){
         this.user = user;
         this.pass = pass;
-        con = new SQL_Conexion(user, pass);
-        sen = new SQL_Sentencias (user, pass);
         
     }
     //INSERTS
+
+    public boolean insertEstadoCaja(String estado, String usuario){
+        String campos[]={estado,usuario};
+        return sen.insertarEgresoRetroventa(campos, "INSERT into venditor.estado_caja (Estado,Usuario)" +
+                " VALUES (?,?);");
+    }
+
     public boolean insertEgresoRetroventa(Caja caja){
         String campos[]={caja.getDescripcion(),String.valueOf(caja.getIngreso()),
         String.valueOf(caja.getEgreso()),String.valueOf(caja.getUtilidad()),
@@ -48,6 +53,14 @@ public class ControlBd {
     }
 
      //Consultas
+
+    public Object[][] consultarUsuario(String username){
+        String[] columnas={"username","password","rol"};
+        Object[][] resultado = sen.GetTabla(columnas, "usuario",
+                "select username, password, rol FROM usuario WHERE username = '"+username+"' ;");
+        return  resultado;
+    }
+
      public Object[][] consultarCaja(){
         String[] columnas={"Id","Fecha","Descripcion","Ingreso","Egreso","Utilidad","Total","Usuario"};
         Object[][] resultado = sen.GetTabla(columnas, "caja",
@@ -127,7 +140,6 @@ public class ControlBd {
     public Object[][] ConsultarContratosVigentes(){
         String[] columnas={"Numero_contrato","Cedula","Articulo","Fecha_inicio","Estado"};
         Object[][] resultado = sen.GetTabla(columnas, "contratos", "select Numero_contrato, Cedula, Articulo, Fecha_inicio, Estado FROM contratos where Estado = 'Vigente'");
-        System.out.println("Entra a la sentencia");
         return resultado;
     }
 
@@ -308,4 +320,19 @@ public class ControlBd {
         return sen.insertar(campos, "update contratos set Sobreprecio_real = ?, Sobreprecio_cobrado = ? where Numero_contrato = ?;");
     }
 
+    public SQL_Sentencias getSen() {
+        return sen;
+    }
+
+    public void setSen(SQL_Sentencias sen) {
+        this.sen = sen;
+    }
+
+    public SQL_Conexion getCon() {
+        return con;
+    }
+
+    public void setCon(SQL_Conexion con) {
+        this.con = con;
+    }
 }

@@ -18,9 +18,6 @@ import java.sql.SQLException;
  * @author Tacho
  */
 public class SQL_Conexion {
-    //private final String url = "jdbc:mysql://190.168.2.111/proyecto_facturacion";
-    //private final String url = "jdbc:mysql://192.168.4.106/proyecto_facturacion";
-    //private final String url = "jdbc:mysql://190.184.200.166/proyecto_facturacion";
     private final String url = "jdbc:mysql://localhost/venditor";
     PreparedStatement psPrepararSentencia;
     Connection con = null;

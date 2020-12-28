@@ -1,7 +1,5 @@
 package logic;
 
-import SQL.ControlBd;
-import gui.CajaController;
 import gui.HomeController;
 
 import javax.imageio.ImageIO;
@@ -9,8 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Procedimientos {
     BufferedImage imagen;
@@ -44,10 +40,10 @@ public class Procedimientos {
     public static String estadoCaja(HomeController HC){
         LocalDate hoy = LocalDate.now();
         String fechaHoy = hoy.toString();
-        Object[][] Cajas=HC.getControl().consultarEstadoCaja(fechaHoy);
+        Object[][] Cajas=HC.getControlBd().consultarEstadoCaja(fechaHoy);
         //Si la caja nunca ha sido abierta, la abre por primera vez
         if(Cajas.length==0){
-            HC.getSentencias().InsertarEstadoCaja("Abierta",usuario);
+            HC.getSentencias().InsertarEstadoCaja("Abierta",HC.getUsuario().getUsername());
             return "Abierta";
         }
         //Si la caja no se ha abierto con la fecha de hoy, la abre y retorna "Abierta" como estado
@@ -70,12 +66,12 @@ public class Procedimientos {
     }
 
 
-     public HomeController getHomeController() {
+     public static HomeController getHomeController() {
          return homeController;
      }
 
-     public void setHomeController(HomeController homeController) {
-         this.homeController = homeController;
+     public static void setHomeController(HomeController homeController) {
+         homeController = homeController;
      }
 
     public static byte[] convertToBytes(BufferedImage originalImage) throws IOException {

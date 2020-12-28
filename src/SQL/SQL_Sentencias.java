@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import logic.Caja;
 import logic.Descuentos;
+import logic.Usuario;
 
 /**
  *
@@ -24,7 +25,7 @@ import logic.Descuentos;
 public class SQL_Sentencias {
     //En esta clase estarán las sentencias de SQL que se utilizarán para controlar la BD
     //
-    private final SQL_Conexion con = new SQL_Conexion("root","");
+    private SQL_Conexion con= new SQL_Conexion(Usuario.getUsername(),Usuario.getPassword());
     PreparedStatement ps;
     ResultSet res;
     private String user="root";
@@ -34,7 +35,6 @@ public class SQL_Sentencias {
     public SQL_Sentencias(String user, String pass) {
         this.user = user;
         this.pass = pass;
-        System.out.println("entra");
     }
 
     public boolean insertar(String datos[], String insert) {
@@ -728,5 +728,11 @@ public class SQL_Sentencias {
         this.pass = pass;
     }
 
+    public SQL_Conexion getCon() {
+        return con;
+    }
 
+    public void setCon(SQL_Conexion con) {
+        this.con = con;
+    }
 }

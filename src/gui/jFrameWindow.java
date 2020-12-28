@@ -164,6 +164,7 @@ root
 package gui;
 
 import SQL.ControlBd;
+import SQL.SQL_Conexion;
 import SQL.SQL_Sentencias;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
@@ -171,6 +172,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import logic.CloseListener;
 import logic.Procedimientos;
+import logic.Usuario;
 import org.apache.log4j.Logger;
 
 import javax.imageio.ImageIO;
@@ -201,7 +203,7 @@ public class jFrameWindow extends JFrame  {
     private BufferedImage image=null;
     private static String cedula;
     private Object lock;
-    private SQL_Sentencias sen= new SQL_Sentencias("root","");
+    private SQL_Sentencias sen=new SQL_Sentencias(Usuario.getUsername(),Usuario.getPassword());
     public jFrameWindow() {
 
         webcam = getCameraByName(Procedimientos.getNombreCamara());
@@ -252,6 +254,7 @@ public class jFrameWindow extends JFrame  {
                     ex.printStackTrace();
                 }
                 try {
+                    sen.setCon(new SQL_Conexion(Usuario.getUsername(),Usuario.getPassword()));
                     sen.InsertarFotoCliente(data, cedula);
                     JOptionPane.showMessageDialog(null,"Foto insertada exitosamente");
                 } catch (SQLException ex) {
@@ -316,5 +319,13 @@ public class jFrameWindow extends JFrame  {
 
     public Object getLock() {
         return lock;
+    }
+
+    public SQL_Sentencias getSen() {
+        return sen;
+    }
+
+    public void setSen(SQL_Sentencias sen) {
+        this.sen = sen;
     }
 }

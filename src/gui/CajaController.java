@@ -6,7 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,18 +14,11 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.Caja;
-import logic.Cliente;
-import logic.Contrato;
 import logic.Procedimientos;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
-
-import static gui.HomeController.mostrarConfirmacion;
 
 public class CajaController {
     @FXML private TableView<Caja> TablaCaja;
@@ -55,7 +47,7 @@ public class CajaController {
     public ObservableList<Caja> listaCajas;
 
     public void llenarTabla(){
-        ControlBd control=homeController.getControl();
+        ControlBd control=homeController.getControlBd();
         Object[][] Cajas=control.consultarCaja();
         for(int i=0;i<Cajas.length;i++){
             if (Cajas[i][0] != null && Cajas[i][1] != null && Cajas[i][2] != null&& Cajas[i][3] != null
@@ -97,7 +89,7 @@ public class CajaController {
         }
         long inicioCaja=0;
 
-        ControlBd control=homeController.getControl();
+        ControlBd control=homeController.getControlBd();
         Object[][] Cajas=control.consultarCajaFecha(fechaCaja);
         Object[][] CajasTotal=control.consultarCaja();
 
