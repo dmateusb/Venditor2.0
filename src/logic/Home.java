@@ -53,10 +53,7 @@ public class Home extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        /*Class clazz=Home.class;
-        URL url = clazz.getResource("../img/tempphoto.jpg");
-        */
-        Parent root = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
         stage.initStyle(StageStyle.UNDECORATED);
         stage.getIcons().add(new Image("/im/favicon.png"));
         Scene scene = new Scene(root);
@@ -66,14 +63,8 @@ public class Home extends Application {
     /**
      * @param args the command line arguments
      */
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-
         BasicConfigurator.configure();
-
         launch(args);
     }
     
