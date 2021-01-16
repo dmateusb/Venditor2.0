@@ -51,6 +51,32 @@ public class SQL_Sentencias {
         return  flag;
     }
 
+    public  boolean eliminarUsuarioBd(String user) throws SQLException {
+        boolean flag=false;
+        try {
+            String insert="DROP USER '"+user+"'@localhost;";
+            ps = con.conectado().prepareStatement(insert);
+            ps.execute();
+            flag=true;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return  flag;
+    }
+
+    public  boolean drop(String table, String column, String value) throws SQLException {
+        boolean flag=false;
+        try {
+            String insert="DELETE from "+table+" WHERE "+column+" = '"+value+"';";
+            ps = con.conectado().prepareStatement(insert);
+            ps.execute();
+            flag=true;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return  flag;
+    }
+
     public boolean insertar(String datos[], String insert) {
         boolean estado = false;
         try {

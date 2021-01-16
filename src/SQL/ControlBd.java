@@ -28,6 +28,8 @@ public class ControlBd {
         
     }
 
+    //Manejo Usuarios
+
     public boolean crearNuevoUsuarioBd(String usuario, String password,String rol){
         boolean flag=false;
         boolean flag2=false;
@@ -39,6 +41,19 @@ public class ControlBd {
         }
         return flag && flag2;
     }
+
+    public boolean eliminarUsuarioBd(String username){
+        boolean flag=false;
+        boolean flag2=false;
+        try {
+            flag=sen.eliminarUsuarioBd(username);
+            flag2=eliminarUsuario(username);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flag && flag2;
+    }
+
 
     //INSERTS
 
@@ -350,6 +365,12 @@ public class ControlBd {
         String campos[]={SobrePrecioReal,SobrePrecioCobrado,numeroContrato};
         return sen.insertar(campos, "update contratos set Sobreprecio_real = ?, Sobreprecio_cobrado = ? where Numero_contrato = ?;");
     }
+
+    //----------DELETES--------------
+    private boolean eliminarUsuario(String username) throws SQLException {
+        return sen.drop("usuario","username",username);
+    }
+
 
     public SQL_Sentencias getSen() {
         return sen;
