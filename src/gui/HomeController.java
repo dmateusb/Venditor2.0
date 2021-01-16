@@ -74,7 +74,7 @@ public class HomeController extends Component implements Initializable {
 
     private ControlBd controlBd;
     private SQL_Sentencias sen;
-    private Usuario usuario;
+    private static Usuario usuario;
     private static Stage stage;
     private String cedulaSeleccionada;
     @FXML private ImageView imageViewBusquedaCliente;
@@ -89,10 +89,12 @@ public class HomeController extends Component implements Initializable {
     @FXML private AnchorPane anchorDetallesContrato;
     @FXML private AnchorPane anchorTablaContratos;
     @FXML private AnchorPane aPimgClienteNuevaRetroventa;
-    @FXML private AnchorPane anchorCaja;
-    @FXML private AnchorPane anchorImpresion;
-    @FXML private AnchorPane anchorDescuentos;
+    @FXML private AnchorPane anchorCaja= new AnchorPane();
+    @FXML private AnchorPane anchorUsuarios= new AnchorPane();
+    @FXML private AnchorPane anchorImpresion=new AnchorPane();
+    @FXML private AnchorPane anchorDescuentos= new AnchorPane();
     @FXML private AnchorPane anchorPrincipal;
+    @FXML private AnchorPane paneNuevoCliente;
     @FXML private Button btnFotoNuevoCliente;
     @FXML private Button btnCrearRetroventa;
     @FXML private Button btnBorrarDatosCliente;
@@ -186,6 +188,10 @@ public class HomeController extends Component implements Initializable {
     @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
 
     @FXML private Label lblNumeroContrato;
+
+    private boolean flagPaneCaja=false;
+    private boolean flagPaneUsuario=false;
+
     private int meses;
 
     public TextField getTxtEstado_DetalleContrato() {
@@ -226,11 +232,11 @@ public class HomeController extends Component implements Initializable {
             "Portatil","Reloj","Sonido","Televisores","Videojuegos", "Varios Artículos","Otros");
     ObservableList<String> subOro = FXCollections.observableArrayList("Oro");
     @FXML private Spinner SpinnerPorcentaje;
-    @FXML private VBox vboxnuevocliente;
-    @FXML private VBox vboxHome;
-    @FXML private VBox vboxNuevaRetroventa;
-    @FXML private VBox vboxBusquedaCliente;
-    @FXML private VBox vboxContratos;
+    @FXML private AnchorPane panenuevocliente;
+    @FXML private AnchorPane paneHome;
+    @FXML private AnchorPane paneNuevaRetroventa;
+    @FXML private AnchorPane paneBusquedaCliente;
+    @FXML private AnchorPane paneContratos;
     @FXML private MenuButton mbtntransacciones;
     @FXML private MenuItem btnnuevaretro;
     @FXML private MenuItem btnventa;
@@ -259,6 +265,7 @@ public class HomeController extends Component implements Initializable {
     @FXML public Button btnRetractarContrato;
 
     private CajaController cajaController;
+    private UsuarioController usuarioController;
     private ImpresionController impresionController;
     private DescuentosController descuentosController;
     private Integer cedulaContrato;
@@ -510,7 +517,7 @@ public class HomeController extends Component implements Initializable {
             String precio = valor.replace(".", "");
 
 
-            String contratoNuevo = new SQL_Sentencias(Usuario.getUsername(),Usuario.getPassword()).InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo,Integer.parseInt(precio),
+            String contratoNuevo = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo,Integer.parseInt(precio),
                     Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
             if(contratoNuevo.length()!=0){
                 controlBd.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
@@ -599,7 +606,7 @@ public class HomeController extends Component implements Initializable {
             String valor = txtValor_DetalleContrato.getText();
             String precio = valor.replace(".", "");
 
-            String nuevoContrato = new SQL_Sentencias(Usuario.getUsername(),Usuario.getPassword()).InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),idArticulo,Integer.parseInt(precio),
+            String nuevoContrato = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),idArticulo,Integer.parseInt(precio),
                     Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
             if(nuevoContrato.length()!=0){
                 controlBd.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
@@ -649,7 +656,7 @@ public class HomeController extends Component implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
     }
-    public void inicalizar(){
+    public void inicializar(){
         Procedimientos.setHomeController(this);
         if(Procedimientos.estadoCaja(this).equals("Cerrada")){
             btnRenovarContrato.setDisable(true);
@@ -663,17 +670,19 @@ public class HomeController extends Component implements Initializable {
         comboCategoria.setItems(categorias);
         comboEstados.setItems(estados);
         comboEstados.getSelectionModel().select(0);
+        if (!usuario.getRol().equals("admin")) mbtngerencia.setDisable(true);
+//        Boolean desactivar= usuario.getRol().equals("admin")? false:true;
+//        mbtngerencia.setDisable(desactivar);
         graficar();
         InteresOro();
         //mostrarTablaInicial();
-        vboxHome.toFront();
+        paneHome.toFront();
 
-        cargarCaja();
-        cargarImpresion();
-        cargarDescuentos();
+
         anchorPrincipal.getChildren().add(anchorCaja);
         anchorPrincipal.getChildren().add(anchorImpresion);
         anchorPrincipal.getChildren().add(anchorDescuentos);
+        //anchorPrincipal.getChildren().add(anchorUsuarios);
     }
     private void cargarCaja(){
         try {
@@ -687,8 +696,12 @@ public class HomeController extends Component implements Initializable {
                 cajaController.btnCerrarCaja.setDisable(true);
             } else {
                 cajaController.btnAbrirCaja.setVisible(false);
-
             }
+            LocalDate now = LocalDate.now();
+            String fechaHoy = String.valueOf(now);
+            cajaController.llenarTabla(fechaHoy);
+            anchorPrincipal.getChildren().add(anchorCaja);
+            anchorCaja.toFront();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -812,7 +825,7 @@ public class HomeController extends Component implements Initializable {
         if (result.get() == no) {
 
         } else {
-            vboxBusquedaCliente.toFront();
+            paneBusquedaCliente.toFront();
             llenarDatosDetalleCliente(txtcedulaNuevaRetroventa.getText());
         }
     }
@@ -857,7 +870,7 @@ public class HomeController extends Component implements Initializable {
 
     @FXML
     private void home() {
-        vboxHome.toFront();
+        paneHome.toFront();
     }
 
     @FXML
@@ -896,7 +909,7 @@ public class HomeController extends Component implements Initializable {
     public void calcularNumeroContrato(){
         int Id = 0;
         String[] columnas={"Numero_contrato"};
-        Object[][] resultado = new SQL_Sentencias(Usuario.getUsername(),Usuario.getPassword()).GetTabla(columnas, "contratos", "SELECT Numero_contrato FROM contratos ORDER BY Numero_contrato ASC;");
+        Object[][] resultado = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).GetTabla(columnas, "contratos", "SELECT Numero_contrato FROM contratos ORDER BY Numero_contrato ASC;");
         if(resultado.length==0){
             Id = 1;
         }else {
@@ -914,9 +927,9 @@ public class HomeController extends Component implements Initializable {
     public void botonesHandle(ActionEvent event) {
         if (event.getSource() == btnnuevaretro) {
             calcularNumeroContrato();
-            vboxNuevaRetroventa.toFront();
+            paneNuevaRetroventa.toFront();
             if(pantallaActiva != 1){
-                new FadeIn(vboxNuevaRetroventa).play();
+                new FadeIn(paneNuevaRetroventa).play();
             }
             aPimgClienteNuevaRetroventa.setOpacity(0);
             aPimgClienteNuevaRetroventa.toBack();
@@ -928,14 +941,14 @@ public class HomeController extends Component implements Initializable {
 
         } else if (event.getSource() == btnnuevaretro && pantallaActiva != 3) {
             pantallaActiva = 3;
-            vboxNuevaRetroventa.toFront();
-            new FadeIn(vboxNuevaRetroventa).play();
+            paneNuevaRetroventa.toFront();
+            new FadeIn(paneNuevaRetroventa).play();
         } else if (event.getSource() == btncontrato) {
             mostrarTablaInicial();
             anchorTablaContratos.toFront();
-            vboxContratos.toFront();
+            paneContratos.toFront();
             if(pantallaActiva != 4){
-                new FadeIn(vboxContratos).play();
+                new FadeIn(paneContratos).play();
             }
             pantallaActiva = 4;
 
@@ -945,7 +958,13 @@ public class HomeController extends Component implements Initializable {
 
         } else if (event.getSource() == btnreportes) {
 
-        } else if (event.getSource() == btnusuarios) {
+        } else if (event.getSource() == btnusuarios && pantallaActiva!=8) {
+            pantallaActiva=8;
+            anchorPrincipal.toFront();
+            if(!flagPaneUsuario){
+                flagPaneUsuario=true;
+                cargarFXMLUsuario();
+            }
 
         } else if (event.getSource() == btnbalance) {
 
@@ -971,28 +990,42 @@ public class HomeController extends Component implements Initializable {
         } else if (event.getSource() == btnbackup) {
 
         } else if (event.getSource() == btncaja && pantallaActiva!=16) {
-
             pantallaActiva=16;
             anchorPrincipal.toFront();
-            anchorCaja.toFront();
-            LocalDate now = LocalDate.now();
-            String fechaHoy = String.valueOf(now);
-            cajaController.llenarTabla(fechaHoy);
+
+            if(flagPaneCaja==false){
+                cargarCaja();
+                flagPaneCaja=true;
+            }
 
         } else if (event.getSource() == btnnuevocliente && pantallaActiva != 17) {
             pantallaActiva = 17;
-            vboxnuevocliente.toFront();
-            new FadeIn(vboxnuevocliente).play();
+            paneNuevoCliente.toFront();
+            new FadeIn(paneNuevoCliente).play();
         } else if (event.getSource() == btnbusquedacliente) {
             mostrarTablaInicial_Clientes();
-            vboxBusquedaCliente.toFront();
+            paneBusquedaCliente.toFront();
             anchorTablaClientes.toFront();
-            //new FadeIn(vboxBusquedaCliente).play();
+            //new FadeIn(paneBusquedaCliente).play();
 
             if(pantallaActiva != 18){
-                new FadeIn(vboxContratos).play();
+                new FadeIn(paneContratos).play();
             }
             pantallaActiva = 18;
+        }
+    }
+
+    public void cargarFXMLUsuario() {
+        FXMLLoader loader= new FXMLLoader(getClass().getResource("/gui/Usuarios.fxml"));
+        try {
+            anchorUsuarios=loader.load();
+            usuarioController=loader.getController();
+            usuarioController.setHomeController(this);
+            usuarioController.inicializar();
+            anchorPrincipal.getChildren().add(anchorUsuarios);
+            anchorUsuarios.toFront();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -1001,7 +1034,7 @@ public class HomeController extends Component implements Initializable {
         if (txtcedula.getText().equals(txtCedulaConfirmacionNuevoCLiente.getText())) {
             byte[] data = null;
 
-            Boolean isCreado = new SQL_Sentencias(Usuario.getUsername(),Usuario.getPassword()).InsertarNuevoCliente((txtcedula.getText()),
+            Boolean isCreado = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarNuevoCliente((txtcedula.getText()),
                     txtnombre.getText(), txtapellido.getText(), txtdireccion.getText(),txtbarrio.getText(),
                     txttelefono1.getText(), txttelefono2.getText(), txtcorreo.getText(), sen.getUser());
             if (isCreado) {
@@ -1297,11 +1330,11 @@ public class HomeController extends Component implements Initializable {
         String IdArticulo;
         String precio = valorArticulo.getText().replace(".", "");
         if(categoria.getValue().toString() =="Oro"){
-            IdArticulo = new SQL_Sentencias(Usuario.getUsername(),Usuario.getPassword()).InsertarNuevoArticulo(categoria.getValue().toString(),subCategoria.getValue().toString(),
+            IdArticulo = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarNuevoArticulo(categoria.getValue().toString(),subCategoria.getValue().toString(),
                     descripccion.getText(),
                     Double.parseDouble(peso.getText()),Integer.parseInt(precio),sen.getUser());
         }else{
-            IdArticulo = new SQL_Sentencias(Usuario.getUsername(),Usuario.getPassword()).InsertarNuevoArticulo(categoria.getValue().toString(),subCategoria.getValue().toString(),
+            IdArticulo = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarNuevoArticulo(categoria.getValue().toString(),subCategoria.getValue().toString(),
                     descripccion.getText(),
                    Integer.parseInt(precio),sen.getUser());
         }
@@ -1390,7 +1423,7 @@ public class HomeController extends Component implements Initializable {
             String ArticuloId = InsertarNuevoArticulo(comboCategoria,comboSubcategoria,txtDescripcionArticulo,
                     txtPesoArticulo,txtValorArticulo);
             String precio = txtValorArticulo.getText().replace(".", "");
-            boolean success = new SQL_Sentencias(Usuario.getUsername(),Usuario.getPassword()).InsertarNuevoContrato(txtcedulaNuevaRetroventa.getText(), ArticuloId, Integer.parseInt(precio),
+            boolean success = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarNuevoContrato(txtcedulaNuevaRetroventa.getText(), ArticuloId, Integer.parseInt(precio),
                     Double.parseDouble(SpinnerPorcentaje.getValue().toString()), vencimiento, sen.getUser());
             if (success && ArticuloId!=null) {
                 float egreso=redondearA50(Float.parseFloat(precio));
@@ -1449,7 +1482,7 @@ public class HomeController extends Component implements Initializable {
         cam.getDiscoveryService().stop();
         cam.close();
         Combo combo = new Combo(lock, nombrescamaras);
-        Detener detener = new Detener(lock,sen);
+        Detener detener = new Detener(lock,sen,this);
         detener.setCedula(cedula);
         Thread t2 = new Thread(detener);
         Thread t1 = new Thread(combo);
@@ -2512,7 +2545,7 @@ public class HomeController extends Component implements Initializable {
         //mostrarTablaInicialContratos_BusquedaClientes();
 
         anchorDetallesCliente.toFront();
-        vboxBusquedaCliente.toFront();
+        paneBusquedaCliente.toFront();
     }
     @FXML
     public void verDetalleContratos(){
@@ -2559,7 +2592,7 @@ public class HomeController extends Component implements Initializable {
     @FXML
     public void regresarBusquedaClientes(){
         mostrarTablaInicial_Clientes();
-        vboxBusquedaCliente.toFront();
+        paneBusquedaCliente.toFront();
         anchorTablaClientes.toFront();
     }
 
@@ -2570,7 +2603,7 @@ public class HomeController extends Component implements Initializable {
                 TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem().getNumeroContrato().toString(),
                 cedulaSeleccionada);
         anchorDetallesContrato.toFront();
-        vboxContratos.toFront();
+        paneContratos.toFront();
     }
 
     @FXML
@@ -2581,7 +2614,7 @@ public class HomeController extends Component implements Initializable {
                 TablaContratos_BusquedaClientes.getSelectionModel().getSelectedItem().getNumeroContrato().toString(),
                 cedulaSeleccionada);
         anchorDetallesContrato.toFront();
-        vboxContratos.toFront();
+        paneContratos.toFront();
         pantallaActiva = 4;
         btnVerDetalleTablaDetallesClientes.setDisable(true);
     }

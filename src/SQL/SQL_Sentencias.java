@@ -6,11 +6,7 @@
 package SQL;
 
 import java.io.ByteArrayInputStream;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
@@ -25,7 +21,8 @@ import logic.Usuario;
 public class SQL_Sentencias {
     //En esta clase estarán las sentencias de SQL que se utilizarán para controlar la BD
     //
-    private SQL_Conexion con= new SQL_Conexion(Usuario.getUsername(),Usuario.getPassword());
+    private SQL_Conexion con= new SQL_Conexion(this.user,this.pass);
+    //private SQL_Conexion con;
     PreparedStatement ps;
     ResultSet res;
     private String user="root";
@@ -35,6 +32,23 @@ public class SQL_Sentencias {
     public SQL_Sentencias(String user, String pass) {
         this.user = user;
         this.pass = pass;
+    }
+
+    public  boolean crearUsuarioBd(String user, String password) throws SQLException {
+        boolean flag=false;
+        try {
+            String insert="CREATE USER '"+user+"'@localhost IDENTIFIED BY '"+password+"';";
+            ps = con.conectado().prepareStatement(insert);
+            ps.execute();
+            insert="GRANT ALL PRIVILEGES ON *.* TO '"+user+"'@localhost IDENTIFIED BY '"+password+"';";
+            ps=con.conectado().prepareStatement(insert);
+            ps.execute();
+            ps.close();
+            flag=true;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return  flag;
     }
 
     public boolean insertar(String datos[], String insert) {

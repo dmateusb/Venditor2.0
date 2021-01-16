@@ -1,6 +1,7 @@
 package logic;
 
 import SQL.SQL_Sentencias;
+import gui.HomeController;
 import gui.jFrameWindow;
 
 import javax.swing.*;
@@ -9,7 +10,8 @@ public class Detener implements Runnable {
     private  Object lock;
     private String cedula;
     private SQL_Sentencias sen;
-    public Detener(Object lock,SQL_Sentencias sen) {
+    private HomeController homeController;
+    public Detener(Object lock, SQL_Sentencias sen, HomeController homeController) {
         this.sen=sen;
         this.lock = lock;
     }
@@ -24,6 +26,7 @@ public class Detener implements Runnable {
             e.printStackTrace();
         }
         jFrameWindow window = new jFrameWindow();
+        window.setHomeController(this.homeController);
         window.setSen(sen);
         window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         window.setCedula(cedula);
@@ -46,4 +49,11 @@ public class Detener implements Runnable {
         this.sen = sen;
     }
 
+    public HomeController getHomeController() {
+        return homeController;
+    }
+
+    public void setHomeController(HomeController homeController) {
+        this.homeController = homeController;
+    }
 }

@@ -1,10 +1,11 @@
+
 package logic;
 
-public final class Usuario {
+public  class Usuario {
 
-    private static String username;
-    private static String password;
-    private static String rol;
+    private  String username;
+    private  String password;
+    private  String rol;
 
     public Usuario(String username, String password, String rol) {
         this.username = username;
@@ -12,27 +13,27 @@ public final class Usuario {
         this.rol = rol;
     }
 
-    public static String getUsername() {
+    public  String getUsername() {
         return username;
     }
 
-    public static void setUsername(String username) {
+    public  void setUsername(String username) {
         username = username;
     }
 
-    public static  String getPassword() {
+    public   String getPassword() {
         return password;
     }
 
-    public static void setPassword(String password) {
+    public  void setPassword(String password) {
         password = password;
     }
 
-    public static String getRol() {
+    public  String getRol() {
         return rol;
     }
 
-    public static  void setRol(String rol) {
+    public   void setRol(String rol) {
         rol = rol;
     }
 }

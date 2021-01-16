@@ -24,6 +24,7 @@ import javafx.stage.WindowEvent;
 import logic.Usuario;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 
@@ -36,6 +37,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private PasswordField password;
+
 
     @FXML
     private Button ingreso;
@@ -81,9 +83,9 @@ public class LoginController implements Initializable {
         Parent root = loader.load();
         HomeController homeController= loader.getController();
         homeController.setControlBd(controlBd);
-        homeController.setUsuario(currentUser);
         homeController.setSen(sen);
-        homeController.inicalizar();
+        homeController.setUsuario(currentUser);
+        homeController.inicializar();
         Scene scene = new Scene(root);
         stage.getIcons().add(new Image("/im/favicon.png"));
         stage.setResizable(false);
@@ -120,13 +122,30 @@ public class LoginController implements Initializable {
                 controlBd= new ControlBd(this.usuario.getText(),this.password.getText());
                 controlBd.setSen(sen);
                 controlBd.setCon(con);
-                Object[][] resultado = controlBd.consultarUsuario(this.usuario.getText());
-                if(this.usuario.getText().equals(resultado[0][0].toString())
-                        && this.password.getText().equals(resultado[0][1].toString()))
-                    currentUser = new Usuario(this.usuario.getText(),this.password.getText(), (String) resultado[0][2]);
-                Stage stage = new Stage();
-                abrir(stage);
-                closeButtonAction();
+                try{
+                    Object[][] resultado = controlBd.consultarUsuarioPorUsername(this.usuario.getText());
+                    Usuario usuario= new Usuario(resultado[0][0].toString(),resultado[0][1].toString(),
+                            resultado[0][2].toString());
+
+                    if(this.usuario.getText().equals(usuario.getUsername())
+                            && this.password.getText().equals(usuario.getPassword()))
+                        {
+                            currentUser=usuario;
+                        }
+                    Stage stage = new Stage();
+                    abrir(stage);
+                    closeButtonAction();
+//                    if(!(this.usuario.getText().equals(Usuario.getUsername())
+//                            && this.password.getText().equals(Usuario.getPassword()))){
+//                        System.err.println("Usuario o contraseña incorrecta");
+//                    }
+//                    Stage stage = new Stage();
+//                    abrir(stage);
+//                    closeButtonAction();
+                }catch (Exception ex){
+                    System.err.println(ex.getCause().toString());
+                }
+
             } else {
                 //Si el usuario no tiene permiso para ingresar a la base de datos tampoco
                 //podrá ingresa a Venditor, por lo que se envía una alerta avisando que

@@ -7,6 +7,10 @@ package SQL;
 
 import logic.Caja;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author Ingeniería
@@ -23,7 +27,26 @@ public class ControlBd {
         this.pass = pass;
         
     }
+
+    public boolean crearNuevoUsuarioBd(String usuario, String password,String rol){
+        boolean flag=false;
+        boolean flag2=false;
+        try {
+         flag= sen.crearUsuarioBd(usuario,password);
+         flag2= insertUsuario(usuario,password,rol);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flag && flag2;
+    }
+
     //INSERTS
+
+    public boolean insertUsuario(String usuario, String password, String rol){
+        String campos[]={usuario,password,rol};
+        return sen.insertar(campos, "INSERT into venditor.usuario(username,password,rol)" +
+                " VALUES (?,?,?);");
+    }
 
     public boolean insertEstadoCaja(String estado, String usuario){
         String campos[]={estado,usuario};
@@ -54,10 +77,17 @@ public class ControlBd {
 
      //Consultas
 
-    public Object[][] consultarUsuario(String username){
+    public Object[][] consultarUsuario(){
         String[] columnas={"username","password","rol"};
         Object[][] resultado = sen.GetTabla(columnas, "usuario",
-                "select username, password, rol FROM usuario WHERE username = '"+username+"' ;");
+                "select * FROM usuario;");
+        return  resultado;
+    }
+
+    public Object[][] consultarUsuarioPorUsername(String username){
+        String[] columnas={"username","password","rol"};
+        Object[][] resultado = sen.GetTabla(columnas, "usuario",
+                "select * FROM usuario WHERE username like '%"+username+"%';");
         return  resultado;
     }
 
@@ -218,6 +248,11 @@ public class ControlBd {
         return resultado;
     }
 
+    public byte[] ConsultarFotoCliente(String documento){
+        byte[] resultado = sen.GetFoto("Foto", "clientes", "select foto FROM venditor.clientes where Cedula='"+documento+"';");
+        return resultado;
+    }
+
     public Object[][] ConsultarNombresCliente(String cedulaString){
         String cedulaInt = cedulaString.replace(".", "");
         int cedula = Integer.valueOf(cedulaInt);
@@ -240,13 +275,7 @@ public class ControlBd {
         return resultado;
     }
 
-    public Object[][] ConsultarClientesLikeCedula(String cedulaString){
-        String cedula = cedulaString.replace(".","");
-        String[] columnas={"Cedula","Nombre","Apellidos","Direccion","Telefono1","Telefono2",
-                "Correo","Perfil","Fecha_registro","Usuario"};
-        Object[][] resultado= sen.GetTabla(columnas,"clientes","select * from clientes where cedula like '%"+cedula+"%';");
-        return  resultado;
-    }
+
 
     public String consultarIdArticulo(String contrato){
         System.out.println(contrato);
@@ -281,15 +310,17 @@ public class ControlBd {
         Object[][] resultado= sen.GetTabla(columnas,"contratos","select Renovaciones from contratos where Numero_contrato = '"+contrato+"';");
         return  resultado;
     }
-    
-    
-    
+
+
+    public Object[][] ConsultarClientesLikeCedula(String cedulaString){
+        String cedula = cedulaString.replace(".","");
+        String[] columnas={"Cedula","Nombre","Apellidos","Direccion","Telefono1","Telefono2",
+                "Correo","Perfil","Fecha_registro","Usuario"};
+        Object[][] resultado= sen.GetTabla(columnas,"clientes","select * from clientes where cedula like '%"+cedula+"%';");
+        return  resultado;
+    }
     
 
-    public byte[] ConsultarFotoCliente(String documento){
-        byte[] resultado = sen.GetFoto("Foto", "clientes", "select foto FROM venditor.clientes where Cedula='"+documento+"';");
-        return resultado;
-    }
 
 
 //---------------------------UPDATE----------------------///-----------------------///--------

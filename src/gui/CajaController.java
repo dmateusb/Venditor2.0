@@ -94,7 +94,7 @@ public class CajaController {
         Object[][] CajasTotal=control.consultarCaja();
 
 
-        if(Cajas.length==0){
+        if(Cajas[0][0]==null){
             txtEgresos.setText("0");
             txtIngresos.setText("0");
             txtUtilidades.setText("0");

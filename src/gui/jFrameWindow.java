@@ -170,6 +170,7 @@ import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import logic.Caja;
 import logic.CloseListener;
 import logic.Procedimientos;
 import logic.Usuario;
@@ -191,6 +192,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class jFrameWindow extends JFrame  {
+    private HomeController homeController;
     private Executor executor = Executors.newSingleThreadExecutor();
     private AtomicBoolean initialized = new AtomicBoolean(false);
     private Webcam webcam;
@@ -203,7 +205,8 @@ public class jFrameWindow extends JFrame  {
     private BufferedImage image=null;
     private static String cedula;
     private Object lock;
-    private SQL_Sentencias sen=new SQL_Sentencias(Usuario.getUsername(),Usuario.getPassword());
+    private SQL_Sentencias sen=new SQL_Sentencias(this.homeController.getUsuario().getUsername(),
+            this.homeController.getUsuario().getPassword());
     public jFrameWindow() {
 
         webcam = getCameraByName(Procedimientos.getNombreCamara());
@@ -241,6 +244,8 @@ public class jFrameWindow extends JFrame  {
             }
         });
         btnConfirmar.addActionListener(new ActionListener() {
+
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 byte[] data = null;
@@ -254,7 +259,8 @@ public class jFrameWindow extends JFrame  {
                     ex.printStackTrace();
                 }
                 try {
-                    sen.setCon(new SQL_Conexion(Usuario.getUsername(),Usuario.getPassword()));
+                    sen.setCon(new SQL_Conexion(homeController.getUsuario().getUsername(),
+                            homeController.getUsuario().getPassword()));
                     sen.InsertarFotoCliente(data, cedula);
                     JOptionPane.showMessageDialog(null,"Foto insertada exitosamente");
                 } catch (SQLException ex) {
@@ -327,5 +333,13 @@ public class jFrameWindow extends JFrame  {
 
     public void setSen(SQL_Sentencias sen) {
         this.sen = sen;
+    }
+
+    public HomeController getHomeController() {
+        return homeController;
+    }
+
+    public void setHomeController(HomeController homeController) {
+        this.homeController = homeController;
     }
 }
