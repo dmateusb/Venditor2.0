@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
@@ -863,7 +864,7 @@
       </AnchorPane>
       <AnchorPane prefHeight="720.0" prefWidth="260.0" style="-fx-background-color: #255958;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox prefHeight="720.0" prefWidth="320.0" style="-fx-background-color: #255958;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox prefHeight="668.0" prefWidth="260.0" style="-fx-background-color: #255958;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <AnchorPane prefHeight="287.0" prefWidth="320.0" style="-fx-background-color: #255958;">
                      <children>
@@ -938,6 +939,18 @@
                            </font>
 
                         </MenuButton>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="120.0" prefWidth="260.0">
+                     <children>
+                        <Button fx:id="btnCerrarSesion" alignment="BOTTOM_LEFT" layoutY="16.0" mnemonicParsing="false" onAction="#onActionCerrarSesion" prefHeight="30.0" prefWidth="260.0" style="-fx-background-color: transparent;" styleClass="btnMenu" text="Cerrar sesión" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView fill="WHITE" glyphName="USER" size="18" />
+                           </graphic>
+                        </Button>
                      </children>
                   </AnchorPane>
                </children>

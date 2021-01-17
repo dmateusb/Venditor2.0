@@ -109,6 +109,7 @@ public class HomeController extends Component implements Initializable {
     @FXML private Button btnGuardarDetalleCliente;
     @FXML private Button btnTomarNuevaHuellaDetalleCliente;
     @FXML private Button btnTomarNuevaFotoDetalleCliente;
+    @FXML private Button btnCerrarSesion;
     //Ventana Detalle Contrato
     @FXML private TextField txtNumeroContrato_DetalleContrato;
     @FXML private TextField txtFechaInicio_DetalleContrato;
@@ -1382,6 +1383,28 @@ public class HomeController extends Component implements Initializable {
         }
     }
 
+    @FXML
+    public void onActionCerrarSesion() {
+        Stage stage = (Stage) anchorPrincipal.getScene().getWindow();
+        this.controlBd=null;
+        this.sen=null;
+        // do what you have to do
+        stage.close();
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
+            //stage.initStyle(StageStyle.UNDECORATED);
+            //stage.getIcons().add(new Image("/im/favicon.png"));
+            Stage stage2 = new Stage();
+            stage2.initStyle(StageStyle.UNDECORATED);
+            Scene scene = new Scene(root);
+            stage2.setScene(scene);
+            stage2.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @FXML protected void InsertarNuevoContrato() throws SQLException {
         if(txtcedulaNuevaRetroventa.getText().length()==0){
