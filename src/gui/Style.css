@@ -148,6 +148,17 @@
     -fx-background-color:  #35A6A4;
 
 }
+.btnCerrarSesion{
+    -fx-background-color: #255958;
+    -fx-background-radius:  0em;
+}
+.btnCerrarSesion:hover{
+    -fx-background-color:  #35A6A4;
+
+}
+
+
+
 
 .btnMenu:pressed{
     -fx-font-size:16px;

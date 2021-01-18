@@ -943,7 +943,7 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="120.0" prefWidth="260.0">
                      <children>
-                        <Button fx:id="btnCerrarSesion" alignment="BOTTOM_LEFT" layoutY="16.0" mnemonicParsing="false" onAction="#onActionCerrarSesion" prefHeight="30.0" prefWidth="260.0" style="-fx-background-color: transparent;" styleClass="btnMenu" text="Cerrar sesión" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Button fx:id="btnCerrarSesion" alignment="BOTTOM_LEFT" layoutY="16.0" mnemonicParsing="false" onAction="#onActionCerrarSesion" prefHeight="30.0" prefWidth="260.0" styleClass="btnCerrarSesion" text="Cerrar sesión" textFill="#fffdfd" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>

@@ -192,6 +192,8 @@ public class HomeController extends Component implements Initializable {
 
     private boolean flagPaneCaja=false;
     private boolean flagPaneUsuario=false;
+    private boolean flagPaneDescuentos=false;
+
 
     private int meses;
 
@@ -726,7 +728,8 @@ public class HomeController extends Component implements Initializable {
             anchorDescuentos = loader.load();
             descuentosController = loader.getController();
             descuentosController.setHomeController(this);
-
+            anchorPrincipal.getChildren().add(anchorDescuentos);
+            anchorDescuentos.toFront();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -985,6 +988,10 @@ public class HomeController extends Component implements Initializable {
         } else if (event.getSource() == btnDescuentos && pantallaActiva!=14) {
             pantallaActiva = 14;
             anchorPrincipal.toFront();
+            if(flagPaneDescuentos==false){
+                cargarDescuentos();
+                flagPaneDescuentos=true;
+            }
             anchorDescuentos.toFront();
 
 
