@@ -1482,9 +1482,9 @@ public class HomeController extends Component implements Initializable {
     @FXML
     public void onClicTomarFotografia(){
         if(pantallaActiva==17) {
-            tomarFotografia(txtcedula.getText());
+            tomarFotografia(txtcedula.getText(),0);
         }else if(pantallaActiva==18){
-            tomarFotografia(txtCedulaBusquedaCliente.getText());
+            tomarFotografia(txtCedulaBusquedaCliente.getText(),1);
         }
     }
 
@@ -1500,10 +1500,10 @@ public class HomeController extends Component implements Initializable {
         return cobro;
     }
 
-    public void tomarFotografia(String cedula) {
+    public void tomarFotografia(String cedula,int refresh) {
         Stage stage = new Stage();
 
-        WebCamAppLauncher webCam = new WebCamAppLauncher(this,cedula);
+        WebCamAppLauncher webCam = new WebCamAppLauncher(this,cedula,refresh);
         webCam.start(stage);
         stage.show();
 

@@ -50,6 +50,8 @@ import javax.swing.*;
  */
 public class WebCamAppLauncher extends Application {
 
+
+
     private class WebCamInfo {
 
         private String webCamName;
@@ -76,6 +78,7 @@ public class WebCamAppLauncher extends Application {
             return webCamName;
         }
     }
+    private int refresh;
     private int indexWeb;
     private FlowPane bottomCameraControlPane;
     private FlowPane topPane;
@@ -314,6 +317,7 @@ public class WebCamAppLauncher extends Application {
             JOptionPane.showMessageDialog(null,"Error en la conexión con la base de datos");
             e.printStackTrace();
         }
+        if(refresh==1)this.homeController.onClicRefreshFotogradiaDetalleCliente();
 //        try {
 //            BufferedImage bImage = image;
 //            ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -358,7 +362,8 @@ public class WebCamAppLauncher extends Application {
     }
 
 
-    public WebCamAppLauncher(HomeController homeController, String cedula) {
+    public WebCamAppLauncher(HomeController homeController, String cedula, int refresh) {
+        this.refresh=refresh;
         this.cedula=cedula;
         this.homeController = homeController;
     }

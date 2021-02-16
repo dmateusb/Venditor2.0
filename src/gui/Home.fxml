@@ -391,10 +391,6 @@
                                        <AnchorPane layoutX="584.0" layoutY="66.0" style="-fx-background-color: #fff;">
                                           <children>
                                              <ImageView fx:id="imageViewBusquedaCliente" fitHeight="179.0" fitWidth="245.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true" />
-                                             <Button layoutX="206.0" layoutY="132.0" mnemonicParsing="false" onAction="#onClicRefreshFotogradiaDetalleCliente" style="-fx-background-color: grey;" AnchorPane.bottomAnchor="-30.0" AnchorPane.rightAnchor="0.0">
-                                                <graphic>
-
-                                                </graphic></Button>
                                           </children>
                                        </AnchorPane>
                                        <Button fx:id="btnVerDetalleTablaDetallesClientes" disable="true" layoutX="688.0" layoutY="579.0" mnemonicParsing="false" onAction="#verDetalleContratoFromCliente" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Detalles" textFill="WHITE">
