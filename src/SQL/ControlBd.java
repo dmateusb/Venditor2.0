@@ -282,6 +282,10 @@ public class ControlBd {
         return resultado;
     }
 
+    public boolean insertarFotografia(byte[] foto, String cedula) throws SQLException {
+
+        return sen.InsertarFotoCliente(foto,cedula);
+    }
 
     public Object[][] ConsultarCliente(){
         String[] columnas={"Cedula","Nombre","Apellidos","Direccion","Telefono1","Telefono2",

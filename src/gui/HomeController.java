@@ -1501,24 +1501,30 @@ public class HomeController extends Component implements Initializable {
     }
 
     public void tomarFotografia(String cedula) {
-        Webcam cam = Webcam.getDefault();
-        Stack<String> nombrescamaras = new Stack<>();
-        List<Webcam> camaras = Webcam.getWebcams();
-        final Object lock = new Object();
-        for (Webcam webcam : camaras) {
-            nombrescamaras.add(webcam.getName());
-        }
-        cam.getDiscoveryService().setEnabled(false);
-        cam.getDiscoveryService().stop();
-        cam.close();
-        Combo combo = new Combo(lock, nombrescamaras);
-        Detener detener = new Detener(lock,sen,this);
-        detener.setCedula(cedula);
-        Thread t2 = new Thread(detener);
-        Thread t1 = new Thread(combo);
+        Stage stage = new Stage();
 
-        t2.start();
-        t1.start();
+        WebCamAppLauncher webCam = new WebCamAppLauncher(this,cedula);
+        webCam.start(stage);
+        stage.show();
+
+        //        Webcam cam = Webcam.getDefault();
+//        Stack<String> nombrescamaras = new Stack<>();
+//        List<Webcam> camaras = Webcam.getWebcams();
+//        final Object lock = new Object();
+//        for (Webcam webcam : camaras) {
+//            nombrescamaras.add(webcam.getName());
+//        }
+//        cam.getDiscoveryService().setEnabled(false);
+//        cam.getDiscoveryService().stop();
+//        cam.close();
+//        Combo combo = new Combo(lock, nombrescamaras);
+//        Detener detener = new Detener(lock,sen,this);
+//        detener.setCedula(cedula);
+//        Thread t2 = new Thread(detener);
+//        Thread t1 = new Thread(combo);
+//
+//        t2.start();
+//        t1.start();
     }
     @FXML
     public void onClicTomarHuellaDetalleCliente(){
