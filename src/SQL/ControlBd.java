@@ -294,7 +294,9 @@ public class ControlBd {
         return resultado;
     }
 
-
+    public boolean insertarEgresocaja(Caja caja) throws SQLException {
+        return sen.InsertarIngresoCaja(caja);
+    }
 
     public String consultarIdArticulo(String contrato){
         System.out.println(contrato);

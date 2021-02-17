@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.Caja;
 import logic.Descuentos;
+import logic.Usuario;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -235,13 +236,13 @@ public class FinalizarRetractoController implements Initializable {
             String subCategoria = controlBd.consultarSubcategoria(idArticulo);
             Caja caja= new Caja();
             caja.setDescripcion("Retracto " + numeroContrato);
-            float ingreso=Float.parseFloat(txtValorInicial.getText().replace(".",""));
+            float ingreso=Float.parseFloat(txtValorCobrado.getText().replace(".",""));
             caja.setIngreso(String.valueOf(ingreso));
-            float valoriniciolaala=Float.parseFloat(txtValorInicial.getText().replace(".",""));
             float utilidad=Float.parseFloat(valorCobrado)-Float.parseFloat(txtValorInicial.getText().replace(".",""));
             caja.setUtilidad(String.valueOf(utilidad));
-            caja.setTotal(String.valueOf(totalCaja+ingreso+utilidad));
-            SQL_Sentencias sentencias2= new SQL_Sentencias("root","");
+            caja.setTotal(String.valueOf(totalCaja+ingreso));
+            Usuario usuario = homeController.getUsuario();
+            SQL_Sentencias sentencias2= new SQL_Sentencias(usuario.getUsername(),usuario.getPassword()  );
             try {
                 sentencias2.InsertarRetractoCaja(caja);
             } catch (SQLException e) {
