@@ -1,0 +1,184 @@
+.btnMenu{
+    -fx-background-color: #255958;
+    -fx-background-radius:  0em;
+}
+
+.btnGris{
+    -fx-cursor: HAND;
+    -fx-background-color: #7E7D88;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-font-size:14px;
+}
+.btnRenovar:openvertically{
+    -fx-cursor: HAND;
+    -fx-background-color: #0F4C81;
+}
+.btnRenovar:openvertically .label{
+    -fx-background-color: #0F4C81;
+
+    -fx-alignment: center;
+}
+.btnRenovar.label{
+
+     -fx-alignment: center;
+ }
+.btnRenovar:openvertically .arrow-button{
+    -fx-background-color:#0F4C81 ;
+}
+.itemRenovar{
+    -fx-text-fill: white;
+    -fx-background-color: #0F4C81;
+}
+.itemRenovar:hover{
+    -fx-cursor: HAND;
+}
+
+.btnRenovar:openvertically .label {
+    -fx-background-color: #0F4C81;
+}
+.btnRenovar:openvertically .label .text{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-font-size:14px;
+}
+
+.btnRenovar:openvertically .arrow-button .arrow{
+    -fx-background-color: white;
+    -fx-fill: white;
+}
+
+.btnRenovar:openvertically .label .text{
+    -fx-fill:white;
+   // -fx-background-color:#0F4C81 ;
+}
+.achPaneGris {
+    -fx-background-color: #e2e2e2;
+
+}
+.btnclasificacion:readonly .text{
+
+}
+.btnclasificacion{
+    -fx-background-color:  #42ad78;
+    -fx-text-fill: black   ;
+
+}
+.shortCutsHome{
+    -fx-text-fill: #255958;
+    -fx-font-family: "System";
+    -fx-font-size: 20px;
+}
+
+.shortCutsHome:hover{
+    -fx-font-weight: bold;
+    -fx-cursor: HAND;
+}
+.btnNaranja{
+    -fx-cursor: HAND;
+    -fx-background-color: #B75E41;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-font-size:14px;
+}
+
+
+
+.btnAzul{
+    -fx-cursor: HAND;
+    -fx-background-color: #0F4C81;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-font-size:14px;
+}
+.btnVerde{
+     -fx-cursor: HAND;
+     -fx-background-color: #255958;
+     -fx-text-fill: #FFFFFF;
+     -fx-font-weight: bold;
+     -fx-font-family: "Open Sans Semibold";
+     -fx-font-size:14px;
+ }
+
+.btnRojo{
+         -fx-cursor: HAND;
+         -fx-background-color: #77202F;
+         -fx-text-fill: #FFFFFF;
+         -fx-font-weight: bold;
+         -fx-font-family: "Open Sans Semibold";
+         -fx-font-size:14px;
+ }
+
+.btnAzulClaro{
+    -fx-cursor: HAND;
+    -fx-background-color: #35A6A4;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-font-size:14px;
+}
+
+
+
+.campotexto{
+    -fx-background-color: white;
+}
+.textos{
+    -fx-fill: #000;
+    -fx-font-size:20px ;
+    -fx-font-family: "Open Sans Semibold";
+}
+.textosCaja{
+    -fx-fill: #000;
+    -fx-font-size:20px ;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-pref-width:100px;
+}
+.btnMenu .arrow-button{
+    -fx-opacity: 0;
+}
+.itemMenu .label{
+    -fx-font-size: 20px;
+}
+.btnMenu:hover{
+    -fx-background-color:  #35A6A4;
+
+}
+.btnCerrarSesion{
+    -fx-background-color: #255958;
+    -fx-background-radius:  0em;
+}
+.btnCerrarSesion:hover{
+    -fx-background-color:  #35A6A4;
+
+}
+
+
+
+
+.btnMenu:pressed{
+    -fx-font-size:16px;
+
+}
+
+
+.btnMenu:focused{
+    -fx-background-color: #35A6A4;
+    -fx-text-fill: #FFFFFF;
+}
+
+.titulos{
+    -fx-font-size:36px;
+    -fx-font-weight: bold;
+}
+
+.subTitulos{
+    -fx-font-size:26px;
+    -fx-font-weight: bold;
+}
+
+
