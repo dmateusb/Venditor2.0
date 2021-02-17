@@ -93,8 +93,26 @@ public class CajaController {
         Object[][] Cajas=control.consultarCajaFecha(fechaCaja);
         Object[][] CajasTotal=control.consultarCaja();
 
-
-        if(Cajas[0][0]==null){
+        if(Cajas==null){
+            txtEgresos.setText("0");
+            txtIngresos.setText("0");
+            txtUtilidades.setText("0");
+            if(CajasTotal.length==0){
+                txtInicioCaja.setText("0");
+                txtEfectivo.setText("0");
+            }else{
+                Object[][] cajaAntesDeFecha = control.consultarCajaAntesDeFecha(fechaCaja);
+                int cota = cajaAntesDeFecha.length-1;
+                while(cajaAntesDeFecha[cota][6]==null){
+                    cota=cota-1;
+                }
+                inicioCaja = Long.valueOf(cajaAntesDeFecha[cota][6].toString());
+                txtInicioCaja.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
+                txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
+            }
+            return;
+        }
+        if(Cajas.length==0){
             txtEgresos.setText("0");
             txtIngresos.setText("0");
             txtUtilidades.setText("0");

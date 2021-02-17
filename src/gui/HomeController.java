@@ -37,6 +37,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -187,7 +188,7 @@ public class HomeController extends Component implements Initializable {
     @FXML private TableColumn<Contrato,String> columnaEstadoBusquedaClientes;
     @FXML private TableColumn<Cliente, Integer> ColumnaCedulaCliente;
     @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
-
+    @FXML private HBox HBoxPrincipal;
     @FXML private Label lblNumeroContrato;
 
     private boolean flagPaneCaja=false;
@@ -703,8 +704,10 @@ public class HomeController extends Component implements Initializable {
             LocalDate now = LocalDate.now();
             String fechaHoy = String.valueOf(now);
             cajaController.llenarTabla(fechaHoy);
-            anchorPrincipal.getChildren().add(anchorCaja);
-            anchorCaja.toFront();
+            HBoxPrincipal.getChildren().add(anchorCaja);
+            anchorPrincipal.toFront();
+            HBoxPrincipal.toFront();
+            //anchorCaja.toFront();
         } catch (IOException e) {
             e.printStackTrace();
         }
