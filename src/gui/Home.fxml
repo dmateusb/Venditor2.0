@@ -948,7 +948,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                            <graphic>
-                              <FontAwesomeIconView fill="WHITE" glyphName="USER" size="18" />
+
                            </graphic>
                         </Button>
                      </children>
