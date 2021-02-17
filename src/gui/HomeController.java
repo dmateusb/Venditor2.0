@@ -520,8 +520,9 @@ public class HomeController extends Component implements Initializable {
             String precio = valor.replace(".", "");
 
 
-            String contratoNuevo = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo,Integer.parseInt(precio),
-                    Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
+            String contratoNuevo = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).
+                    InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo,Integer.parseInt(precio),
+                    Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,this.usuario.getUsername());
             if(contratoNuevo.length()!=0){
                 controlBd.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
                 mostrarTablaInicial();
@@ -1000,11 +1001,8 @@ public class HomeController extends Component implements Initializable {
         } else if (event.getSource() == btncaja && pantallaActiva!=16) {
             pantallaActiva=16;
             anchorPrincipal.toFront();
+            cargarCaja();
 
-            if(flagPaneCaja==false){
-                cargarCaja();
-                flagPaneCaja=true;
-            }
 
         } else if (event.getSource() == btnnuevocliente && pantallaActiva != 17) {
             pantallaActiva = 17;

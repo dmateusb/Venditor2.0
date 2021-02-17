@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import logic.Caja;
+import logic.Usuario;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -124,16 +126,15 @@ public class AgregarGastoController implements Initializable{
             return;
         }
 
-        ControlBd controlBd = new ControlBd(usuario,password);
-        float totalCaja=controlBd.ConsultarTotalCaja();
+        float totalCaja=this.homeController.getControlBd().ConsultarTotalCaja();
 
         Caja caja= new Caja();
         caja.setDescripcion("Retiro Capital");
         caja.setEgreso(dinero);
         caja.setTotal(String.valueOf(totalCaja-Float.valueOf(dinero)));
         caja.setUsuario(usuario);
-
-        SQL_Sentencias sentencias2= new SQL_Sentencias("root","");
+        Usuario usuario = homeController.getUsuario();
+        SQL_Sentencias sentencias2= new SQL_Sentencias(usuario.getUsername(),usuario.getPassword());
         try {
             sentencias2.InsertarIngresoCaja(caja);
             homeController.mostrarInformacion("Gasto agregado", "Se completó un retiro de caja de "+txtDinero.getText());
