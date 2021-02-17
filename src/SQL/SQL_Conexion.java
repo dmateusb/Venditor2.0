@@ -41,7 +41,11 @@ public class SQL_Conexion {
          }
      
     }
-    
+
+    public SQL_Conexion() {
+
+    }
+
     public boolean SQL_Conexion(String user, String pass) {
      try{
          Class.forName("com.mysql.jdbc.Driver");

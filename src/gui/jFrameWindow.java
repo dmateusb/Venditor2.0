@@ -205,8 +205,7 @@ public class jFrameWindow extends JFrame  {
     private BufferedImage image=null;
     private static String cedula;
     private Object lock;
-    private SQL_Sentencias sen=new SQL_Sentencias(this.homeController.getUsuario().getUsername(),
-            this.homeController.getUsuario().getPassword());
+    private SQL_Sentencias sen=new SQL_Sentencias();
     public jFrameWindow() {
 
         webcam = getCameraByName(Procedimientos.getNombreCamara());
@@ -259,8 +258,7 @@ public class jFrameWindow extends JFrame  {
                     ex.printStackTrace();
                 }
                 try {
-                    sen.setCon(new SQL_Conexion(homeController.getUsuario().getUsername(),
-                            homeController.getUsuario().getPassword()));
+                    sen.setCon(new SQL_Conexion());
                     sen.InsertarFotoCliente(data, cedula);
                     JOptionPane.showMessageDialog(null,"Foto insertada exitosamente");
                 } catch (SQLException ex) {

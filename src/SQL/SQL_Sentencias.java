@@ -34,6 +34,10 @@ public class SQL_Sentencias {
         this.pass = pass;
     }
 
+    public SQL_Sentencias() {
+
+    }
+
     public  boolean crearUsuarioBd(String user, String password) throws SQLException {
         boolean flag=false;
         try {
