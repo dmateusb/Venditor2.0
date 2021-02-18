@@ -91,10 +91,12 @@ public class HomeController extends Component implements Initializable {
     @FXML private AnchorPane anchorTablaContratos;
     @FXML private AnchorPane aPimgClienteNuevaRetroventa;
     @FXML private AnchorPane anchorCaja= new AnchorPane();
+    @FXML private AnchorPane anchorCajaAdmin= new AnchorPane();
     @FXML private AnchorPane anchorUsuarios= new AnchorPane();
     @FXML private AnchorPane anchorImpresion=new AnchorPane();
     @FXML private AnchorPane anchorDescuentos= new AnchorPane();
     @FXML private AnchorPane anchorPrincipal;
+    @FXML private AnchorPane cajaAdmin;
     @FXML private AnchorPane paneNuevoCliente;
     @FXML private Button btnFotoNuevoCliente;
     @FXML private Button btnCrearRetroventa;
@@ -189,6 +191,7 @@ public class HomeController extends Component implements Initializable {
     @FXML private TableColumn<Cliente, Integer> ColumnaCedulaCliente;
     @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
     @FXML private HBox HBoxPrincipal;
+    @FXML private HBox HBoxPrincipalCajaAdmin;
     @FXML private Label lblNumeroContrato;
 
     private boolean flagPaneCaja=false;
@@ -201,21 +204,13 @@ public class HomeController extends Component implements Initializable {
     public TextField getTxtEstado_DetalleContrato() {
         return txtEstado_DetalleContrato;
     }
-
-    @FXML
-    private TableColumn<Cliente, String> ColumnaApellidosCliente;
-
-    @FXML
-    private TableColumn<Cliente, String> ColumnaDireccionCliente;
-
-    @FXML
-    private TableColumn<Cliente, String> ColumnaTelefono1Cliente;
-
-    @FXML
-    private TableColumn<Cliente, String> ColumnaTelefono2Cliente;
-
-    @FXML
-    private TableColumn<Cliente, String> ColumnaCorreoCliente;
+    @FXML private TableColumn<Cliente, String> ColumnaApellidosCliente;
+    @FXML private TableColumn<Cliente, String> ColumnaDireccionCliente;
+    @FXML private TableColumn<Cliente, String> ColumnaTelefono1Cliente;
+    @FXML private TableColumn<Cliente, String> ColumnaTelefono2Cliente;
+    @FXML private TableColumn<Cliente, String> ColumnaCorreoCliente;
+    @FXML private TableColumn<Cliente, String> ColumnaHuellaCliente;
+    @FXML private TableColumn<Cliente, String> ColumnaFotoCliente;
     @FXML private Cliente clienteEscogidoTabla;
     @FXML private Contrato contratoEscogidoTabla;
     @FXML private Contrato contratoEscogidoTablaDetalles;
@@ -269,6 +264,7 @@ public class HomeController extends Component implements Initializable {
     @FXML public Button btnRetractarContrato;
 
     private CajaController cajaController;
+    private CajaAdminController cajaAdminController;
     private UsuarioController usuarioController;
     private ImpresionController impresionController;
     private DescuentosController descuentosController;
@@ -685,33 +681,75 @@ public class HomeController extends Component implements Initializable {
 
 
         anchorPrincipal.getChildren().add(anchorCaja);
+        anchorPrincipal.getChildren().add(anchorCajaAdmin);
         anchorPrincipal.getChildren().add(anchorImpresion);
         anchorPrincipal.getChildren().add(anchorDescuentos);
         //anchorPrincipal.getChildren().add(anchorUsuarios);
     }
     private void cargarCaja(){
-        try {
-            FXMLLoader loader= new FXMLLoader(getClass().getResource("/gui/Caja.fxml"));
-            anchorCaja= loader.load();
-            cajaController= loader.getController();
-            cajaController.setHomeController(this);
-            if (Procedimientos.estadoCaja(this).equals("Cerrada")) {
-                cajaController.btnRetiroCapital.setDisable(true);
-                cajaController.btnIngresoCapital.setDisable(true);
-                cajaController.btnCerrarCaja.setDisable(true);
-            } else {
-                cajaController.btnAbrirCaja.setVisible(false);
+        if(cajaController==null){
+            try {
+                FXMLLoader loader= new FXMLLoader(getClass().getResource("/gui/Caja.fxml"));
+                anchorCaja= loader.load();
+                cajaController= loader.getController();
+                cajaController.setHomeController(this);
+                if (Procedimientos.estadoCaja(this).equals("Cerrada")) {
+                    cajaController.btnRetiroCapital.setDisable(true);
+                    cajaController.btnIngresoCapital.setDisable(true);
+                    cajaController.btnCerrarCaja.setDisable(true);
+                } else {
+                    cajaController.btnAbrirCaja.setVisible(false);
+                }
+                LocalDate now = LocalDate.now();
+                String fechaHoy = String.valueOf(now);
+                cajaController.llenarTabla(fechaHoy);
+                HBoxPrincipal.getChildren().removeAll();
+                HBoxPrincipal.getChildren().add(anchorCaja);
+                anchorPrincipal.toFront();
+                HBoxPrincipal.toFront();
+                anchorCaja.toFront();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            LocalDate now = LocalDate.now();
-            String fechaHoy = String.valueOf(now);
-            cajaController.llenarTabla(fechaHoy);
-            HBoxPrincipal.getChildren().add(anchorCaja);
+        }else{
             anchorPrincipal.toFront();
             HBoxPrincipal.toFront();
-            //anchorCaja.toFront();
-        } catch (IOException e) {
-            e.printStackTrace();
+            anchorCaja.toFront();
         }
+
+    }
+
+    private void cargarCajaAdmin(){
+        if(cajaAdminController==null){
+            try {
+                FXMLLoader loader= new FXMLLoader(getClass().getResource("/gui/CajaAdmin.fxml"));
+                anchorCajaAdmin= loader.load();
+                cajaAdminController= loader.getController();
+                cajaAdminController.setHomeController(this);
+                if (Procedimientos.estadoCaja(this).equals("Cerrada")) {
+                    cajaAdminController.btnRetiroCapital.setDisable(true);
+                    cajaAdminController.btnIngresoCapital.setDisable(true);
+                    cajaAdminController.btnCerrarCaja.setDisable(true);
+                } else {
+                    cajaAdminController.btnAbrirCaja.setVisible(false);
+                }
+                LocalDate now = LocalDate.now();
+                String fechaHoy = String.valueOf(now);
+                cajaAdminController.llenarTabla(fechaHoy);
+                HBoxPrincipalCajaAdmin.getChildren().removeAll();
+                HBoxPrincipalCajaAdmin.getChildren().add(anchorCajaAdmin);
+                cajaAdmin.toFront();
+                HBoxPrincipalCajaAdmin.toFront();
+                anchorCajaAdmin.toFront();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            cajaAdmin.toFront();
+            HBoxPrincipalCajaAdmin.toFront();
+            anchorCajaAdmin.toFront();
+        }
+
     }
 
     private void cargarImpresion() {
@@ -977,6 +1015,10 @@ public class HomeController extends Component implements Initializable {
         } else if (event.getSource() == btnbalance) {
 
         } else if (event.getSource() == btnaportesoretiro) {
+            pantallaActiva=10;
+            anchorPrincipal.toFront();
+            cargarCajaAdmin();
+
 
         } else if (event.getSource() == btnestadistica) {
 
@@ -2258,14 +2300,24 @@ public class HomeController extends Component implements Initializable {
     public void mostrarTablaInicial_Clientes(){
 
         Object[][] Clientes = controlBd.ConsultarCliente();
+        String Foto;
+        String Huella;
         for(int i=0;i<Clientes.length;i++){
+            Foto = "true";
+            Huella = "true";
             if (Clientes[i][0] != null && Clientes[i][1] != null && Clientes[i][2] != null&& Clientes[i][3] != null
                     && Clientes[i][4] != null&& Clientes[i][5] != null&& Clientes[i][6] != null
                     && Clientes[i][7] != null&& Clientes[i][8] != null&& Clientes[i][9] != null) {
+                if(Clientes[i][10]==null){
+                    Huella = "false";
+                }
+                if(Clientes[i][11]==null){
+                        Foto = "false";
+                    }
                 Cliente cliente= new Cliente(Integer.parseInt(Clientes[i][0].toString()),Clientes[i][1].toString(),
                         Clientes[i][2].toString(),Clientes[i][3].toString(),Clientes[i][4].toString(),
                         Clientes[i][5].toString(),Clientes[i][6].toString(),Clientes[i][7].toString(),Clientes[i][8].toString()
-                        ,Clientes[i][9].toString());
+                        ,Clientes[i][9].toString(),Huella,Foto);
                 arrayClientes.add(cliente);
             }
         }
@@ -2278,21 +2330,94 @@ public class HomeController extends Component implements Initializable {
         ColumnaTelefono1Cliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaTelefono1Cliente"));
         ColumnaTelefono2Cliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaTelefono2Cliente"));
         ColumnaCorreoCliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaCorreoCliente"));
+        ColumnaHuellaCliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaHuellaCliente"));
+        ColumnaFotoCliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaFotoCliente"));
         Tabla_BusquedaClientes.setItems(listaClientes);
         listaClientes.removeAll();
+        ColumnaHuellaCliente.setCellFactory(new Callback<TableColumn<Cliente, String>, TableCell<Cliente, String>>()
+        {
+            @Override
+            public TableCell<Cliente, String> call(
+                    TableColumn<Cliente, String> param)
+            {
+                return new TableCell<Cliente, String>()
+                {
+                    @Override
+                    protected void updateItem(String item, boolean empty)
+                    {
+                        if (!empty)
+                        {
+                            // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                            boolean isDeposit = true;
+                            char val = '█';
+                            setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                            if(item.toString().equals("true")) // should be if type is deposit
+                            {
+                                setTextFill(Color.GREEN);
+                                //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                            }else{
+                                setTextFill(Color.RED);
+                            }
+                        }
+                    }
+                };
+            }
+        });
+        ColumnaFotoCliente.setCellFactory(new Callback<TableColumn<Cliente, String>, TableCell<Cliente, String>>()
+        {
+            @Override
+            public TableCell<Cliente, String> call(
+                    TableColumn<Cliente, String> param)
+            {
+                return new TableCell<Cliente, String>()
+                {
+                    @Override
+                    protected void updateItem(String item, boolean empty)
+                    {
+                        if (!empty)
+                        {
+                            // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                            boolean isDeposit = true;
+                            char val = '█';
+                            setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                            if(item.toString().equals("true")) // should be if type is deposit
+                            {
+                                setTextFill(Color.GREEN);
+                                //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                            }else{
+                                setTextFill(Color.RED);
+                            }
+                        }
+                    }
+                };
+            }
+        });
+
         arrayClientes.removeAll(listaClientes);
     }
 
+
+
     public void mostrarTablaClientesPorCedula(){
         Object[][] ClientesLikeCedula = controlBd.ConsultarClientesLikeCedula(txtBusquedaCliente.getText());
+        String Foto;
+        String Huella;
         for (int i = 0; i < ClientesLikeCedula.length; i++) {
+            Foto = "true";
+            Huella = "true";
             if (ClientesLikeCedula[i][0] != null && ClientesLikeCedula[i][1] != null && ClientesLikeCedula[i][2] != null&& ClientesLikeCedula[i][3] != null
                     && ClientesLikeCedula[i][4] != null&& ClientesLikeCedula[i][5] != null&& ClientesLikeCedula[i][6] != null
                     && ClientesLikeCedula[i][7] != null&& ClientesLikeCedula[i][8] != null&& ClientesLikeCedula[i][9] != null) {
+                if(ClientesLikeCedula[i][10]==null){
+                    Huella = "false";
+                }
+                if(ClientesLikeCedula[i][11]==null){
+                    Foto = "false";
+                }
                 Cliente cliente= new Cliente(Integer.parseInt(ClientesLikeCedula[i][0].toString()),ClientesLikeCedula[i][1].toString(),
                         ClientesLikeCedula[i][2].toString(),ClientesLikeCedula[i][3].toString(),ClientesLikeCedula[i][4].toString(),
                         ClientesLikeCedula[i][5].toString(),ClientesLikeCedula[i][6].toString(),ClientesLikeCedula[i][7].toString(),ClientesLikeCedula[i][8].toString()
-                        ,ClientesLikeCedula[i][9].toString());
+                        ,ClientesLikeCedula[i][9].toString(),Huella,Foto);
                 arrayClientes.add(cliente);
             }
         }
@@ -2304,8 +2429,69 @@ public class HomeController extends Component implements Initializable {
         ColumnaTelefono1Cliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaTelefono1Cliente"));
         ColumnaTelefono2Cliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaTelefono2Cliente"));
         ColumnaCorreoCliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaCorreoCliente"));
+        ColumnaHuellaCliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaHuellaCliente"));
+        ColumnaFotoCliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ColumnaFotoCliente"));
         Tabla_BusquedaClientes.setItems(listaClientes);
         listaClientes.removeAll();
+        ColumnaHuellaCliente.setCellFactory(new Callback<TableColumn<Cliente, String>, TableCell<Cliente, String>>()
+        {
+            @Override
+            public TableCell<Cliente, String> call(
+                    TableColumn<Cliente, String> param)
+            {
+                return new TableCell<Cliente, String>()
+                {
+                    @Override
+                    protected void updateItem(String item, boolean empty)
+                    {
+                        if (!empty)
+                        {
+                            // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                            boolean isDeposit = true;
+                            char val = '█';
+                            setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                            if(item.toString().equals("true")) // should be if type is deposit
+                            {
+                                setTextFill(Color.GREEN);
+                                //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                            }else{
+                                setTextFill(Color.RED);
+                            }
+                        }
+                    }
+                };
+            }
+        });
+        ColumnaFotoCliente.setCellFactory(new Callback<TableColumn<Cliente, String>, TableCell<Cliente, String>>()
+        {
+            @Override
+            public TableCell<Cliente, String> call(
+                    TableColumn<Cliente, String> param)
+            {
+                return new TableCell<Cliente, String>()
+                {
+                    @Override
+                    protected void updateItem(String item, boolean empty)
+                    {
+                        if (!empty)
+                        {
+                            // should be something like (transaction.getType().equals(TransactionTypes.DEPOSIT) ? true : false;)
+                            boolean isDeposit = true;
+                            char val = '█';
+                            setText(String.valueOf(val)+String.valueOf(val)+String.valueOf(val)+String.valueOf(val));
+                            if(item.toString().equals("true")) // should be if type is deposit
+                            {
+                                setTextFill(Color.GREEN);
+                                //setFont(Font.font ("Verdana", FontWeight.BOLD,14));
+                            }else{
+                                setTextFill(Color.RED);
+                            }
+                        }
+                    }
+                };
+            }
+        });
+
         arrayClientes.removeAll(listaClientes);
     }
     //Mostrar la tabla de contratos de un determinado Cliete

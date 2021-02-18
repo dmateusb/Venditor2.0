@@ -13,8 +13,13 @@ public class Cliente {
     private String ColumnaPerfilCliente;
     private String ColumnaFechaRegistroCliente;
     private String ColumnaUsuarioCliente;
+    private String ColumnaFotoCliente;
+    private String ColumnaHuellaCliente;
 
-    public Cliente(Integer columnaCedulaCliente, String columnaNombreCliente, String columnaApellidosCliente, String columnaDireccionCliente, String columnaTelefono1Cliente, String columnaTelefono2Cliente, String columnaCorreoCliente, String columnaPerfilCliente, String columnaFechaRegistroCliente, String columnaUsuarioCliente) {
+
+    public Cliente(Integer columnaCedulaCliente, String columnaNombreCliente, String columnaApellidosCliente, String columnaDireccionCliente,
+                   String columnaTelefono1Cliente, String columnaTelefono2Cliente, String columnaCorreoCliente, String columnaPerfilCliente,
+                   String columnaFechaRegistroCliente, String columnaUsuarioCliente) {
         ColumnaCedulaCliente = columnaCedulaCliente;
         ColumnaNombreCliente = columnaNombreCliente;
         ColumnaApellidosCliente = columnaApellidosCliente;
@@ -25,6 +30,39 @@ public class Cliente {
         ColumnaPerfilCliente = columnaPerfilCliente;
         ColumnaFechaRegistroCliente = columnaFechaRegistroCliente;
         ColumnaUsuarioCliente = columnaUsuarioCliente;
+    }
+
+    public Cliente(Integer columnaCedulaCliente, String columnaNombreCliente, String columnaApellidosCliente, String columnaDireccionCliente,
+                   String columnaTelefono1Cliente, String columnaTelefono2Cliente, String columnaCorreoCliente, String columnaPerfilCliente,
+                   String columnaFechaRegistroCliente, String columnaUsuarioCliente, String Huella, String Foto) {
+        ColumnaCedulaCliente = columnaCedulaCliente;
+        ColumnaNombreCliente = columnaNombreCliente;
+        ColumnaApellidosCliente = columnaApellidosCliente;
+        ColumnaDireccionCliente = columnaDireccionCliente;
+        ColumnaTelefono1Cliente = columnaTelefono1Cliente;
+        ColumnaTelefono2Cliente = columnaTelefono2Cliente;
+        ColumnaCorreoCliente = columnaCorreoCliente;
+        ColumnaPerfilCliente = columnaPerfilCliente;
+        ColumnaFechaRegistroCliente = columnaFechaRegistroCliente;
+        ColumnaUsuarioCliente = columnaUsuarioCliente;
+        ColumnaHuellaCliente = Huella;
+        ColumnaFotoCliente = Foto;
+    }
+
+    public String getColumnaHuellaCliente() {
+        return ColumnaHuellaCliente;
+    }
+
+    public void setColumnaHuellaCliente(String columnaHuellaCliente) {
+        ColumnaHuellaCliente = columnaHuellaCliente;
+    }
+
+    public String getColumnaFotoCliente() {
+        return ColumnaFotoCliente;
+    }
+
+    public void setColumnaFotoCliente(String columnaFotoCliente) {
+        ColumnaFotoCliente = columnaFotoCliente;
     }
 
     public Integer getColumnaCedulaCliente() {

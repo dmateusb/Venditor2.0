@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class CajaController {
-    @FXML private TableView<Caja> TablaCaja;
+public class CajaAdminController {
+    @FXML private TableView<Caja> TablaCajaAdmin;
     @FXML private TableColumn<Caja, String> fecha;
     @FXML private TableColumn<Caja, String> descripcion;
     @FXML private TableColumn<Caja, Float> ingreso;
@@ -71,7 +71,7 @@ public class CajaController {
         ingreso.setCellValueFactory(new PropertyValueFactory<Caja, Float>("ingreso"));
         egreso.setCellValueFactory(new PropertyValueFactory<Caja, Float>("egreso"));
         utilidad.setCellValueFactory(new PropertyValueFactory<Caja, Float>("utilidad"));
-        TablaCaja.setItems(listaCajas);
+        TablaCajaAdmin.setItems(listaCajas);
         listaCajas.removeAll();
         arrayCajas.removeAll(listaCajas);
         LocalDate now = LocalDate.now();
@@ -131,14 +131,10 @@ public class CajaController {
             }
 
         }else{
-            if(Cajas[0][0]==null){
-                txtInicioCaja.setText("0");
-            }else{
-                int lastId = Integer.parseInt(Cajas[0][0].toString());
-                Object[][] cajaParaTotal = control.consultarCajaId(String.valueOf(lastId));
-                inicioCaja = Long.valueOf(cajaParaTotal[0][6].toString());
-                txtInicioCaja.setText(String.valueOf(inicioCaja));
-            }
+            int lastId = Integer.parseInt(Cajas[0][0].toString());
+            Object[][] cajaParaTotal = control.consultarCajaId(String.valueOf(lastId));
+            inicioCaja = Long.valueOf(cajaParaTotal[0][6].toString());
+            txtInicioCaja.setText(String.valueOf(inicioCaja));
         }
 
         for(int i=0;i<Cajas.length;i++){
@@ -186,7 +182,7 @@ public class CajaController {
         ingreso.setCellValueFactory(new PropertyValueFactory<Caja, Float>("ingreso"));
         egreso.setCellValueFactory(new PropertyValueFactory<Caja, Float>("egreso"));
         utilidad.setCellValueFactory(new PropertyValueFactory<Caja, Float>("utilidad"));
-        TablaCaja.setItems(listaCajas);
+        TablaCajaAdmin.setItems(listaCajas);
         listaCajas.removeAll();
         arrayCajas.removeAll(listaCajas);
     }
@@ -213,7 +209,7 @@ public class CajaController {
         stage.show();
         IngresoCapitalController ingresarCapital  = loader.getController();
         ingresarCapital.setHomeController(homeController);
-        ingresarCapital.setCajaController(this);
+        ingresarCapital.setCajaAdminController(this);
         ingresarCapital.setUsuario(usuarioBD);
         ingresarCapital.setPassword(passwordBD);
 
@@ -265,7 +261,7 @@ public class CajaController {
         stage.show();
         AgregarGastoController agregarGasto  = loader.getController();
         agregarGasto.setHomeController(homeController);
-        agregarGasto.setCajaController(this);
+        agregarGasto.setCajaAdminController(this);
         agregarGasto.setUsuario(usuarioBD);
         agregarGasto.setPassword(passwordBD);
     }

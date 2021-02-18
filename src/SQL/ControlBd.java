@@ -107,8 +107,9 @@ public class ControlBd {
     }
 
      public Object[][] consultarCaja(){
+        SQL_Sentencias sentencias = new SQL_Sentencias(this.user,this.pass);
         String[] columnas={"Id","Fecha","Descripcion","Ingreso","Egreso","Utilidad","Total","Usuario"};
-        Object[][] resultado = sen.GetTabla(columnas, "caja",
+        Object[][] resultado = sentencias.GetTabla(columnas, "caja",
                 "select Id,Fecha,Descripcion,Ingreso,Egreso,Utilidad,Total,Usuario FROM caja;");
         return  resultado;
     }
@@ -131,8 +132,9 @@ public class ControlBd {
         return  resultado;
     }
     public float ConsultarTotalCaja(){
+        SQL_Sentencias sentencias = new SQL_Sentencias(this.user,this.pass);
          String[] columnas={"Total"};
-         Object[][] resultado = sen.GetTabla(columnas, "caja",
+         Object[][] resultado = sentencias.GetTabla(columnas, "caja",
                  "select Total FROM caja ORDER BY id DESC LIMIT 1;");
          if(resultado.length==0) return 0;
          String aux= (String) resultado[0][0];
@@ -289,7 +291,7 @@ public class ControlBd {
 
     public Object[][] ConsultarCliente(){
         String[] columnas={"Cedula","Nombre","Apellidos","Direccion","Telefono1","Telefono2",
-                "Correo","Perfil","Fecha_registro","Usuario"};
+                "Correo","Perfil","Fecha_registro","Usuario","Huella","Foto"};
         Object[][] resultado = sen.GetTabla(columnas, "clientes", "select * FROM clientes");
         return resultado;
     }
@@ -336,7 +338,7 @@ public class ControlBd {
     public Object[][] ConsultarClientesLikeCedula(String cedulaString){
         String cedula = cedulaString.replace(".","");
         String[] columnas={"Cedula","Nombre","Apellidos","Direccion","Telefono1","Telefono2",
-                "Correo","Perfil","Fecha_registro","Usuario"};
+                "Correo","Perfil","Fecha_registro","Usuario","Huella","Foto"};
         Object[][] resultado= sen.GetTabla(columnas,"clientes","select * from clientes where cedula like '%"+cedula+"%';");
         return  resultado;
     }
