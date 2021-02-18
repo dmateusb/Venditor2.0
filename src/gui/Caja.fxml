@@ -13,11 +13,11 @@
       <TableView fx:id="TablaCaja" layoutX="46.0" layoutY="180.0" prefHeight="417.0" prefWidth="942.0" AnchorPane.bottomAnchor="123.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="180.0">
         <columns>
             <TableColumn fx:id="id" prefWidth="43.666664123535156" text="ID" />
-          <TableColumn fx:id="fecha" prefWidth="161.60000610351562" text="Fecha" />
-          <TableColumn fx:id="descripcion" prefWidth="207.20001220703125" text="Descripción" />
-            <TableColumn fx:id="egreso" prefWidth="170.0" text="(1)" />
+          <TableColumn fx:id="fecha" prefWidth="124.0" text="Fecha" />
+          <TableColumn fx:id="descripcion" prefWidth="259.0" text="Descripción" />
+            <TableColumn fx:id="egreso" prefWidth="185.0" text="(1)" />
             <TableColumn fx:id="ingreso" prefWidth="170.0" text="(2)" />
-            <TableColumn fx:id="utilidad" prefWidth="170.0" text="(3)" />
+            <TableColumn fx:id="utilidad" prefWidth="173.0" text="(3)" />
         </columns>
       </TableView>
       <Text layoutX="473.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="CAJA" AnchorPane.bottomAnchor="645.96484375" AnchorPane.leftAnchor="473.0" AnchorPane.rightAnchor="457.87890625" AnchorPane.topAnchor="26.15234375" />

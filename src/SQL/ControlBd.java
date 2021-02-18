@@ -69,7 +69,7 @@ public class ControlBd {
                 " VALUES (?,?);");
     }
 
-    public boolean insertEgresoRetroventa(Caja caja){
+    public boolean insertCaja(Caja caja){
         String campos[]={caja.getDescripcion(),String.valueOf(caja.getIngreso()),
         String.valueOf(caja.getEgreso()),String.valueOf(caja.getUtilidad()),
         String.valueOf(caja.getTotal())};
