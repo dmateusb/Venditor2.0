@@ -19,6 +19,7 @@ public class IngresoCapitalController implements Initializable {
     @FXML private TextField txtDinero = new TextField();
     private HomeController homeController;
     private CajaController cajaController;
+    private CajaAdminController cajaAdminController;
     private String usuario;
     private String password;
 
@@ -52,6 +53,14 @@ public class IngresoCapitalController implements Initializable {
 
     public void setCajaController(CajaController cajaController) {
         this.cajaController = cajaController;
+    }
+
+    public CajaAdminController getCajaAdminController() {
+        return cajaAdminController;
+    }
+
+    public void setCajaAdminController(CajaAdminController cajaAdminController) {
+        this.cajaAdminController = cajaAdminController;
     }
 
     public void TextFormater(TextField textField){
@@ -145,7 +154,16 @@ public class IngresoCapitalController implements Initializable {
         }
         LocalDate now = LocalDate.now();
         String fechaHoy = String.valueOf(now);
-        cajaController.llenarTabla(fechaHoy);
+        try{
+            cajaAdminController.llenarTabla(fechaHoy);
+        }catch(Exception e){
+
+        }
+        try{
+            cajaController.llenarTabla(fechaHoy);
+        }catch(Exception e){
+
+        }
         Stage stage = (Stage) txtDinero.getScene().getWindow();
         stage.close();
     }
