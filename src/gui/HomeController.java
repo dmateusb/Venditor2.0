@@ -775,9 +775,7 @@ public class HomeController extends Component implements Initializable {
                 } else {
                     cajaController.btnAbrirCaja.setVisible(false);
                 }
-                LocalDate now = LocalDate.now();
-                String fechaHoy = String.valueOf(now);
-                cajaController.llenarTabla(fechaHoy);
+                cajaController.llenarTabla(String.valueOf(LocalDate.now()));
                 HBoxPrincipal.getChildren().removeAll();
                 HBoxPrincipal.getChildren().add(anchorCaja);
                 anchorPrincipal.toFront();
@@ -790,6 +788,7 @@ public class HomeController extends Component implements Initializable {
             anchorPrincipal.toFront();
             HBoxPrincipal.toFront();
             anchorCaja.toFront();
+            cajaController.llenarTabla(String.valueOf(LocalDate.now()));
         }
 
     }
@@ -1118,8 +1117,8 @@ public class HomeController extends Component implements Initializable {
 
         } else if (event.getSource() == btnbackup) {
 
-        } else if (event.getSource() == btncaja && pantallaActiva!=16) {
-            pantallaActiva=16;
+        } else if (event.getSource() == btncaja) {
+            //pantallaActiva=16;
             anchorPrincipal.toFront();
             cargarCaja();
 
@@ -1571,15 +1570,16 @@ public class HomeController extends Component implements Initializable {
             String ArticuloId = InsertarNuevoArticulo(comboCategoria,comboSubcategoria,txtDescripcionArticulo,
                     txtPesoArticulo,txtValorArticulo);
             String precio = txtValorArticulo.getText().replace(".", "");
+            float egreso=redondearA50(Float.parseFloat(precio));
+            Caja caja = new Caja(
+                    "Retroventa "+txtNumeroContrato_DetalleContrato.getText(),
+                    "0",String.valueOf(egreso),"0",
+                    String.valueOf(controlBd.ConsultarTotalCaja()-egreso));
+            if (!controlBd.insertCaja(caja)) return;
             boolean success = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarNuevoContrato(txtcedulaNuevaRetroventa.getText(), ArticuloId, Integer.parseInt(precio),
                     Double.parseDouble(SpinnerPorcentaje.getValue().toString()), vencimiento, sen.getUser());
             if (success && ArticuloId!=null) {
-                float egreso=redondearA50(Float.parseFloat(precio));
-                Caja caja = new Caja(
-                        "Retroventa "+txtNumeroContrato_DetalleContrato.getText(),
-                        "0",String.valueOf(egreso),"0",
-                        String.valueOf(controlBd.ConsultarTotalCaja()-egreso));
-                controlBd.insertCaja(caja);
+
                 CambiarCliente();
                 onClicBorrarArticuloNuevaRetroventa();
             }

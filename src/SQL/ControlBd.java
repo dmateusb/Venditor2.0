@@ -5,7 +5,10 @@
  */
 package SQL;
 
+import gui.HomeController;
 import logic.Caja;
+import logic.Home;
+import logic.Procedimientos;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,11 +72,17 @@ public class ControlBd {
                 " VALUES (?,?);");
     }
 
-    public boolean insertCaja(Caja caja){
+    public boolean insertCaja(Caja caja) {
+        if (Double.valueOf(caja.getTotal()) < 0) {
+            HomeController.mostrarAlerta("Error", "No se puede completar la transacción porque " +
+                    "no hay dinero suficiente en la caja");
+            return false;
+        }
         String campos[]={caja.getDescripcion(),String.valueOf(caja.getIngreso()),
         String.valueOf(caja.getEgreso()),String.valueOf(caja.getUtilidad()),
         String.valueOf(caja.getTotal())};
-        return sen.insertarEgresoRetroventa(campos, "insert into Caja (descripcion,ingreso,egreso,utilidad,total,usuario)" +
+        return sen.insertarEgresoRetroventa(campos, "insert into Caja " +
+                "(descripcion,ingreso,egreso,utilidad,total,usuario)" +
                 " VALUES (?,?,?,?,?,?);");
     }
     //Existencias
