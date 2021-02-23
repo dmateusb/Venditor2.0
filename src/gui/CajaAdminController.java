@@ -40,9 +40,7 @@ public class CajaAdminController {
     @FXML public Button btnCerrarCaja;
     @FXML public Button btnAbrirCaja;
     ArrayList<Caja> arrayCajas= new ArrayList<>();
-
-    String usuarioBD ="root";
-    String passwordBD ="";
+    
 
     public ObservableList<Caja> listaCajas;
 
@@ -209,17 +207,18 @@ public class CajaAdminController {
         stage.show();
         IngresoCapitalController ingresarCapital  = loader.getController();
         ingresarCapital.setHomeController(homeController);
+homeController.getUsuario().getPassword();
         ingresarCapital.setCajaAdminController(this);
-        ingresarCapital.setUsuario(usuarioBD);
-        ingresarCapital.setPassword(passwordBD);
+        ingresarCapital.setUsuario(homeController.getUsuario().getUsername());
+        ingresarCapital.setPassword(homeController.getUsuario().getPassword());
 
     }
     @FXML public void CerrarCaja()throws IOException {
         String confirmacion = homeController.mostrarConfirmacion("Confirmación", "La caja se cerrará y" +
                 " no se podrán hacer más transacciones. ¿Estás seguro que quieres cerrar la caja?");
         if (confirmacion.equals("OK")) {
-            SQL_Sentencias sen = new SQL_Sentencias(usuarioBD,passwordBD);
-            if(sen.InsertarEstadoCaja("Cerrada",usuarioBD)){
+            SQL_Sentencias sen = new SQL_Sentencias(homeController.getUsuario().getUsername(),    homeController.getUsuario().getPassword());
+            if(sen.InsertarEstadoCaja("Cerrada",homeController.getUsuario().getUsername())){
                 btnCerrarCaja.setDisable(true);
                 btnIngresoCapital.setDisable(true);
                 btnRetiroCapital.setDisable(true);
@@ -234,8 +233,8 @@ public class CajaAdminController {
     }
 
     @FXML public void AbrirCaja(){
-        SQL_Sentencias sen = new SQL_Sentencias(usuarioBD,passwordBD);
-        if(sen.InsertarEstadoCaja("Abierta",usuarioBD)){
+        SQL_Sentencias sen = new SQL_Sentencias(homeController.getUsuario().getUsername(),homeController.getUsuario().getPassword());
+        if(sen.InsertarEstadoCaja("Abierta",homeController.getUsuario().getUsername())){
 
             System.out.println("Se abre la caja");
             btnCerrarCaja.setDisable(false);
@@ -262,8 +261,8 @@ public class CajaAdminController {
         AgregarGastoController agregarGasto  = loader.getController();
         agregarGasto.setHomeController(homeController);
         agregarGasto.setCajaAdminController(this);
-        agregarGasto.setUsuario(usuarioBD);
-        agregarGasto.setPassword(passwordBD);
+        agregarGasto.setUsuario(homeController.getUsuario().getUsername());
+        agregarGasto.setPassword(homeController.getUsuario().getPassword());
     }
 
 
