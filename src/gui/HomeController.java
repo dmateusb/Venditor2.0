@@ -95,7 +95,6 @@ public class HomeController extends Component implements Initializable {
     @FXML private AnchorPane anchorImpresion=new AnchorPane();
     @FXML private AnchorPane anchorDescuentos= new AnchorPane();
     @FXML private AnchorPane anchorPrincipal;
-    @FXML private AnchorPane cajaAdmin;
     @FXML private AnchorPane paneNuevoCliente;
     @FXML private Button btnFotoNuevoCliente;
     @FXML private Button btnCrearRetroventa;
@@ -189,8 +188,6 @@ public class HomeController extends Component implements Initializable {
     @FXML private TableColumn<Contrato,String> columnaEstadoBusquedaClientes;
     @FXML private TableColumn<Cliente, Integer> ColumnaCedulaCliente;
     @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
-    @FXML private HBox HBoxPrincipal;
-    @FXML private HBox HBoxPrincipalCajaAdmin;
     @FXML private Label lblNumeroContrato;
 
     private boolean flagPaneCaja=false;
@@ -755,11 +752,12 @@ public class HomeController extends Component implements Initializable {
         paneHome.toFront();
 
 
-        anchorPrincipal.getChildren().add(anchorCaja);
         anchorPrincipal.getChildren().add(anchorCajaAdmin);
         anchorPrincipal.getChildren().add(anchorImpresion);
         anchorPrincipal.getChildren().add(anchorDescuentos);
-        //anchorPrincipal.getChildren().add(anchorUsuarios);
+        anchorPrincipal.getChildren().add(anchorUsuarios);
+        anchorPrincipal.getChildren().add(anchorCaja);
+
     }
     private void cargarCaja(){
         if(cajaController==null){
@@ -776,19 +774,15 @@ public class HomeController extends Component implements Initializable {
                     cajaController.btnAbrirCaja.setVisible(false);
                 }
                 cajaController.llenarTabla(String.valueOf(LocalDate.now()));
-                HBoxPrincipal.getChildren().removeAll();
-                HBoxPrincipal.getChildren().add(anchorCaja);
-                anchorPrincipal.toFront();
-                HBoxPrincipal.toFront();
+                anchorPrincipal.getChildren().add(anchorCaja);
+                //anchorPrincipal.toFront();
                 anchorCaja.toFront();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else{
-            anchorPrincipal.toFront();
-            HBoxPrincipal.toFront();
+            //anchorPrincipal.toFront();
             anchorCaja.toFront();
-            cajaController.llenarTabla(String.valueOf(LocalDate.now()));
         }
 
     }
@@ -810,17 +804,14 @@ public class HomeController extends Component implements Initializable {
                 LocalDate now = LocalDate.now();
                 String fechaHoy = String.valueOf(now);
                 cajaAdminController.llenarTabla(fechaHoy);
-                HBoxPrincipalCajaAdmin.getChildren().removeAll();
-                HBoxPrincipalCajaAdmin.getChildren().add(anchorCajaAdmin);
-                cajaAdmin.toFront();
-                HBoxPrincipalCajaAdmin.toFront();
+                anchorPrincipal.getChildren().add(anchorCajaAdmin);
+                anchorPrincipal.toFront();
                 anchorCajaAdmin.toFront();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else{
-            cajaAdmin.toFront();
-            HBoxPrincipalCajaAdmin.toFront();
+            anchorPrincipal.toFront();
             anchorCajaAdmin.toFront();
         }
 
@@ -845,6 +836,7 @@ public class HomeController extends Component implements Initializable {
             descuentosController = loader.getController();
             descuentosController.setHomeController(this);
             anchorPrincipal.getChildren().add(anchorDescuentos);
+            anchorPrincipal.toFront();
             anchorDescuentos.toFront();
         } catch (IOException e) {
             e.printStackTrace();
@@ -1055,8 +1047,6 @@ public class HomeController extends Component implements Initializable {
             aPimgClienteNuevaRetroventa.toBack();
             pantallaActiva = 1;
 
-
-
         } else if (event.getSource() == btnventa) {
 
         } else if (event.getSource() == btnnuevaretro && pantallaActiva != 3) {
@@ -1085,12 +1075,12 @@ public class HomeController extends Component implements Initializable {
                 flagPaneUsuario=true;
                 cargarFXMLUsuario();
             }
-
+            anchorUsuarios.toFront();
         } else if (event.getSource() == btnbalance) {
 
         } else if (event.getSource() == btnaportesoretiro) {
             pantallaActiva=10;
-            anchorPrincipal.toFront();
+            //anchorPrincipal.toFront();
             cargarCajaAdmin();
 
 
@@ -1107,7 +1097,7 @@ public class HomeController extends Component implements Initializable {
 
         } else if (event.getSource() == btnDescuentos && pantallaActiva!=14) {
             pantallaActiva = 14;
-            anchorPrincipal.toFront();
+            //anchorPrincipal.toFront();
             if(flagPaneDescuentos==false){
                 cargarDescuentos();
                 flagPaneDescuentos=true;
@@ -1118,10 +1108,9 @@ public class HomeController extends Component implements Initializable {
         } else if (event.getSource() == btnbackup) {
 
         } else if (event.getSource() == btncaja) {
-            //pantallaActiva=16;
-            anchorPrincipal.toFront();
+            pantallaActiva=16;
             cargarCaja();
-
+            //anchorCaja.toFront();
 
         } else if (event.getSource() == btnnuevocliente && pantallaActiva != 17) {
             pantallaActiva = 17;

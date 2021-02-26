@@ -95,7 +95,7 @@ public class CajaAdminController {
             txtEgresos.setText("0");
             txtIngresos.setText("0");
             txtUtilidades.setText("0");
-            if(CajasTotal.length==0){
+            if(CajasTotal[0][0]==null){
                 txtInicioCaja.setText("0");
                 txtEfectivo.setText("0");
             }else{
@@ -110,11 +110,11 @@ public class CajaAdminController {
             }
             return;
         }
-        if(Cajas.length==0){
+        if(Cajas[0][0]==null){
             txtEgresos.setText("0");
             txtIngresos.setText("0");
             txtUtilidades.setText("0");
-            if(CajasTotal.length==0){
+            if(CajasTotal[0][0]==null){
                 txtInicioCaja.setText("0");
                 txtEfectivo.setText("0");
             }else{
@@ -132,6 +132,7 @@ public class CajaAdminController {
             int lastId = Integer.parseInt(Cajas[0][0].toString());
             Object[][] cajaParaTotal = control.consultarCajaId(String.valueOf(lastId));
             inicioCaja = Long.valueOf(cajaParaTotal[0][6].toString());
+            txtInicioCaja.setText(String.valueOf(inicioCaja));
             txtInicioCaja.setText(String.valueOf(inicioCaja));
         }
 
