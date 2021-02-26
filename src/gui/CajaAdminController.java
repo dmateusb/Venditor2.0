@@ -194,7 +194,6 @@ public class CajaAdminController {
     }
 
 
-
     @FXML public void IngresoCapital() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/IngresoCapital.fxml"));
         Parent root = loader.load();
