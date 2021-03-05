@@ -22,7 +22,7 @@
       </TableView>
       <Text layoutX="473.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="CAJA" AnchorPane.bottomAnchor="645.96484375" AnchorPane.leftAnchor="473.0" AnchorPane.rightAnchor="457.87890625" AnchorPane.topAnchor="26.15234375" />
       <Button fx:id="btnIngresoCapital" layoutX="46.0" layoutY="615.0" mnemonicParsing="false" onAction="#IngresoCapital" prefHeight="30.0" prefWidth="150.0" styleClass="btnVerde" text="Ingreso de capital" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="824.0" AnchorPane.topAnchor="615.0" />
-      <Button fx:id="btnRetiroCapital" layoutX="221.0" layoutY="615.0" mnemonicParsing="false" onAction="#AgregarGasto" prefWidth="150.0" styleClass="btnNaranja" text="Retiro de Capital" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="824.0" AnchorPane.topAnchor="615.0" />
+      <Button fx:id="btnRetiroCapital" layoutX="221.0" layoutY="615.0" mnemonicParsing="false" onAction="#AgregarGasto" prefWidth="150.0" styleClass="btnNaranja" text="Registrar gasto" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="824.0" AnchorPane.topAnchor="615.0" />
       <DatePicker fx:id="selectorFecha" layoutX="106.0" layoutY="140.0" onAction="#CambioFecha" />
       <TextField fx:id="txtEgresos" alignment="CENTER" editable="false" layoutX="473.0" layoutY="617.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
       <TextField fx:id="txtIngresos" alignment="CENTER" editable="false" layoutX="646.0" layoutY="617.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
