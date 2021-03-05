@@ -142,14 +142,17 @@ public class AgregarGastoController implements Initializable{
         caja.setEgreso(dinero);
         caja.setTotal(String.valueOf(totalCaja-Float.valueOf(dinero)));
         caja.setUsuario(usuario);
-        Usuario usuario = homeController.getUsuario();
-        SQL_Sentencias sentencias2= new SQL_Sentencias(usuario.getUsername(),usuario.getPassword());
-        try {
-            sentencias2.InsertarIngresoCaja(caja);
+        if(homeController.getControlBd().insertCaja(caja)){
             homeController.mostrarInformacion("Gasto agregado", "Se completó un retiro de caja de "+txtDinero.getText());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }else{
+            return;
         }
+
+//        try {
+//            sentencias2.InsertarIngresoCaja(caja);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
         LocalDate now = LocalDate.now();
         String fechaHoy = String.valueOf(now);

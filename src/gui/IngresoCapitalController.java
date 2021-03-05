@@ -135,23 +135,20 @@ public class IngresoCapitalController implements Initializable {
             homeController.mostrarAlerta("Valor incorrecto","Por favor escribe una cantidad de dinero válida");
             return;
         }
-
-        ControlBd controlBd = new ControlBd(usuario,password);
+        ControlBd controlBd=homeController.getControlBd();
         float totalCaja=controlBd.ConsultarTotalCaja();
-
         Caja caja= new Caja();
         caja.setDescripcion("Ingreso Capital");
         caja.setIngreso(dinero);
         caja.setTotal(String.valueOf(totalCaja+Float.valueOf(dinero)));
         caja.setUsuario(usuario);
-
-        SQL_Sentencias sentencias2= new SQL_Sentencias("root","");
-        try {
-            sentencias2.InsertarIngresoCaja(caja);
+        if (controlBd.insertCaja(caja)){
             homeController.mostrarInformacion("Capital ingresado", "Se completó ingreso de "+txtDinero.getText()+" a la caja");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }else{
+            return;
         }
+
+
         LocalDate now = LocalDate.now();
         String fechaHoy = String.valueOf(now);
         try{

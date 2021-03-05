@@ -9,7 +9,6 @@ package gui;
 import SQL.ControlBd;
 import SQL.SQL_Sentencias;
 import animatefx.animation.FadeIn;
-import com.github.sarxos.webcam.Webcam;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
 import javafx.collections.FXCollections;
@@ -96,7 +95,6 @@ public class HomeController extends Component implements Initializable {
     @FXML private AnchorPane anchorImpresion=new AnchorPane();
     @FXML private AnchorPane anchorDescuentos= new AnchorPane();
     @FXML private AnchorPane anchorPrincipal;
-    @FXML private AnchorPane cajaAdmin;
     @FXML private AnchorPane paneNuevoCliente;
     @FXML private Button btnFotoNuevoCliente;
     @FXML private Button btnCrearRetroventa;
@@ -190,8 +188,6 @@ public class HomeController extends Component implements Initializable {
     @FXML private TableColumn<Contrato,String> columnaEstadoBusquedaClientes;
     @FXML private TableColumn<Cliente, Integer> ColumnaCedulaCliente;
     @FXML private TableColumn<Cliente, String> ColumnaNombreCliente;
-    @FXML private HBox HBoxPrincipal;
-    @FXML private HBox HBoxPrincipalCajaAdmin;
     @FXML private Label lblNumeroContrato;
 
     private boolean flagPaneCaja=false;
@@ -456,7 +452,6 @@ public class HomeController extends Component implements Initializable {
         finalizarController.getTxtFechaInicio().setText(txtFechaInicio_DetalleContrato.getText());
         finalizarController.getTxtPorcentaje().setText(txtPorcentaje_DetalleContrato.getText());
         finalizarController.getTxtValorInicial().setText(txtValor_DetalleContrato.getText());
-        finalizarController.calcularTiempo();
         finalizarController.cobrar();
         finalizarController.setHomeController(this);
 
@@ -489,19 +484,35 @@ public class HomeController extends Component implements Initializable {
             mostrarAlerta("Contrato retractado","El contrato que intentas renovar ya está retractado. Es necesario crear un nuevo contrato.");
             return;
         }
+        FinalizarRetractoController controller = new FinalizarRetractoController();
+        controller.setNumeroContrato(txtNumeroContrato_DetalleContrato.getText());
+        controller.setControlBd(controlBd);
+        controller.setSen(sen);
+        //String valorACobrar=controller.cobrar();
+        String valorACobrar = confirmarCobroRenovacion(txtNumeroContrato_DetalleContrato.getText());
+        if(valorACobrar == null) {
+            return;
+        }else{
+            String ingreso=valorACobrar;
+            Caja caja = new Caja(
+                    "Utilidad renovación contrato "+txtNumeroContrato_DetalleContrato.getText(),
+                    ingreso,"0","0",
+                    String.valueOf(controlBd.ConsultarTotalCaja()+ingreso));
+            controlBd.insertCaja(caja);
+        };
         preguntarMesesRenovacion();
         if(getMeses()==-1) return;
-        String confirmacion;
+        String confirmacion2;
         if(getMeses()==1){
-            confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por 1 mes a partir de la fecha de hoy. " +
+            confirmacion2 = mostrarConfirmacion("Confirmación","El contrato se renovará por 1 mes a partir de la fecha de hoy. " +
                     "¿Estás seguro de renovar el contrato?");
         }else{
-            confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
+            confirmacion2 = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
                     "¿Estás seguro de renovar el contrato?");
         }
 
 
-        if(confirmacion.equals("OK")){
+        if(confirmacion2.equals("OK")){
             Object[][] renovacion = controlBd.consultarRenovaciones(txtNumeroContrato_DetalleContrato.getText());
 
             int renovaciones = Integer.parseInt(renovacion[0][0].toString())+1;
@@ -528,6 +539,56 @@ public class HomeController extends Component implements Initializable {
                 mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
             }
         }
+    }
+
+    private String confirmarCobroRenovacion(String text) {
+        String valorACobrar=cobrarInteresRenovacion(txtNumeroContrato_DetalleContrato.getText());
+        String confirmacion=mostrarConfirmacion("Cobro utilidad",
+                "La utilidad a pagar del actual contrato es" +
+                        ": "+Procedimientos.setPuntosDecimales(valorACobrar));
+        if(confirmacion.equals("OK")){
+            return valorACobrar;
+        }else{
+            return null;
+        }
+    }
+
+    public String cobrarInteresRenovacion(String numeroContrato) {
+        long[] tiempo=calcularTiempo(numeroContrato);
+        long meses=tiempo[0];
+        long dias=tiempo[1];
+        Object[][] informacionContrato = controlBd.GetContrato(numeroContrato);
+        if(meses==0){meses=1;}
+        if(dias>5){meses = meses+1;}
+        int valor = Integer.parseInt(informacionContrato[0][8].toString());
+        double porcentaje = Double.parseDouble(informacionContrato[0][9].toString());
+        double cobroMes = valor*porcentaje/100;
+        double utilidad = cobroMes * meses;
+        float cobro = (float) utilidad;
+        if(cobro%50!=0){
+            float residuo=cobro%50;
+            if(residuo<25){
+                cobro-=residuo;
+            }else {
+                cobro+=(50-residuo);
+            }
+        }
+        String valorCobro=String.format("%.0f",cobro);
+        return valorCobro;
+    }
+
+    public  long[] calcularTiempo(String numeroContrato){
+        Object[][] informacionContrato = this.controlBd.GetContrato(numeroContrato);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+        String fecha = informacionContrato[0][5].toString().substring(0,19).replace(' ','T');
+        LocalDateTime fechaInicioContrato = LocalDateTime.parse(fecha,dtf);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tempDateTime = LocalDateTime.from(fechaInicioContrato);
+        //Calcula la cantidad de días entre la fecha de vencimiento del contrato y el día actual
+        long meses = tempDateTime.until(now, ChronoUnit.MONTHS);
+        long dias = fechaInicioContrato.plusMonths(meses).until(now, ChronoUnit.DAYS);
+        long[] tiempo = {meses,dias};
+        return tiempo;
     }
 
     public int  preguntarMesesRenovacion() {
@@ -572,6 +633,17 @@ public class HomeController extends Component implements Initializable {
             return;
         }
         try {
+            String valorACobrar = confirmarCobroRenovacion(txtNumeroContrato_DetalleContrato.getText());
+            if(valorACobrar == null) {
+                return;
+            }else{
+                String ingreso=valorACobrar;
+                Caja caja = new Caja(
+                        "Utilidad renovación contrato "+txtNumeroContrato_DetalleContrato.getText(),
+                        ingreso,"0","0",
+                        String.valueOf(controlBd.ConsultarTotalCaja()+ingreso));
+                controlBd.insertCaja(caja);
+            };
             idArticulo=popUpEditarArticulo();
         } catch (IOException e) {
             e.printStackTrace();
@@ -680,11 +752,12 @@ public class HomeController extends Component implements Initializable {
         paneHome.toFront();
 
 
-        anchorPrincipal.getChildren().add(anchorCaja);
         anchorPrincipal.getChildren().add(anchorCajaAdmin);
         anchorPrincipal.getChildren().add(anchorImpresion);
         anchorPrincipal.getChildren().add(anchorDescuentos);
-        //anchorPrincipal.getChildren().add(anchorUsuarios);
+        anchorPrincipal.getChildren().add(anchorUsuarios);
+        anchorPrincipal.getChildren().add(anchorCaja);
+
     }
     private void cargarCaja(){
         if(cajaController==null){
@@ -700,20 +773,15 @@ public class HomeController extends Component implements Initializable {
                 } else {
                     cajaController.btnAbrirCaja.setVisible(false);
                 }
-                LocalDate now = LocalDate.now();
-                String fechaHoy = String.valueOf(now);
-                cajaController.llenarTabla(fechaHoy);
-                HBoxPrincipal.getChildren().removeAll();
-                HBoxPrincipal.getChildren().add(anchorCaja);
-                anchorPrincipal.toFront();
-                HBoxPrincipal.toFront();
+                cajaController.llenarTabla(String.valueOf(LocalDate.now()));
+                anchorPrincipal.getChildren().add(anchorCaja);
+                //anchorPrincipal.toFront();
                 anchorCaja.toFront();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else{
-            anchorPrincipal.toFront();
-            HBoxPrincipal.toFront();
+            //anchorPrincipal.toFront();
             anchorCaja.toFront();
         }
 
@@ -736,17 +804,14 @@ public class HomeController extends Component implements Initializable {
                 LocalDate now = LocalDate.now();
                 String fechaHoy = String.valueOf(now);
                 cajaAdminController.llenarTabla(fechaHoy);
-                HBoxPrincipalCajaAdmin.getChildren().removeAll();
-                HBoxPrincipalCajaAdmin.getChildren().add(anchorCajaAdmin);
-                cajaAdmin.toFront();
-                HBoxPrincipalCajaAdmin.toFront();
+                anchorPrincipal.getChildren().add(anchorCajaAdmin);
+                anchorPrincipal.toFront();
                 anchorCajaAdmin.toFront();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else{
-            cajaAdmin.toFront();
-            HBoxPrincipalCajaAdmin.toFront();
+            anchorPrincipal.toFront();
             anchorCajaAdmin.toFront();
         }
 
@@ -771,6 +836,7 @@ public class HomeController extends Component implements Initializable {
             descuentosController = loader.getController();
             descuentosController.setHomeController(this);
             anchorPrincipal.getChildren().add(anchorDescuentos);
+            anchorPrincipal.toFront();
             anchorDescuentos.toFront();
         } catch (IOException e) {
             e.printStackTrace();
@@ -981,8 +1047,6 @@ public class HomeController extends Component implements Initializable {
             aPimgClienteNuevaRetroventa.toBack();
             pantallaActiva = 1;
 
-
-
         } else if (event.getSource() == btnventa) {
 
         } else if (event.getSource() == btnnuevaretro && pantallaActiva != 3) {
@@ -1011,12 +1075,12 @@ public class HomeController extends Component implements Initializable {
                 flagPaneUsuario=true;
                 cargarFXMLUsuario();
             }
-
+            anchorUsuarios.toFront();
         } else if (event.getSource() == btnbalance) {
 
         } else if (event.getSource() == btnaportesoretiro) {
             pantallaActiva=10;
-            anchorPrincipal.toFront();
+            //anchorPrincipal.toFront();
             cargarCajaAdmin();
 
 
@@ -1033,7 +1097,7 @@ public class HomeController extends Component implements Initializable {
 
         } else if (event.getSource() == btnDescuentos && pantallaActiva!=14) {
             pantallaActiva = 14;
-            anchorPrincipal.toFront();
+            //anchorPrincipal.toFront();
             if(flagPaneDescuentos==false){
                 cargarDescuentos();
                 flagPaneDescuentos=true;
@@ -1043,11 +1107,10 @@ public class HomeController extends Component implements Initializable {
 
         } else if (event.getSource() == btnbackup) {
 
-        } else if (event.getSource() == btncaja && pantallaActiva!=16) {
+        } else if (event.getSource() == btncaja) {
             pantallaActiva=16;
-            anchorPrincipal.toFront();
             cargarCaja();
-
+            //anchorCaja.toFront();
 
         } else if (event.getSource() == btnnuevocliente && pantallaActiva != 17) {
             pantallaActiva = 17;
@@ -1496,13 +1559,16 @@ public class HomeController extends Component implements Initializable {
             String ArticuloId = InsertarNuevoArticulo(comboCategoria,comboSubcategoria,txtDescripcionArticulo,
                     txtPesoArticulo,txtValorArticulo);
             String precio = txtValorArticulo.getText().replace(".", "");
+            float egreso=redondearA50(Float.parseFloat(precio));
+            Caja caja = new Caja(
+                    "Retroventa "+txtNumeroContrato_DetalleContrato.getText(),
+                    "0",String.valueOf(egreso),"0",
+                    String.valueOf(controlBd.ConsultarTotalCaja()-egreso));
+            if (!controlBd.insertCaja(caja)) return;
             boolean success = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarNuevoContrato(txtcedulaNuevaRetroventa.getText(), ArticuloId, Integer.parseInt(precio),
                     Double.parseDouble(SpinnerPorcentaje.getValue().toString()), vencimiento, sen.getUser());
             if (success && ArticuloId!=null) {
-                float egreso=redondearA50(Float.parseFloat(precio));
-                Caja caja = new Caja("Retroventa "+lblNumeroContrato.getText(),"0",String.valueOf(egreso),
-                        "0",String.valueOf(controlBd.ConsultarTotalCaja()-egreso));
-                controlBd.insertEgresoRetroventa(caja);
+
                 CambiarCliente();
                 onClicBorrarArticuloNuevaRetroventa();
             }

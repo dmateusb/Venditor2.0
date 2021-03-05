@@ -178,7 +178,8 @@ public class FinalizarRetractoController implements Initializable {
     }
 
 
-    public void cobrar() {
+    public String cobrar() {
+        calcularTiempo();
         Object[][] informacionContrato = controlBd.GetContrato(numeroContrato);
         if(meses==0){meses=1;}
         if(dias>5){meses = meses+1;}
@@ -198,6 +199,7 @@ public class FinalizarRetractoController implements Initializable {
         }
         valorCobro=String.format("%.0f",cobro);
         txtValorCobrar.setText( valorCobro);
+        return valorCobro;
     }
 
     @FXML public void retractar() {
