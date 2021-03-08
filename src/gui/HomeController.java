@@ -111,6 +111,8 @@ public class HomeController extends Component implements Initializable {
     @FXML private Button btnTomarNuevaHuellaDetalleCliente;
     @FXML private Button btnTomarNuevaFotoDetalleCliente;
     @FXML private Button btnCerrarSesion;
+    @FXML private HBox HBoxPrincipal;
+
     //Ventana Detalle Contrato
     @FXML private TextField txtNumeroContrato_DetalleContrato;
     @FXML private TextField txtFechaInicio_DetalleContrato;
@@ -774,17 +776,11 @@ public class HomeController extends Component implements Initializable {
                     cajaController.btnAbrirCaja.setVisible(false);
                 }
                 cajaController.llenarTabla(String.valueOf(LocalDate.now()));
-                anchorPrincipal.getChildren().add(anchorCaja);
-                //anchorPrincipal.toFront();
-                anchorCaja.toFront();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
-            //anchorPrincipal.toFront();
-            anchorCaja.toFront();
         }
-
+        limpiarYCargar(HBoxPrincipal,anchorCaja);
     }
 
     private void cargarCajaAdmin(){
@@ -804,17 +800,19 @@ public class HomeController extends Component implements Initializable {
                 LocalDate now = LocalDate.now();
                 String fechaHoy = String.valueOf(now);
                 cajaAdminController.llenarTabla(fechaHoy);
-                anchorPrincipal.getChildren().add(anchorCajaAdmin);
-                anchorPrincipal.toFront();
-                anchorCajaAdmin.toFront();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
-            anchorPrincipal.toFront();
-            anchorCajaAdmin.toFront();
         }
+        limpiarYCargar(HBoxPrincipal,anchorCajaAdmin);
+    }
 
+    private void limpiarYCargar(HBox hbox,AnchorPane anchor){
+        hbox.getChildren().clear();
+        hbox.getChildren().add(anchor);
+        anchorPrincipal.toFront();
+        anchor.toFront();
     }
 
     private void cargarImpresion() {
@@ -823,7 +821,7 @@ public class HomeController extends Component implements Initializable {
             anchorImpresion = loader.load();
             impresionController = loader.getController();
             impresionController.setHomeController(this);
-
+            limpiarYCargar(HBoxPrincipal,anchorImpresion);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1090,11 +1088,7 @@ public class HomeController extends Component implements Initializable {
 
         } else if (event.getSource() == btnImpresion && pantallaActiva!=13) {
             pantallaActiva = 13;
-            anchorPrincipal.toFront();
-            anchorImpresion.toFront();
-
-
-
+            cargarImpresion();
         } else if (event.getSource() == btnDescuentos && pantallaActiva!=14) {
             pantallaActiva = 14;
             //anchorPrincipal.toFront();
@@ -1103,15 +1097,12 @@ public class HomeController extends Component implements Initializable {
                 flagPaneDescuentos=true;
             }
             anchorDescuentos.toFront();
-
-
         } else if (event.getSource() == btnbackup) {
 
         } else if (event.getSource() == btncaja) {
             pantallaActiva=16;
             cargarCaja();
-            //anchorCaja.toFront();
-
+            anchorCaja.toFront();
         } else if (event.getSource() == btnnuevocliente && pantallaActiva != 17) {
             pantallaActiva = 17;
             paneNuevoCliente.toFront();

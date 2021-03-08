@@ -46,6 +46,7 @@ public class FinalizarRetractoController implements Initializable {
 
     public void setNumeroContrato(String contrato){
         this.numeroContrato = contrato;
+        txtContrato.setText(contrato);
     }
 
     public TextField getTxtNombre() {
@@ -88,6 +89,12 @@ public class FinalizarRetractoController implements Initializable {
 
     public void setHomeController(HomeController homeController) {
         this.homeController = homeController;
+    }
+
+    @FXML
+    public void closeButtonAction() {
+        Stage stage1 = (Stage) txtValorCobrado.getScene().getWindow();
+        stage1.close();
     }
 
     public void TextFormater(TextField textField){

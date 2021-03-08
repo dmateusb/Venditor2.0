@@ -92,8 +92,9 @@ public class CajaController {
         ControlBd control=homeController.getControlBd();
         Object[][] Cajas=control.consultarCajaFecha(fechaCaja);
         Object[][] CajasTotal=control.consultarCaja();
+        System.out.println("Caja Total"+CajasTotal.length);
 
-        if(Cajas==null){
+        if(Cajas.length==0){
             txtEgresos.setText("0");
             txtIngresos.setText("0");
             txtUtilidades.setText("0");
@@ -112,7 +113,8 @@ public class CajaController {
             }
             return;
         }
-        if(Cajas.length==0){
+        if(Cajas[0][0]==null){
+            System.out.println("Entra 1");
             txtEgresos.setText("0");
             txtIngresos.setText("0");
             txtUtilidades.setText("0");
@@ -124,13 +126,23 @@ public class CajaController {
                 int cota = cajaAntesDeFecha.length-1;
                 while(cajaAntesDeFecha[cota][6]==null){
                     cota=cota-1;
+                    if(cota==0){
+                        break;
+                    }
                 }
-                inicioCaja = Long.valueOf(cajaAntesDeFecha[cota][6].toString());
-                txtInicioCaja.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
-                txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
+                if(cota!=0){
+                    inicioCaja = Long.valueOf(cajaAntesDeFecha[cota][6].toString());
+                    txtInicioCaja.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
+                    txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
+                }else{
+                    txtInicioCaja.setText("0");
+                    txtEfectivo.setText("0");
+                }
+
             }
 
         }else{
+
             if(Cajas[0][0]==null){
                 txtInicioCaja.setText("0");
             }else{
