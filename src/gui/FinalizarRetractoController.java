@@ -246,8 +246,9 @@ public class FinalizarRetractoController implements Initializable {
             Caja caja= new Caja();
             caja.setDescripcion("Retracto " + numeroContrato);
             float ingreso=Float.parseFloat(txtValorCobrado.getText().replace(".",""));
-            caja.setIngreso(String.valueOf(ingreso));
             float utilidad=Float.parseFloat(valorCobrado)-Float.parseFloat(txtValorInicial.getText().replace(".",""));
+            ingreso-=utilidad;
+            caja.setIngreso(String.valueOf(ingreso));
             caja.setUtilidad(String.valueOf(utilidad));
             caja.setTotal(String.valueOf(totalCaja+ingreso));
             Usuario usuario = homeController.getUsuario();
