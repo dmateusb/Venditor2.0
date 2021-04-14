@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="176.0" prefWidth="600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.EditarArticuloController">
+<AnchorPane prefHeight="176.0" prefWidth="600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.EditarArticuloController">
    <children>
       <Text layoutX="366.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcion" />
       <Text layoutX="27.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Categoria" />
@@ -19,7 +19,7 @@
       <ComboBox fx:id="comboCategoria" layoutX="26.0" layoutY="33.0" onAction="#cambioSubcategorias" prefWidth="150.0" />
       <ComboBox fx:id="comboSubcategoria" layoutX="26.0" layoutY="94.0" prefWidth="150.0" />
       <TextField fx:id="txtPesoArticulo" layoutX="195.0" layoutY="33.0" prefHeight="26.0" prefWidth="149.0" />
-      <TextField fx:id="txtValorArticulo" layoutX="195.0" layoutY="94.0" prefHeight="26.0" prefWidth="150.0" />
+      <TextField fx:id="txtValorArticulo" disable="true" editable="false" layoutX="195.0" layoutY="94.0" prefHeight="26.0" prefWidth="150.0" />
       <TextArea fx:id="txtDescripcionArticulo" layoutX="366.0" layoutY="32.0" prefHeight="87.0" prefWidth="209.0" />
       <Label layoutX="194.0" layoutY="67.0" text="Valor" />
       <Spinner fx:id="SpinnerPorcentaje" layoutX="166.0" layoutY="136.0" prefHeight="25.0" prefWidth="69.0" />
