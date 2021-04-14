@@ -129,7 +129,10 @@ public class CajaAdminController {
             }
 
         }else{
-            int lastId = Integer.parseInt(Cajas[0][0].toString());
+            int lastId = Integer.parseInt(Cajas[0][0].toString())-1;
+            if(Integer.valueOf(Cajas[0][0].toString())==1){
+                lastId=lastId+1;
+            }
             Object[][] cajaParaTotal = control.consultarCajaId(String.valueOf(lastId));
             inicioCaja = Long.valueOf(cajaParaTotal[0][6].toString());
             txtInicioCaja.setText(String.valueOf(inicioCaja));
@@ -266,9 +269,13 @@ homeController.getUsuario().getPassword();
     }
 
 
+    public DatePicker getSelectorFecha() {
+        return selectorFecha;
+    }
 
-
-
+    public void setSelectorFecha(DatePicker selectorFecha) {
+        this.selectorFecha = selectorFecha;
+    }
 
     public HomeController getHomeController() {
         return homeController;

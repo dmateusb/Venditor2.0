@@ -4,11 +4,15 @@ import SQL.ControlBd;
 import SQL.SQL_Sentencias;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.TextInputDialog;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import logic.Caja;
 import logic.Descuentos;
 import logic.Usuario;
@@ -42,6 +46,9 @@ public class FinalizarRetractoController implements Initializable {
     private float cobro;
     long meses;
     long dias;
+    private boolean renovacion = false;
+
+
 
 
     public void setNumeroContrato(String contrato){
@@ -194,7 +201,12 @@ public class FinalizarRetractoController implements Initializable {
         double porcentaje = Double.parseDouble(informacionContrato[0][9].toString());
         double cobroMes = valor*porcentaje/100;
         this.utilidad = cobroMes*meses;
-        double cobroTotal = valor+utilidad;
+        double cobroTotal;
+        if(renovacion){
+            cobroTotal = utilidad;
+        }else{
+            cobroTotal = valor+utilidad;
+        }
         this.cobro = (float)cobroTotal;
         if(cobro%50!=0){
             float residuo=cobro%50;
@@ -205,11 +217,11 @@ public class FinalizarRetractoController implements Initializable {
             }
         }
         valorCobro=String.format("%.0f",cobro);
-        txtValorCobrar.setText( valorCobro);
+        txtValorCobrar.setText(valorCobro);
         return valorCobro;
     }
 
-    @FXML public void retractar() {
+    @FXML public void retractar() throws SQLException {
         SQL_Sentencias sentencias= new SQL_Sentencias("root","");
         String valorCobrado=txtValorCobrado.getText().replace(".","");
         String valorCobrar=txtValorCobrar.getText().replace(".","");
@@ -217,7 +229,7 @@ public class FinalizarRetractoController implements Initializable {
             homeController.mostrarAlerta(" Información incompleta","No has escrito el valor cobrado");
             return;
         }
-        if(Double.parseDouble(valorCobrado)-Double.parseDouble(txtValorInicial.getText().replace(".",""))<0){
+        if(Double.parseDouble(valorCobrado)-Double.parseDouble(txtValorInicial.getText().replace(".",""))<0&&!renovacion){
             homeController.mostrarAlerta(" Información erronea","No se puede cobrar un valor menor al costo inicial");
             return;
         }
@@ -244,13 +256,22 @@ public class FinalizarRetractoController implements Initializable {
             String idArticulo=controlBd.consultarIdArticulo(numeroContrato);
             String subCategoria = controlBd.consultarSubcategoria(idArticulo);
             Caja caja= new Caja();
-            caja.setDescripcion("Retracto " + numeroContrato);
+            if(renovacion){
+                caja.setDescripcion("Renovación " + numeroContrato);
+            }else{
+                caja.setDescripcion("Retracto " + numeroContrato);
+            }
             float ingreso=Float.parseFloat(txtValorCobrado.getText().replace(".",""));
             float utilidad=Float.parseFloat(valorCobrado)-Float.parseFloat(txtValorInicial.getText().replace(".",""));
             ingreso-=utilidad;
-            caja.setIngreso(String.valueOf(ingreso));
+            if(renovacion){
+                caja.setIngreso(String.valueOf(0));
+                utilidad=Float.parseFloat(valorCobrado);
+            }else{
+                caja.setIngreso(String.valueOf(ingreso));
+            }
             caja.setUtilidad(String.valueOf(utilidad));
-            caja.setTotal(String.valueOf(totalCaja+ingreso));
+            caja.setTotal(String.valueOf(totalCaja+ingreso+utilidad));
             Usuario usuario = homeController.getUsuario();
             SQL_Sentencias sentencias2= new SQL_Sentencias(usuario.getUsername(),usuario.getPassword()  );
             try {
@@ -263,8 +284,39 @@ public class FinalizarRetractoController implements Initializable {
             homeController.mostrarTablaInicial();//
             Stage stage = (Stage) txtNombre.getScene().getWindow();
             stage.close();
+            if(renovacion){
+                preguntarMesesRenovacion();
+                homeController.renovar();
+                renovacion=false;
+            }
         }
     }
+    public int  preguntarMesesRenovacion() {
+        homeController.setMeses(-1);
+        Stage popupwindow=new Stage();
+        popupwindow.initModality(Modality.APPLICATION_MODAL);
+        popupwindow.initStyle(StageStyle.UTILITY);
+        popupwindow.setTitle("Tiempo renovacion");
+        Button button1= new Button("Confirmar");
+        Label label1= new Label("Meses a renovar");
+
+        label1.setWrapText(true);
+        Spinner<Integer> spinner= new Spinner<>(1,homeController.mesesPlazo(homeController.getTxtEstado_DetalleContrato()),3);
+        button1.setOnAction(e -> {
+            homeController.setMeses(spinner.getValue());
+            popupwindow.close();
+        });
+        VBox layout= new VBox(10);
+        layout.setPadding(new Insets(10,10,10,10));
+        layout.getChildren().addAll(label1,spinner, button1);
+        layout.setAlignment(Pos.CENTER);
+        Scene scene1= new Scene(layout);
+        popupwindow.setScene(scene1);
+        popupwindow.showAndWait();
+        return homeController.getMeses();
+    }
+
+
     public String textInput(){
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Favor completar");
@@ -296,6 +348,14 @@ public class FinalizarRetractoController implements Initializable {
 
     public void setSen(SQL_Sentencias sen) {
         this.sen = sen;
+    }
+
+    public boolean isRenovacion() {
+        return renovacion;
+    }
+
+    public void setRenovacion(boolean renovacion) {
+        this.renovacion = renovacion;
     }
 }
 

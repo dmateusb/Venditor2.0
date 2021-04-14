@@ -478,7 +478,7 @@ public class HomeController extends Component implements Initializable {
 
     }
 
-    public void renovarContrato() throws SQLException {
+    public void renovarContrato() throws SQLException, IOException {
         Object[][] contrato = controlBd.consultarEstado(txtNumeroContrato_DetalleContrato.getText());
         String estadoContrato = contrato[0][0].toString();
 
@@ -486,23 +486,32 @@ public class HomeController extends Component implements Initializable {
             mostrarAlerta("Contrato retractado","El contrato que intentas renovar ya está retractado. Es necesario crear un nuevo contrato.");
             return;
         }
-        FinalizarRetractoController controller = new FinalizarRetractoController();
-        controller.setNumeroContrato(txtNumeroContrato_DetalleContrato.getText());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/FinalizarRetracto.fxml"));
+        Parent root = loader.load();
+        Stage stage= new Stage();
+        stage.initStyle(StageStyle.DECORATED);
+        stage.getIcons().add(new Image("/im/favicon.png"));
+        stage.setTitle("Renovar Retracto");
+        stage.resizableProperty().setValue(Boolean.TRUE);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        FinalizarRetractoController controller = loader.getController();
+        controller.setRenovacion(true);
         controller.setControlBd(controlBd);
         controller.setSen(sen);
-        //String valorACobrar=controller.cobrar();
-        String valorACobrar = confirmarCobroRenovacion(txtNumeroContrato_DetalleContrato.getText());
-        if(valorACobrar == null) {
-            return;
-        }else{
-            String ingreso=valorACobrar;
-            Caja caja = new Caja(
-                    "Utilidad renovación contrato "+txtNumeroContrato_DetalleContrato.getText(),
-                    ingreso,"0","0",
-                    String.valueOf(controlBd.ConsultarTotalCaja()+ingreso));
-            controlBd.insertCaja(caja);
-        };
-        preguntarMesesRenovacion();
+        controller.setNumeroContrato(txtNumeroContrato_DetalleContrato.getText());
+        controller.getTxtCedula().setText(txtCedula_DetalleContrato.getText());
+        controller.getTxtNombre().setText(txtNombre_DetalleContrato.getText());
+        controller.getTxtNombre().setText(txtNombre_DetalleContrato.getText());
+        controller.getTxtFechaInicio().setText(txtFechaInicio_DetalleContrato.getText());
+        controller.getTxtPorcentaje().setText(txtPorcentaje_DetalleContrato.getText());
+        controller.getTxtValorInicial().setText(txtValor_DetalleContrato.getText());
+        controller.cobrar();
+        controller.setHomeController(this);
+    }
+
+    public void renovar() throws SQLException {
         if(getMeses()==-1) return;
         String confirmacion2;
         if(getMeses()==1){
@@ -512,8 +521,6 @@ public class HomeController extends Component implements Initializable {
             confirmacion2 = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
                     "¿Estás seguro de renovar el contrato?");
         }
-
-
         if(confirmacion2.equals("OK")){
             Object[][] renovacion = controlBd.consultarRenovaciones(txtNumeroContrato_DetalleContrato.getText());
 
@@ -532,7 +539,7 @@ public class HomeController extends Component implements Initializable {
 
             String contratoNuevo = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).
                     InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),articulo,Integer.parseInt(precio),
-                    Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,this.usuario.getUsername());
+                            Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,this.usuario.getUsername());
             if(contratoNuevo.length()!=0){
                 controlBd.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
                 mostrarTablaInicial();
@@ -593,35 +600,12 @@ public class HomeController extends Component implements Initializable {
         return tiempo;
     }
 
-    public int  preguntarMesesRenovacion() {
-        setMeses(-1);
-        Stage popupwindow=new Stage();
-        popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.initStyle(StageStyle.UTILITY);
-        popupwindow.setTitle("Tiempo renovacion");
-        Button button1= new Button("Confirmar");
-        Label label1= new Label("Meses a renovar");
 
-        label1.setWrapText(true);
-        Spinner<Integer> spinner= new Spinner<>(1,mesesPlazo(txtSubcategoria_DetalleContrato),3);
-        button1.setOnAction(e -> {
-            setMeses(spinner.getValue());
-            popupwindow.close();
-        });
-        VBox layout= new VBox(10);
-        layout.setPadding(new Insets(10,10,10,10));
-        layout.getChildren().addAll(label1,spinner, button1);
-        layout.setAlignment(Pos.CENTER);
-        Scene scene1= new Scene(layout);
-        popupwindow.setScene(scene1);
-        popupwindow.showAndWait();
-        return meses;
-    }
 
-    private void setMeses(int meses) {
+    public void setMeses(int meses) {
         this.meses=meses;
     }
-    private int getMeses(){
+    public int getMeses(){
         return this.meses;
     }
 
@@ -641,7 +625,7 @@ public class HomeController extends Component implements Initializable {
             }else{
                 String ingreso=valorACobrar;
                 Caja caja = new Caja(
-                        "Utilidad renovación contrato "+txtNumeroContrato_DetalleContrato.getText(),
+                        "Renovación contrato "+txtNumeroContrato_DetalleContrato.getText(),
                         ingreso,"0","0",
                         String.valueOf(controlBd.ConsultarTotalCaja()+ingreso));
                 controlBd.insertCaja(caja);
@@ -652,7 +636,7 @@ public class HomeController extends Component implements Initializable {
         }
 
         if(idArticulo.equals("-1")) return;
-        preguntarMesesRenovacion();
+        //preguntarMesesRenovacion();
         if(getMeses()==-1) return;
 
         String confirmacion;
@@ -779,6 +763,9 @@ public class HomeController extends Component implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else{
+            String fechaNueva= String.valueOf(cajaController.getSelectorFecha().getValue());
+            cajaController.llenarTabla(fechaNueva);
         }
         limpiarYCargar(HBoxPrincipal,anchorCaja);
     }
@@ -804,6 +791,9 @@ public class HomeController extends Component implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else{
+            String fechaNueva= String.valueOf(cajaAdminController.getSelectorFecha().getValue());
+            cajaAdminController.llenarTabla(fechaNueva);
         }
         limpiarYCargar(HBoxPrincipal,anchorCajaAdmin);
     }
@@ -1539,10 +1529,6 @@ public class HomeController extends Component implements Initializable {
 
 
         if(confirmacion.equals("OK")) {
-
-
-
-
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now().plusMonths(meses);
             String vencimiento = now.toString();
@@ -1551,8 +1537,9 @@ public class HomeController extends Component implements Initializable {
                     txtPesoArticulo,txtValorArticulo);
             String precio = txtValorArticulo.getText().replace(".", "");
             float egreso=redondearA50(Float.parseFloat(precio));
+            System.out.println("Contrato: "+lblNumeroContrato.getText());
             Caja caja = new Caja(
-                    "Retroventa "+txtNumeroContrato_DetalleContrato.getText(),
+                    "Retroventa "+lblNumeroContrato.getText(),
                     "0",String.valueOf(egreso),"0",
                     String.valueOf(controlBd.ConsultarTotalCaja()-egreso));
             if (!controlBd.insertCaja(caja)) return;
@@ -3061,5 +3048,11 @@ public class HomeController extends Component implements Initializable {
         this.sen = sen;
     }
 
+    public TextField getTxtSubcategoria_DetalleContrato() {
+        return txtSubcategoria_DetalleContrato;
+    }
 
+    public void setTxtSubcategoria_DetalleContrato(TextField txtSubcategoria_DetalleContrato) {
+        this.txtSubcategoria_DetalleContrato = txtSubcategoria_DetalleContrato;
+    }
 }

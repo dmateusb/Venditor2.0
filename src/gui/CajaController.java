@@ -87,34 +87,18 @@ public class CajaController {
         if (selectorFecha.getValue()==null){
             selectorFecha.setValue(now);
         }
+        now.minusDays(1);
+        String ayer = String.valueOf(now);
         long inicioCaja=0;
 
         ControlBd control=homeController.getControlBd();
         Object[][] Cajas=control.consultarCajaFecha(fechaCaja);
         Object[][] CajasTotal=control.consultarCaja();
-        System.out.println("Caja Total"+CajasTotal.length);
 
-        if(Cajas.length==0){
-            txtEgresos.setText("0");
-            txtIngresos.setText("0");
-            txtUtilidades.setText("0");
-            if(CajasTotal.length==0){
-                txtInicioCaja.setText("0");
-                txtEfectivo.setText("0");
-            }else{
-                Object[][] cajaAntesDeFecha = control.consultarCajaAntesDeFecha(fechaCaja);
-                int cota = cajaAntesDeFecha.length-1;
-                while(cajaAntesDeFecha[cota][6]==null){
-                    cota=cota-1;
-                }
-                inicioCaja = Long.valueOf(cajaAntesDeFecha[cota][6].toString());
-                txtInicioCaja.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
-                txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
-            }
-            return;
-        }
+
+
+
         if(Cajas[0][0]==null){
-            System.out.println("Entra 1");
             txtEgresos.setText("0");
             txtIngresos.setText("0");
             txtUtilidades.setText("0");
@@ -142,11 +126,13 @@ public class CajaController {
             }
 
         }else{
-
             if(Cajas[0][0]==null){
                 txtInicioCaja.setText("0");
             }else{
-                int lastId = Integer.parseInt(Cajas[0][0].toString());
+                int lastId = Integer.parseInt(Cajas[0][0].toString())-1;
+                if(Integer.valueOf(Cajas[0][0].toString())==1){
+                    lastId=lastId+1;
+                }
                 Object[][] cajaParaTotal = control.consultarCajaId(String.valueOf(lastId));
                 inicioCaja = Long.valueOf(cajaParaTotal[0][6].toString());
                 txtInicioCaja.setText(String.valueOf(inicioCaja));
@@ -207,7 +193,6 @@ public class CajaController {
         String fechaNueva= String.valueOf(selectorFecha.getValue());
         System.out.println(fechaNueva+" Fecha nueva");
         llenarTabla(fechaNueva);
-
     }
 
 
@@ -282,10 +267,13 @@ public class CajaController {
         agregarGasto.setPassword(passwordBD);
     }
 
+    public DatePicker getSelectorFecha() {
+        return selectorFecha;
+    }
 
-
-
-
+    public void setSelectorFecha(DatePicker selectorFecha) {
+        this.selectorFecha = selectorFecha;
+    }
 
     public HomeController getHomeController() {
         return homeController;

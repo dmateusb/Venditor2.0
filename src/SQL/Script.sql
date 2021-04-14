@@ -62,13 +62,13 @@ CREATE TABLE IF NOT EXISTS `venditor`.`caja` (
   `Usuario` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`Id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = latin1;
-
+INSERT INTO Caja(descripcion,ingreso,egreso,utilidad,total,usuario)VALUES ('Inicio Caja','0','0','0','0','root');
 
 -- -----------------------------------------------------
 -- Table `venditor`.`clientes`
--- -----------------------------------------------------
+-- -----------------------------------------------------root
 CREATE TABLE IF NOT EXISTS `venditor`.`clientes` (
   `Cedula` INT(15) NOT NULL,
   `Nombre` VARCHAR(45) NOT NULL,
@@ -166,14 +166,17 @@ CREATE TABLE IF NOT EXISTS `venditor`.`usuario` (
   `password` VARCHAR(45) NOT NULL,
   `rol` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`username`))
+
 ENGINE = InnoDB;
-
 USE `venditor`;
-
 DELIMITER $$
+INSERT INTO usuario(username, password, rol)VALUES ('root','','admin');
+
+
 USE `venditor`$$
 CREATE
 DEFINER=`root`@`localhost`
+
 TRIGGER `venditor`.`TRI_ARTICULOS_INSERT`
 BEFORE INSERT ON `venditor`.`articulos`
 FOR EACH ROW
