@@ -15,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -42,6 +43,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import logic.*;
 
@@ -433,8 +435,8 @@ public class HomeController extends Component implements Initializable {
             mostrarAlerta("Contrato retractado","El contrato que intentas retractar ya está retractado.");
             return;
         }
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/FinalizarRetracto.fxml"));
+        abrirDetalleContrato(false, false);
+        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/FinalizarRetracto.fxml"));
         Parent root = loader.load();
         Stage stage= new Stage();
         stage.initStyle(StageStyle.DECORATED);
@@ -456,7 +458,7 @@ public class HomeController extends Component implements Initializable {
         finalizarController.getTxtValorInicial().setText(txtValor_DetalleContrato.getText());
         finalizarController.cobrar();
         finalizarController.setHomeController(this);
-
+*/
         //finalizarController.inicializar();
 
 
@@ -486,8 +488,15 @@ public class HomeController extends Component implements Initializable {
             mostrarAlerta("Contrato retractado","El contrato que intentas renovar ya está retractado. Es necesario crear un nuevo contrato.");
             return;
         }
+        
+        abrirDetalleContrato(true, false);
+
+    }
+
+    private void abrirDetalleContrato(boolean isRenovacion, boolean isEditar) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/FinalizarRetracto.fxml"));
         Parent root = loader.load();
+        FinalizarRetractoController controller = loader.getController();
         Stage stage= new Stage();
         stage.initStyle(StageStyle.DECORATED);
         stage.getIcons().add(new Image("/im/favicon.png"));
@@ -495,23 +504,23 @@ public class HomeController extends Component implements Initializable {
         stage.resizableProperty().setValue(Boolean.TRUE);
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.show();
-        FinalizarRetractoController controller = loader.getController();
-        controller.setRenovacion(true);
+        controller.setRenovacion(isRenovacion);
+        controller.setIsEditar(isEditar);
         controller.setControlBd(controlBd);
         controller.setSen(sen);
         controller.setNumeroContrato(txtNumeroContrato_DetalleContrato.getText());
         controller.getTxtCedula().setText(txtCedula_DetalleContrato.getText());
-        controller.getTxtNombre().setText(txtNombre_DetalleContrato.getText());
         controller.getTxtNombre().setText(txtNombre_DetalleContrato.getText());
         controller.getTxtFechaInicio().setText(txtFechaInicio_DetalleContrato.getText());
         controller.getTxtPorcentaje().setText(txtPorcentaje_DetalleContrato.getText());
         controller.getTxtValorInicial().setText(txtValor_DetalleContrato.getText());
         controller.cobrar();
         controller.setHomeController(this);
+        stage.showAndWait();
+
     }
 
-    public void renovar() throws SQLException {
+    public void renovar(String articulo) throws SQLException {
         if(getMeses()==-1) return;
         String confirmacion2;
         if(getMeses()==1){
@@ -531,7 +540,7 @@ public class HomeController extends Component implements Initializable {
             String vencimiento = fechaFinal.toString();
             String fechaHoy = hoy.toString();
 
-            String articulo = controlBd.consultarIdArticulo(txtNumeroContrato_DetalleContrato.getText());
+
 
             String valor = txtValor_DetalleContrato.getText();
             String precio = valor.replace(".", "");
@@ -618,6 +627,13 @@ public class HomeController extends Component implements Initializable {
             mostrarAlerta("Contrato retractado","El contrato que intentas retractar ya está retractado.");
             return;
         }
+
+        try {
+             abrirDetalleContrato(true, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*
         try {
             String valorACobrar = confirmarCobroRenovacion(txtNumeroContrato_DetalleContrato.getText());
             if(valorACobrar == null) {
@@ -630,7 +646,9 @@ public class HomeController extends Component implements Initializable {
                         String.valueOf(controlBd.ConsultarTotalCaja()+ingreso));
                 controlBd.insertCaja(caja);
             };
-            idArticulo=popUpEditarArticulo();
+            idArticulo=popUpEditarArticulo( txtNumeroContrato_DetalleContrato,  txtCedula_DetalleContrato,
+                    txtNombre_DetalleContrato, txtFechaFinal_DetalleContrato,
+                    txtPorcentaje_DetalleContrato, txtValor_DetalleContrato);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -674,9 +692,10 @@ public class HomeController extends Component implements Initializable {
                 mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
             }
         }
+        */
     }
 
-    private String popUpEditarArticulo() throws IOException {
+    public String popUpEditarArticulo() throws IOException {
         FXMLLoader loader= new FXMLLoader(getClass().getResource("/gui/EditarArticulo.fxml"));
         Parent root=loader.load();
         EditarArticuloController controller=loader.getController();
@@ -697,6 +716,7 @@ public class HomeController extends Component implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.showAndWait();
+
         return controller.getIdArticulo();
     }
     public void formatoDeTextos(){
@@ -1436,7 +1456,7 @@ public class HomeController extends Component implements Initializable {
         return IdArticulo;
     }
 
-    public int  preguntarMesesNuevoContrato() {
+    public int  preguntarMesesNuevoContrato(int min, int max, int init) {
         setMeses(-1);
         Stage popupwindow= new Stage();
         popupwindow.initModality(Modality.APPLICATION_MODAL);
@@ -1518,7 +1538,7 @@ public class HomeController extends Component implements Initializable {
 
 
 
-        int meses=preguntarMesesNuevoContrato();
+        int meses=preguntarMesesNuevoContrato(1,mesesPlazo(comboSubcategoria),3);
         String confirmacion;
         if(meses==-1) return;
         if(meses==1){

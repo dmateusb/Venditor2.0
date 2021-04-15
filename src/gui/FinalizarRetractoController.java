@@ -2,12 +2,14 @@ package gui;
 
 import SQL.ControlBd;
 import SQL.SQL_Sentencias;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -17,6 +19,7 @@ import logic.Caja;
 import logic.Descuentos;
 import logic.Usuario;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -39,6 +42,7 @@ public class FinalizarRetractoController implements Initializable {
     @FXML private TextField txtValorCobrar;
     @FXML private TextField txtValorCobrado;
     @FXML private Text txtContrato;
+
     private SQL_Sentencias sen;
     private ControlBd controlBd;
     private String numeroContrato;
@@ -47,9 +51,7 @@ public class FinalizarRetractoController implements Initializable {
     long meses;
     long dias;
     private boolean renovacion = false;
-
-
-
+    private boolean isEditar = false;
 
     public void setNumeroContrato(String contrato){
         this.numeroContrato = contrato;
@@ -285,8 +287,17 @@ public class FinalizarRetractoController implements Initializable {
             Stage stage = (Stage) txtNombre.getScene().getWindow();
             stage.close();
             if(renovacion){
-                preguntarMesesRenovacion();
-                homeController.renovar();
+                int meses=preguntarMesesRenovacion();
+                if(isEditar && meses != -1) {
+                    try {
+                        String numeroArticulo = homeController.popUpEditarArticulo();
+                        homeController.renovar(numeroArticulo);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    homeController.renovar(controlBd.consultarIdArticulo(numeroContrato));
+                }
                 renovacion=false;
             }
         }
@@ -301,7 +312,10 @@ public class FinalizarRetractoController implements Initializable {
         Label label1= new Label("Meses a renovar");
 
         label1.setWrapText(true);
-        Spinner<Integer> spinner= new Spinner<>(1,homeController.mesesPlazo(homeController.getTxtEstado_DetalleContrato()),3);
+        Spinner<Integer> spinner= new Spinner<Integer>();
+        SpinnerValueFactory<Integer> spinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                1,homeController.mesesPlazo(homeController.getTxtEstado_DetalleContrato()),3,1);
+        spinner.setValueFactory(spinnerValueFactory);
         button1.setOnAction(e -> {
             homeController.setMeses(spinner.getValue());
             popupwindow.close();
@@ -356,6 +370,11 @@ public class FinalizarRetractoController implements Initializable {
 
     public void setRenovacion(boolean renovacion) {
         this.renovacion = renovacion;
+    }
+
+
+    public void setIsEditar(boolean isEditar) {
+        this.isEditar=isEditar;
     }
 }
 

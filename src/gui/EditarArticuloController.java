@@ -1,5 +1,7 @@
 package gui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -28,29 +30,34 @@ public class EditarArticuloController  {
 
     @FXML
     private TextField txtValorArticulo;
-
+    ObservableList<String> categorias = FXCollections.observableArrayList("Oro","Electrodomésticos");
+    ObservableList<String> subElectrodomesticos = FXCollections.observableArrayList(
+            "Cámaras","Deportes","Herramientas","Hogar","Industria","Instrumentos",
+            "Portatil","Reloj","Sonido","Televisores","Videojuegos", "Varios Artículos","Otros");
+    ObservableList<String> subOro = FXCollections.observableArrayList("Oro");
 
 
     @FXML
     protected void cambioSubcategorias() {
-        String output = (String) comboCategoria.getValue();
-        if(output == "Oro"){
+        if(comboCategoria.getValue().equals("Oro")){
             comboSubcategoria.getItems().removeAll();
-            comboSubcategoria.setItems(homeController.getSubOro());
+            comboSubcategoria.setItems(subOro);
             InteresOro();
             txtPesoArticulo.setDisable(false);
             comboSubcategoria.getSelectionModel().select(0);
 
-
         }else{
             comboSubcategoria.getItems().removeAll();
-            comboSubcategoria.setItems(homeController.getSubElectrodomesticos());
+            comboSubcategoria.setItems(subElectrodomesticos);
             comboSubcategoria.getSelectionModel().select(0);
             InteresElectrodomesticos();
+            if (comboCategoria.getValue().equals("Otro")){
+                txtPesoArticulo.setDisable(false);
+            } else {
+                txtPesoArticulo.setDisable(true);
+            }
             txtPesoArticulo.setText("");
-            txtPesoArticulo.setDisable(true);
         }
-
 
     }
     @FXML
@@ -83,12 +90,13 @@ public class EditarArticuloController  {
     }
 
     public void inicializar() {
-//        cambioSubcategorias();
         SpinnerPorcentaje.setEditable(false);
         SpinnerPorcentaje.setDisable(true);
-        comboCategoria.setItems(homeController.getCategorias());
+        comboCategoria.setItems(categorias);
         homeController.TextFormater(txtValorArticulo);
+        cambioSubcategorias();
     }
+
 
     @FXML
     public void onClicConfirmar(){
