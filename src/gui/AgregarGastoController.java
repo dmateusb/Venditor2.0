@@ -2,8 +2,11 @@ package gui;
 
 import SQL.ControlBd;
 import SQL.SQL_Sentencias;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
@@ -18,12 +21,15 @@ import java.util.regex.Pattern;
 
 public class AgregarGastoController implements Initializable{
     @FXML private TextField txtDinero = new TextField();
+    @FXML private ComboBox<String> comboGatos;
     private HomeController homeController;
     private CajaController cajaController;
     private CajaAdminController cajaAdminController;
     private String usuario;
     private String password;
-
+    private ObservableList<String> gastos = FXCollections.observableArrayList(
+            "Nomina", "Parafiscales", "Otro"
+    );
     public HomeController getHomeController() {
         return homeController;
     }
@@ -121,11 +127,11 @@ public class AgregarGastoController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         TextFormater(txtDinero);
-        System.out.println("dsadasdsadas");
+        comboGatos.setItems(gastos);
     }
 
     @FXML public void agregarGasto(){
-        if(txtDinero.getText().length()==0){
+        if(txtDinero.getText().length()==0 && comboGatos.getValue().equals("")){
             homeController.mostrarAlerta(" Información incompleta","No has escrito el valor que quieres ingresar a la caja");
             return;
         }
@@ -138,7 +144,7 @@ public class AgregarGastoController implements Initializable{
         float totalCaja=this.homeController.getControlBd().ConsultarTotalCaja();
 
         Caja caja= new Caja();
-        caja.setDescripcion("Retiro Capital");
+        caja.setDescripcion(comboGatos.getValue());
         caja.setEgreso(dinero);
         caja.setTotal(String.valueOf(totalCaja-Float.valueOf(dinero)));
         caja.setUsuario(usuario);

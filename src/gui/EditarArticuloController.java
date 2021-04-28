@@ -45,7 +45,6 @@ public class EditarArticuloController  {
             InteresOro();
             txtPesoArticulo.setDisable(false);
             comboSubcategoria.getSelectionModel().select(0);
-
         }else{
             comboSubcategoria.getItems().removeAll();
             comboSubcategoria.setItems(subElectrodomesticos);
