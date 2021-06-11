@@ -46,7 +46,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import logic.*;
-
+import org.apache.log4j.component.spi.Component;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -72,7 +72,7 @@ import java.util.regex.Pattern;
  * @author david
  */
 
-public class HomeController extends Component implements Initializable {
+public class HomeController implements Initializable {
 
     private ControlBd controlBd;
     private SQL_Sentencias sen;

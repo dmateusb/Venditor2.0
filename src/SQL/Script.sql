@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `venditor`.`caja` (
   `Id` INT(11) NOT NULL AUTO_INCREMENT,
   `Fecha` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
   `Descripcion` VARCHAR(45) NOT NULL,
+  `Tipo` VARCHAR(45) NOT NULL,
   `Ingreso` FLOAT NULL,
   `Egreso` FLOAT NULL,
   `Utilidad` FLOAT NULL,
@@ -165,6 +166,8 @@ CREATE TABLE IF NOT EXISTS `venditor`.`usuario` (
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   `rol` VARCHAR(45) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `cedula` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`username`))
 
 ENGINE = InnoDB;
@@ -172,6 +175,35 @@ USE `venditor`;
 DELIMITER $$
 INSERT INTO usuario(username, password, rol)VALUES ('root','','admin');
 
+
+-- -----------------------------------------------------
+-- Table `venditor`.`impresion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `venditor`.`impresion` (
+                                                      `Elemento` VARCHAR(45) NOT NULL,
+                                                      `X` INT(11) NOT NULL,
+                                                      `Y` INT(11) NOT NULL,
+                                                      `Documento` VARCHAR(45) NOT NULL,
+                                                      PRIMARY KEY (`Elemento`))
+
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+-- Valores por defecto para el formato de impresion
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Fecha inicio',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Fecha final',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Numero contrato',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Nombre cliente',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Cedula cliente',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Direccion cliente',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Barrio cliente',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Telefono cliente',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Nombre vendedor',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Cedula vendedor',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Descripcion articulo',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Peso articulo',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Valor articulo',0,0,'Contrato');
+INSERT INTO impresion(Elemento, X, Y, Documento)VALUES ('Sobreprecio articulo',0,0,'Contrato');
 
 USE `venditor`$$
 CREATE
