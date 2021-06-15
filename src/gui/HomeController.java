@@ -843,9 +843,7 @@ public class HomeController implements Initializable {
             anchorDescuentos = loader.load();
             descuentosController = loader.getController();
             descuentosController.setHomeController(this);
-            anchorPrincipal.getChildren().add(anchorDescuentos);
-            anchorPrincipal.toFront();
-            anchorDescuentos.toFront();
+            limpiarYCargar(HBoxPrincipal,anchorDescuentos);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1137,8 +1135,7 @@ public class HomeController implements Initializable {
             usuarioController=loader.getController();
             usuarioController.setHomeController(this);
             usuarioController.inicializar();
-            anchorPrincipal.getChildren().add(anchorUsuarios);
-            anchorUsuarios.toFront();
+            limpiarYCargar(HBoxPrincipal,anchorUsuarios);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -222,7 +222,6 @@ public class CajaController {
             SQL_Sentencias sen = new SQL_Sentencias(usuarioBD,passwordBD);
             if(sen.InsertarEstadoCaja("Cerrada",usuarioBD)){
                 btnCerrarCaja.setDisable(true);
-                btnIngresoCapital.setDisable(true);
                 btnRetiroCapital.setDisable(true);
                 btnAbrirCaja.setVisible(true);
                 homeController.btnRenovarContrato.setDisable(true);

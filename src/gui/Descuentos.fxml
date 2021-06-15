@@ -5,19 +5,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="720.0" prefWidth="1020.0" styleClass="achPaneGris" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DescuentosController">
+<AnchorPane prefHeight="680.0" prefWidth="1000.0" styleClass="achPaneGris" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DescuentosController">
    <children>
       <Text layoutX="395.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="DESCUENTOS" />
-      <TableView layoutX="42.0" layoutY="169.0" prefHeight="439.0" prefWidth="942.0">
+      <TableView layoutX="45.0" layoutY="140.0" prefHeight="439.0" prefWidth="910.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="ID" />
+          <TableColumn maxWidth="1000.0" prefWidth="75.0" text="ID" />
           <TableColumn prefWidth="126.39994049072266" text="Contrato" />
             <TableColumn prefWidth="153.06666564941406" text="Precio real" />
             <TableColumn prefWidth="194.66665649414062" text="Precio cobrado" />
             <TableColumn prefWidth="238.13330078125" text="Razón" />
             <TableColumn minWidth="0.0" prefWidth="154.13330078125" text="Usuario" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
    </children>
 </AnchorPane>

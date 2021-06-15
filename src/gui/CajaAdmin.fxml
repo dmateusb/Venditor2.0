@@ -8,29 +8,32 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="725.0" prefWidth="1121.0" styleClass="achPaneGris" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CajaAdminController">
+<AnchorPane minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" styleClass="achPaneGris" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CajaAdminController">
    <children>
-      <TableView fx:id="TablaCajaAdmin" layoutX="46.0" layoutY="180.0" prefHeight="417.0" prefWidth="962.0" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="180.0">
+      <TableView fx:id="TablaCajaAdmin" layoutX="46.0" layoutY="180.0" prefHeight="370.0" prefWidth="940.0">
         <columns>
-            <TableColumn fx:id="id" prefWidth="43.666664123535156" text="ID" />
-          <TableColumn fx:id="fecha" prefWidth="161.60000610351562" text="Fecha" />
-          <TableColumn fx:id="descripcion" prefWidth="207.20001220703125" text="Descripción" />
-            <TableColumn fx:id="egreso" prefWidth="210.0" text="(1)" />
-            <TableColumn fx:id="ingreso" prefWidth="210.0" text="(2)" />
-            <TableColumn fx:id="utilidad" prefWidth="210.0" text="(3)" />
+            <TableColumn fx:id="id" maxWidth="200.0" prefWidth="43.666664123535156" text="ID" />
+          <TableColumn fx:id="fecha" maxWidth="1000.0" prefWidth="161.60000610351562" text="Fecha" />
+          <TableColumn fx:id="descripcion" maxWidth="1500.0" prefWidth="207.20001220703125" text="Descripción" />
+            <TableColumn fx:id="egreso" maxWidth="1000.0" prefWidth="210.0" text="(1)" />
+            <TableColumn fx:id="ingreso" maxWidth="1000.0" prefWidth="210.0" text="(2)" />
+            <TableColumn fx:id="utilidad" maxWidth="1000.0" prefWidth="210.0" text="(3)" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <Text layoutX="442.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="CAJA GERENCIA" AnchorPane.bottomAnchor="645.96484375" AnchorPane.leftAnchor="442.0" AnchorPane.rightAnchor="404.904296875" AnchorPane.topAnchor="26.15234375" />
-      <Button fx:id="btnIngresoCapital" layoutX="46.0" layoutY="615.0" mnemonicParsing="false" onAction="#IngresoCapital" prefHeight="30.0" prefWidth="149.0" styleClass="btnVerde" text="Ingreso de capital" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="46.0" AnchorPane.topAnchor="615.0" />
-      <Button fx:id="btnRetiroCapital" layoutX="222.0" layoutY="615.0" mnemonicParsing="false" onAction="#AgregarGasto" prefHeight="35.0" prefWidth="149.0" styleClass="btnNaranja" text="Retiro de capital" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="222.0" AnchorPane.topAnchor="615.0" />
+      <Text layoutX="363.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="CAJA GERENCIA" />
+      <Button fx:id="btnIngresoCapital" layoutX="46.0" layoutY="567.0" mnemonicParsing="false" onAction="#IngresoCapital" prefHeight="30.0" prefWidth="149.0" styleClass="btnVerde" text="Ingreso de capital" />
+      <Button fx:id="btnRetiroCapital" layoutX="222.0" layoutY="567.0" mnemonicParsing="false" onAction="#AgregarGasto" prefHeight="30.0" prefWidth="149.0" styleClass="btnNaranja" text="Retiro de capital" />
       <DatePicker fx:id="selectorFecha" layoutX="106.0" layoutY="140.0" onAction="#CambioFecha" />
-      <TextField fx:id="txtEgresos" alignment="CENTER" editable="false" layoutX="473.0" layoutY="617.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
-      <TextField fx:id="txtIngresos" alignment="CENTER" editable="false" layoutX="646.0" layoutY="617.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
-      <TextField fx:id="txtUtilidades" alignment="CENTER" editable="false" layoutX="814.0" layoutY="617.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
-      <TextField fx:id="txtEfectivo" alignment="CENTER" editable="false" layoutX="646.0" layoutY="664.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
+      <TextField fx:id="txtEgresos" alignment="CENTER" editable="false" layoutX="472.0" layoutY="567.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
+      <TextField fx:id="txtIngresos" alignment="CENTER" editable="false" layoutX="645.0" layoutY="567.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
+      <TextField fx:id="txtUtilidades" alignment="CENTER" editable="false" layoutX="813.0" layoutY="567.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
+      <TextField fx:id="txtEfectivo" alignment="CENTER" editable="false" layoutX="645.0" layoutY="614.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
       <TextField fx:id="txtInicioCaja" alignment="CENTER" editable="false" layoutX="643.0" layoutY="138.0" maxWidth="150.0" prefHeight="30.0" styleClass="text" />
       <Text layoutX="46.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Fecha" AnchorPane.bottomAnchor="554.140625" AnchorPane.leftAnchor="46.0" AnchorPane.topAnchor="138.623046875" />
-      <Button fx:id="btnCerrarCaja" layoutX="46.0" layoutY="664.0" mnemonicParsing="false" onAction="#CerrarCaja" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Cerrar Caja" />
-      <Button fx:id="btnAbrirCaja" layoutX="221.0" layoutY="664.0" mnemonicParsing="false" onAction="#AbrirCaja" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzulClaro" text="Abrir Caja" />
+      <Button fx:id="btnCerrarCaja" layoutX="46.0" layoutY="616.0" mnemonicParsing="false" onAction="#CerrarCaja" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Cerrar Caja" />
+      <Button fx:id="btnAbrirCaja" layoutX="221.0" layoutY="616.0" mnemonicParsing="false" onAction="#AbrirCaja" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzulClaro" text="Abrir Caja" />
    </children>
 </AnchorPane>
