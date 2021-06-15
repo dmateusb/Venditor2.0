@@ -29,18 +29,6 @@ public class DescuentosController {
     ArrayList<Descuentos> arrayDescuentos = new ArrayList();
     public ObservableList<Descuentos> lista;
 
-//    public void mostrarTablaInicial() {
-//        ControlBd control = new ControlBd(usuario, password);
-//        Object[][] Descuentos = control.ConsultarDescuentos();
-//        for (int i = 0; i < Descuentos.length; i++) {
-//            if (Descuentos[i][0] != null && Descuentos[i][1] != null && Descuentos[i][2] != null) {
-//                Descuentos descuento = new Descuentos();
-//
-//
-//                arrayDescuentos.add(descuento);
-//            }
-//        }
-//    }
 
     private HomeController homeController;
 

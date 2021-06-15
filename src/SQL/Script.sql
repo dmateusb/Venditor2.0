@@ -54,7 +54,8 @@ DEFAULT CHARACTER SET = latin1;
 CREATE TABLE IF NOT EXISTS `venditor`.`caja` (
   `Id` INT(11) NOT NULL AUTO_INCREMENT,
   `Fecha` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
-  `Descripcion` VARCHAR(45) NOT NULL,
+  `Tipo` VARCHAR(45) NOT NULL,
+  `Descripcion` VARCHAR(300) NOT NULL,
   `Ingreso` FLOAT NULL,
   `Egreso` FLOAT NULL,
   `Utilidad` FLOAT NULL,
@@ -64,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `venditor`.`caja` (
 ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = latin1;
-INSERT INTO Caja(descripcion,ingreso,egreso,utilidad,total,usuario)VALUES ('Inicio Caja','0','0','0','0','root');
+INSERT INTO Caja(tipo, descripcion,ingreso,egreso,utilidad,total,usuario)VALUES ('Inicio Caja', 'Inicio Caja','0','0','0','0','root');
 
 -- -----------------------------------------------------
 -- Table `venditor`.`clientes`

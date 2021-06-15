@@ -1558,10 +1558,13 @@ public class HomeController extends Component implements Initializable {
             String precio = txtValorArticulo.getText().replace(".", "");
             float egreso=redondearA50(Float.parseFloat(precio));
             System.out.println("Contrato: "+lblNumeroContrato.getText());
-            Caja caja = new Caja(
+            /*descripcion
+              ingreso,egreso,utilidad,total
+            * */
+            Caja caja = new Caja("Retroventa",
                     "Retroventa "+lblNumeroContrato.getText(),
                     "0",String.valueOf(egreso),"0",
-                    String.valueOf(controlBd.ConsultarTotalCaja()-egreso));
+                    String.valueOf(controlBd.ConsultarTotalCaja()-egreso),this.getUsuario().getUsername());
             if (!controlBd.insertCaja(caja)) return;
             boolean success = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarNuevoContrato(txtcedulaNuevaRetroventa.getText(), ArticuloId, Integer.parseInt(precio),
                     Double.parseDouble(SpinnerPorcentaje.getValue().toString()), vencimiento, sen.getUser());
