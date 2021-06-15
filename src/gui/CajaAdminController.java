@@ -88,8 +88,9 @@ public class CajaAdminController {
         long inicioCaja=0;
 
         ControlBd control=homeController.getControlBd();
-        Object[][] Cajas=control.consultarCajaFecha(fechaCaja);
-        Object[][] CajasTotal=control.consultarCaja();
+        Object[][] Cajas=control.consultarCajaAdminFecha(fechaCaja);
+        Object[][] CajasParaId=control.consultarCajaFecha(fechaCaja);
+        Object[][] CajasTotal=control.consultarCajaAdmin();
 
         if(Cajas==null){
             txtEgresos.setText("0");
@@ -129,8 +130,8 @@ public class CajaAdminController {
             }
 
         }else{
-            int lastId = Integer.parseInt(Cajas[0][0].toString())-1;
-            if(Integer.valueOf(Cajas[0][0].toString())==1){
+            int lastId = Integer.parseInt(CajasParaId[0][0].toString())-1;
+            if(Integer.valueOf(CajasParaId[0][0].toString())==1){
                 lastId=lastId+1;
             }
             Object[][] cajaParaTotal = control.consultarCajaId(String.valueOf(lastId));
@@ -154,10 +155,16 @@ public class CajaAdminController {
             }
         }
 
-        long ingresos=0;
-        long egresos=0;
-        long utilidades=0;
-        for(int i=0;i<Cajas.length;i++){
+        Object[][] cajaTotal=control.consultarCajaFecha(fechaCaja);
+        long[] totalesCaja = calcularTotales(Cajas);
+        long[] totalesCajaTotal = calcularTotales(cajaTotal);
+        long ingresos = totalesCaja[0];
+        long egresos = totalesCaja[1];
+        long utilidades = totalesCaja[2];
+        long ingresosTotales = totalesCajaTotal[0];
+        long egresosTotales = totalesCajaTotal[1];
+        long utilidadesTotales = totalesCajaTotal[2];
+        /*for(int i=0;i<Cajas.length;i++){
             if(Cajas[i][3]!=null){
                 ingresos=ingresos+Long.valueOf(Cajas[i][3].toString());
             }
@@ -170,12 +177,13 @@ public class CajaAdminController {
 
 
         }
-
+*/
         txtInicioCaja.setText(Procedimientos.setPuntosDecimales(String.valueOf(inicioCaja)));
         txtEgresos.setText(Procedimientos.setPuntosDecimales(String.valueOf(egresos)));
         txtIngresos.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos+inicioCaja)));
         txtUtilidades.setText(Procedimientos.setPuntosDecimales(String.valueOf(utilidades)));
-        txtEfectivo.setText(Procedimientos.setPuntosDecimales(String.valueOf(ingresos+utilidades-egresos+inicioCaja)));
+        txtEfectivo.setText(Procedimientos.setPuntosDecimales(
+                String.valueOf(ingresosTotales+utilidadesTotales-egresosTotales+inicioCaja)));
 
         listaCajas = FXCollections.observableArrayList(arrayCajas);
         id.setCellValueFactory(new PropertyValueFactory<Caja, Integer>("id"));
@@ -187,6 +195,28 @@ public class CajaAdminController {
         TablaCajaAdmin.setItems(listaCajas);
         listaCajas.removeAll();
         arrayCajas.removeAll(listaCajas);
+    }
+
+    private long[] calcularTotales(Object[][] Cajas){
+        long ingresos=0;
+        long egresos=0;
+        long utilidades=0;
+        long[] resultados = new long[3];
+        for(int i=0;i<Cajas.length;i++){
+            if(Cajas[i][3]!=null){
+                ingresos=ingresos+Long.valueOf(Cajas[i][3].toString());
+            }
+            if(Cajas[i][4]!=null){
+                egresos=egresos+Long.valueOf(Cajas[i][4].toString());
+            }
+            if(Cajas[i][4]!=null){
+                utilidades=utilidades+Long.valueOf(Cajas[i][5].toString());
+            }
+        }
+        resultados[0]=ingresos;
+        resultados[1]=egresos;
+        resultados[2]=utilidades;
+        return resultados;
     }
 
     @FXML public void CambioFecha(){

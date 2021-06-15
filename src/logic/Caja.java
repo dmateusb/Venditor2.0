@@ -3,12 +3,13 @@ package logic;
 public class Caja {
     private int id;
     private String fecha;
-    private String usuario;
+    private String tipo;
     private String descripcion;
     private String ingreso;
     private String egreso;
     private String utilidad;
     private String total;
+    private String usuario;
 
     public Caja() {
         this.ingreso="0";
@@ -17,7 +18,27 @@ public class Caja {
         this.total="0";
     }
 
-    public Caja(int id,String fecha, String descripcion, String ingreso, String egreso, String utilidad, String total,
+
+    public Caja(String tipo, String descripcion, String ingreso, String egreso,
+                String utilidad, String total, String usuario) {
+        this.tipo = tipo;
+        this.usuario = usuario;
+        this.descripcion = descripcion;
+        this.ingreso = ingreso;
+        this.egreso = egreso;
+        this.utilidad = utilidad;
+        this.total = total;
+    }
+    public Caja(String descripcion, String ingreso, String egreso,
+                String utilidad, String total, String usuario) {
+        this.usuario = usuario;
+        this.descripcion = descripcion;
+        this.ingreso = ingreso;
+        this.egreso = egreso;
+        this.utilidad = utilidad;
+        this.total = total;
+    }
+    public Caja(int id, String fecha, String descripcion, String ingreso, String egreso, String utilidad, String total,
                 String usuario) {
         this.id=id;
         this.fecha=fecha;
@@ -29,14 +50,6 @@ public class Caja {
         this.total = total;
     }
 
-
-    public Caja(String descripcion, String ingreso, String egreso, String utilidad, String total) {
-        this.descripcion = descripcion;
-        this.ingreso = ingreso;
-        this.egreso = egreso;
-        this.utilidad = utilidad;
-        this.total = total;
-    }
 
     public String getDescripcion() {
         return descripcion;
@@ -100,5 +113,13 @@ public class Caja {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }

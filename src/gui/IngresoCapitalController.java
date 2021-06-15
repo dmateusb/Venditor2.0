@@ -138,6 +138,7 @@ public class IngresoCapitalController implements Initializable {
         ControlBd controlBd=homeController.getControlBd();
         float totalCaja=controlBd.ConsultarTotalCaja();
         Caja caja= new Caja();
+        caja.setTipo("Ingreso");
         caja.setDescripcion("Ingreso Capital");
         caja.setIngreso(dinero);
         caja.setTotal(String.valueOf(totalCaja+Float.valueOf(dinero)));

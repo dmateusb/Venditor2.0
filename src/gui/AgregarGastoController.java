@@ -144,6 +144,7 @@ public class AgregarGastoController implements Initializable{
         float totalCaja=this.homeController.getControlBd().ConsultarTotalCaja();
 
         Caja caja= new Caja();
+        caja.setTipo("Egreso");
         caja.setDescripcion(comboGatos.getValue());
         caja.setEgreso(dinero);
         caja.setTotal(String.valueOf(totalCaja-Float.valueOf(dinero)));

@@ -103,6 +103,8 @@ public class SQL_Sentencias {
         float utilidad=Float.parseFloat(datos[3]);
         float total=Float.parseFloat(datos[4]);
         boolean estado = false;
+        String tipo = datos[5];
+
         try {
             ps = con.conectado().prepareStatement(insert);
             ps.setString(1,descripcion);
@@ -111,6 +113,7 @@ public class SQL_Sentencias {
             ps.setFloat(4,utilidad);
             ps.setFloat(5,total);
             ps.setString(6,user);
+            ps.setString(7, tipo);
             ps.execute();
             ps.close();
             estado = true;
