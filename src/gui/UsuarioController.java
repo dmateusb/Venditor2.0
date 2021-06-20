@@ -129,10 +129,17 @@ public class UsuarioController {
         TextField txtNombreUsuario= new TextField();
         txtNombreUsuario.setPromptText("Nombre de usuario");
         txtNombreUsuario.setText("Nombre de usuario");
+        TextField txtNombreCompleto= new TextField();
+        txtNombreCompleto.setPromptText("Nombre completo");
+        TextField txtCedula= new TextField();
+        txtCedula.setPromptText("Cedula");
+        TextField txtLugar= new TextField();
+        txtLugar.setPromptText("Lugar de Expedición");
         PasswordField txtContraseña1= new PasswordField();
         txtContraseña1.setPromptText("Contraseña");
         PasswordField txtContraseña2= new PasswordField();
         txtContraseña2.setPromptText("Confirmar contraseña");
+
         ObservableList<String> options =
                 FXCollections.observableArrayList(
                         "Vendedor","Admin"
@@ -144,12 +151,18 @@ public class UsuarioController {
         Label label= new Label("Rol: ");
         hBox.getChildren().addAll(label,cBoxRol);
         Button btnConfirmar= new Button("Confirmar");
+        btnConfirmar.setStyle("-fx-cursor: HAND;\n" +
+                "-fx-background-color: #255958;\n" +
+                "-fx-text-fill: #FFFFFF;\n" +
+                "-fx-font-weight: bold;\n" +
+                "-fx-font-family: \"Open Sans Semibold\";\n" +
+                "-fx-font-size:14px;");
         vBox.requestFocus();
         btnConfirmar.setOnAction(event -> {
             if(txtContraseña1.getText().equals(txtContraseña2.getText()) && !txtContraseña1.getText().equals("")){
                 if(homeController.getControlBd().crearNuevoUsuarioBd(txtNombreUsuario.getText(),
-                        txtContraseña1.getText(),cBoxRol.getValue().toString().toLowerCase())){
-                    mostrarAlerta("Ëxito","Usuario ingresado correctamente");
+                        txtContraseña1.getText(),txtNombreCompleto.getText(),txtCedula.getText(),txtLugar.getText(),cBoxRol.getValue().toString().toLowerCase())){
+                    mostrarInformacion("Éxito","Usuario ingresado correctamente");
                     popUpWindow.close();
                     inicializarTabla();
                 }else{
@@ -159,8 +172,10 @@ public class UsuarioController {
                 mostrarAlerta("Error al crear nuevo usuario","Las contraseñas deben coincidir");
             }
         });
-        vBox.getChildren().addAll(txtNombreUsuario,txtContraseña1,txtContraseña2,hBox,btnConfirmar);
+        vBox.getChildren().addAll(txtNombreUsuario,txtContraseña1,txtContraseña2,txtNombreCompleto,txtCedula,txtLugar,hBox,btnConfirmar);
         vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(20.0);
+        vBox.setPadding(new Insets(30, 30, 30, 30));
         Scene scene = new Scene(vBox);
         popUpWindow.setScene(scene);
         popUpWindow.showAndWait();
@@ -231,5 +246,14 @@ public class UsuarioController {
         } else {
             return result.get().getText();
         }
+    }
+
+    public static void mostrarInformacion(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }

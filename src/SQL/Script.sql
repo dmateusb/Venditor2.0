@@ -34,153 +34,208 @@ CREATE TABLE IF NOT EXISTS `venditor`.`estado_caja` (
 -- Table `venditor`.`articulos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `venditor`.`articulos` (
-  `Id` VARCHAR(10) NOT NULL,
-  `Fecha` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
-  `Categoria` VARCHAR(45) NOT NULL,
-  `Subcategoria` VARCHAR(45) NOT NULL,
-  `Descripcion` VARCHAR(250) NOT NULL,
-  `Peso` DOUBLE NULL DEFAULT NULL,
-  `Valor` INT(11) NOT NULL,
-  `Estado` VARCHAR(45) NOT NULL,
-  `Usuario` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`Id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+                                                      `Id` VARCHAR(10) NOT NULL,
+                                                      `Fecha` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
+                                                      `Categoria` VARCHAR(45) NOT NULL,
+                                                      `Subcategoria` VARCHAR(45) NOT NULL,
+                                                      `Descripcion` VARCHAR(250) NOT NULL,
+                                                      `Peso` DOUBLE NULL DEFAULT NULL,
+                                                      `Valor` INT(11) NOT NULL,
+                                                      `Estado` VARCHAR(45) NOT NULL,
+                                                      `Usuario` VARCHAR(45) NOT NULL,
+                                                      PRIMARY KEY (`Id`))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
 -- Table `venditor`.`caja`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `venditor`.`caja` (
-  `Id` INT(11) NOT NULL AUTO_INCREMENT,
-  `Fecha` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
-  `Tipo` VARCHAR(45) NOT NULL,
-  `Descripcion` VARCHAR(300) NOT NULL,
-  `Ingreso` FLOAT NULL,
-  `Egreso` FLOAT NULL,
-  `Utilidad` FLOAT NULL,
-  `Total` FLOAT NOT NULL,
-  `Usuario` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`Id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = latin1;
+                                                 `Id` INT(11) NOT NULL AUTO_INCREMENT,
+                                                 `Fecha` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
+                                                 `Tipo` VARCHAR(45) NOT NULL,
+                                                 `Descripcion` VARCHAR(300) NOT NULL,
+                                                 `Ingreso` FLOAT NULL,
+                                                 `Egreso` FLOAT NULL,
+                                                 `Utilidad` FLOAT NULL,
+                                                 `Total` FLOAT NOT NULL,
+                                                 `Usuario` VARCHAR(20) NOT NULL,
+                                                 PRIMARY KEY (`Id`))
+    ENGINE = InnoDB
+    AUTO_INCREMENT = 1
+    DEFAULT CHARACTER SET = latin1;
 INSERT INTO Caja(tipo, descripcion,ingreso,egreso,utilidad,total,usuario)VALUES ('Inicio Caja', 'Inicio Caja','0','0','0','0','root');
 
 -- -----------------------------------------------------
 -- Table `venditor`.`clientes`
 -- -----------------------------------------------------root
 CREATE TABLE IF NOT EXISTS `venditor`.`clientes` (
-  `Cedula` INT(15) NOT NULL,
-  `Nombre` VARCHAR(45) NOT NULL,
-  `Apellidos` VARCHAR(45) NOT NULL,
-  `Direccion` VARCHAR(45) NULL DEFAULT NULL,
-  `Telefono1` VARCHAR(45) NOT NULL,
-  `Telefono2` VARCHAR(45) NULL DEFAULT NULL,
-  `Correo` VARCHAR(45) NULL DEFAULT NULL,
-  `Perfil` VARCHAR(45) NULL DEFAULT 'Nuevo',
-  `Huella` BLOB NULL DEFAULT NULL,
-  `Foto` BLOB NULL DEFAULT NULL,
-  `Fecha_registro` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
-  `Usuario` VARCHAR(45) NOT NULL,
-  `Barrio` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`Cedula`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+                                                     `Cedula` INT(15) NOT NULL,
+                                                     `Nombre` VARCHAR(45) NOT NULL,
+                                                     `Apellidos` VARCHAR(45) NOT NULL,
+                                                     `Lugar_Expedicion` VARCHAR(45) NOT NULL,
+                                                     `Direccion` VARCHAR(45) NULL DEFAULT NULL,
+                                                     `Telefono1` VARCHAR(45) NOT NULL,
+                                                     `Telefono2` VARCHAR(45) NULL DEFAULT NULL,
+                                                     `Correo` VARCHAR(45) NULL DEFAULT NULL,
+                                                     `Perfil` VARCHAR(45) NULL DEFAULT 'Nuevo',
+                                                     `Huella` BLOB NULL DEFAULT NULL,
+                                                     `Foto` BLOB NULL DEFAULT NULL,
+                                                     `Fecha_registro` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
+                                                     `Usuario` VARCHAR(45) NOT NULL,
+                                                     `Barrio` VARCHAR(45) NOT NULL,
+                                                     PRIMARY KEY (`Cedula`))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
 -- Table `venditor`.`contratos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `venditor`.`contratos` (
-  `Numero_contrato` VARCHAR(10) NOT NULL,
-  `Cedula` INT(15) NOT NULL,
-  `Articulo` VARCHAR(10) NOT NULL,
-  `Sobreprecio_real` FLOAT NULL DEFAULT NULL,
-  `Sobreprecio_cobrado` FLOAT NULL DEFAULT NULL,
-  `Fecha_inicio` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `Fecha_final` DATETIME NULL DEFAULT NULL,
-  `Tiempo` VARCHAR(45) NULL DEFAULT NULL,
-  `Valor` INT(15) NOT NULL,
-  `Porcentaje` VARCHAR(45) NULL DEFAULT NULL,
-  `Renovaciones` INT(10) NULL DEFAULT 0,
-  `Estado` VARCHAR(45) NOT NULL DEFAULT 'Vigente',
-  `Usuario` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`Numero_contrato`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+                                                      `Numero_contrato` VARCHAR(10) NOT NULL,
+                                                      `Cedula` INT(15) NOT NULL,
+                                                      `Articulo` VARCHAR(10) NOT NULL,
+                                                      `Sobreprecio_real` FLOAT NULL DEFAULT NULL,
+                                                      `Sobreprecio_cobrado` FLOAT NULL DEFAULT NULL,
+                                                      `Fecha_inicio` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+                                                      `Fecha_final` DATETIME NULL DEFAULT NULL,
+                                                      `Tiempo` VARCHAR(45) NULL DEFAULT NULL,
+                                                      `Valor` INT(15) NOT NULL,
+                                                      `Porcentaje` VARCHAR(45) NULL DEFAULT NULL,
+                                                      `Renovaciones` INT(10) NULL DEFAULT 0,
+                                                      `Estado` VARCHAR(45) NOT NULL DEFAULT 'Vigente',
+                                                      `Usuario` VARCHAR(45) NOT NULL,
+                                                      PRIMARY KEY (`Numero_contrato`))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
 -- Table `venditor`.`descuentos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `venditor`.`descuentos` (
-  `Id` INT(11) NULL AUTO_INCREMENT,
-  `Numero_contrato` VARCHAR(45) NOT NULL,
-  `Precio_real` FLOAT NOT NULL,
-  `Precio_cobrado` FLOAT NOT NULL,
-  `Razon` VARCHAR(150) NOT NULL,
-  `Usuario` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`Id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+                                                       `Id` INT(11) NULL AUTO_INCREMENT,
+                                                       `Numero_contrato` VARCHAR(45) NOT NULL,
+                                                       `Precio_real` FLOAT NOT NULL,
+                                                       `Precio_cobrado` FLOAT NOT NULL,
+                                                       `Razon` VARCHAR(150) NOT NULL,
+                                                       `Usuario` VARCHAR(45) NOT NULL,
+                                                       PRIMARY KEY (`Id`))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
 -- Table `venditor`.`registro_adicion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `venditor`.`registro_adicion` (
-  `ID_ADICION` INT(11) NOT NULL AUTO_INCREMENT,
-  `TABLA` VARCHAR(20) NOT NULL,
-  `ID_VALOR_AÑADIDO` VARCHAR(20) NOT NULL,
-  `FECHA` DATETIME NOT NULL,
-  `USUARIO_OPERACION` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`ID_ADICION`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 12
-DEFAULT CHARACTER SET = utf8mb4;
+                                                             `ID_ADICION` INT(11) NOT NULL AUTO_INCREMENT,
+                                                             `TABLA` VARCHAR(20) NOT NULL,
+                                                             `ID_VALOR_AÑADIDO` VARCHAR(20) NOT NULL,
+                                                             `FECHA` DATETIME NOT NULL,
+                                                             `USUARIO_OPERACION` VARCHAR(20) NOT NULL,
+                                                             PRIMARY KEY (`ID_ADICION`))
+    ENGINE = InnoDB
+    AUTO_INCREMENT = 12
+    DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
 -- Table `venditor`.`registro_modificacion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `venditor`.`registro_modificacion` (
-  `ID_REGISTRO_MOD` INT(11) NOT NULL AUTO_INCREMENT,
-  `ID_MODIFICADO` VARCHAR(20) NOT NULL,
-  `Fecha` DATETIME NOT NULL,
-  `Usario_operacion` VARCHAR(20) NOT NULL,
-  `Columna_modificada` VARCHAR(20) NOT NULL,
-  `Valor_antiguo` VARCHAR(20) NOT NULL,
-  `Valor_nuevo` VARCHAR(20) NOT NULL,
-  `TABLA_MODIFICADA` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`ID_REGISTRO_MOD`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 12
-DEFAULT CHARACTER SET = utf8mb4;
+                                                                  `ID_REGISTRO_MOD` INT(11) NOT NULL AUTO_INCREMENT,
+                                                                  `ID_MODIFICADO` VARCHAR(20) NOT NULL,
+                                                                  `Fecha` DATETIME NOT NULL,
+                                                                  `Usario_operacion` VARCHAR(20) NOT NULL,
+                                                                  `Columna_modificada` VARCHAR(20) NOT NULL,
+                                                                  `Valor_antiguo` VARCHAR(20) NOT NULL,
+                                                                  `Valor_nuevo` VARCHAR(20) NOT NULL,
+                                                                  `TABLA_MODIFICADA` VARCHAR(20) NOT NULL,
+                                                                  PRIMARY KEY (`ID_REGISTRO_MOD`))
+    ENGINE = InnoDB
+    AUTO_INCREMENT = 12
+    DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
 -- Table `venditor`.`usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `venditor`.`usuario` (
-  `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
-  `rol` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`username`))
+                                                    `username` VARCHAR(45) NOT NULL,
+                                                    `password` VARCHAR(45) NOT NULL,
+                                                    `nombre_completo` VARCHAR(45) NOT NULL,
+                                                    `cedula` VARCHAR(45) NOT NULL,
+                                                    `lugar_expedicion` VARCHAR(45) NOT NULL,
+                                                    `rol` VARCHAR(45) NOT NULL,
+                                                    PRIMARY KEY (`username`))
 
-ENGINE = InnoDB;
+    ENGINE = InnoDB;
 USE `venditor`;
 DELIMITER $$
-INSERT INTO usuario(username, password, rol)VALUES ('root','','admin');
+INSERT INTO usuario(username, password,nombre_completo,cedula,lugar_expedicion, rol)VALUES ('root','','admin','000000','Colombia','admin');
+
+-- -----------------------------------------------------
+-- Table `venditor`.`impresion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `venditor`.`impresion` (
+                                                      `Elemento` VARCHAR(45) NOT NULL,
+                                                      `X` INT(11) NOT NULL,
+                                                      `Y` INT(11) NOT NULL,
+                                                      `Documento` VARCHAR(45) NOT NULL,
+                                                      Activo BOOLEAN)
+
+    ENGINE = InnoDB;
+USE `venditor`;
+DELIMITER $$
+-- --------------------------------------------------------------------------------------
+-- Inserts de la tabla impresion para los elementos que irán en el contrato impreso------
+-- --------------------------------------------------------------------------------------
+-- Carta
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Fecha inicio',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Fecha final',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Numero contrato',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Nombre cliente',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Cedula cliente',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Lugar cliente',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Direccion cliente',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Barrio cliente',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Telefono cliente',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Nombre vendedor',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Cedula vendedor',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Lugar vendedor',0,0,'Contrato carta', FALSE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Descripcion articulo',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Peso articulo',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Precio articulo',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Sobreprecio articulo',0,0,'Contrato carta', TRUE);
+-- Oficio
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Fecha inicio',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Fecha final',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Numero contrato',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Nombre cliente',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Cedula cliente',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Lugar cliente',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Direccion cliente',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Barrio cliente',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Telefono cliente',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Nombre vendedor',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Cedula vendedor',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Lugar vendedor',0,0,'Contrato oficio', FALSE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Descripcion articulo',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Peso articulo',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Precio articulo',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Sobreprecio articulo',0,0,'Contrato oficio', TRUE);
 
 
 USE `venditor`$$
 CREATE
-DEFINER=`root`@`localhost`
+    DEFINER=`root`@`localhost`
 
-TRIGGER `venditor`.`TRI_ARTICULOS_INSERT`
-BEFORE INSERT ON `venditor`.`articulos`
-FOR EACH ROW
+    TRIGGER `venditor`.`TRI_ARTICULOS_INSERT`
+    BEFORE INSERT ON `venditor`.`articulos`
+    FOR EACH ROW
 BEGIN
     INSERT INTO
         registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
@@ -189,10 +244,10 @@ end$$
 
 USE `venditor`$$
 CREATE
-DEFINER=`root`@`localhost`
-TRIGGER `venditor`.`TRI_CAJA_INSERT`
-BEFORE INSERT ON `venditor`.`caja`
-FOR EACH ROW
+    DEFINER=`root`@`localhost`
+    TRIGGER `venditor`.`TRI_CAJA_INSERT`
+    BEFORE INSERT ON `venditor`.`caja`
+    FOR EACH ROW
 BEGIN
     INSERT INTO
         registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
@@ -201,10 +256,10 @@ end$$
 
 USE `venditor`$$
 CREATE
-DEFINER=`root`@`localhost`
-TRIGGER `venditor`.`TRI_CAJA_UPDATE`
-BEFORE UPDATE ON `venditor`.`caja`
-FOR EACH ROW
+    DEFINER=`root`@`localhost`
+    TRIGGER `venditor`.`TRI_CAJA_UPDATE`
+    BEFORE UPDATE ON `venditor`.`caja`
+    FOR EACH ROW
 BEGIN
     IF NEW.id<>OLD.id THEN
         INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
@@ -250,10 +305,10 @@ end$$
 
 USE `venditor`$$
 CREATE
-DEFINER=`root`@`localhost`
-TRIGGER `venditor`.`TRI_CLIENTES_INSERT`
-BEFORE INSERT ON `venditor`.`clientes`
-FOR EACH ROW
+    DEFINER=`root`@`localhost`
+    TRIGGER `venditor`.`TRI_CLIENTES_INSERT`
+    BEFORE INSERT ON `venditor`.`clientes`
+    FOR EACH ROW
 BEGIN
     INSERT INTO
         registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
@@ -262,10 +317,10 @@ end$$
 
 USE `venditor`$$
 CREATE
-DEFINER=`root`@`localhost`
-TRIGGER `venditor`.`TRI_CLIENTES_UPDATE`
-BEFORE UPDATE ON `venditor`.`clientes`
-FOR EACH ROW
+    DEFINER=`root`@`localhost`
+    TRIGGER `venditor`.`TRI_CLIENTES_UPDATE`
+    BEFORE UPDATE ON `venditor`.`clientes`
+    FOR EACH ROW
 BEGIN
     IF NEW.Cedula<>OLD.CEDULA THEN
         INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,
@@ -331,10 +386,10 @@ end$$
 
 USE `venditor`$$
 CREATE
-DEFINER=`root`@`localhost`
-TRIGGER `venditor`.`TRI_CONTRATOS_INSERT`
-BEFORE INSERT ON `venditor`.`contratos`
-FOR EACH ROW
+    DEFINER=`root`@`localhost`
+    TRIGGER `venditor`.`TRI_CONTRATOS_INSERT`
+    BEFORE INSERT ON `venditor`.`contratos`
+    FOR EACH ROW
 BEGIN
     INSERT INTO
         registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
@@ -343,10 +398,10 @@ end$$
 
 USE `venditor`$$
 CREATE
-DEFINER=`root`@`localhost`
-TRIGGER `venditor`.`TRI_DESCUENTOS_INSERT`
-BEFORE INSERT ON `venditor`.`descuentos`
-FOR EACH ROW
+    DEFINER=`root`@`localhost`
+    TRIGGER `venditor`.`TRI_DESCUENTOS_INSERT`
+    BEFORE INSERT ON `venditor`.`descuentos`
+    FOR EACH ROW
 BEGIN
     INSERT INTO
         registro_adicion (TABLA, ID_VALOR_AÑADIDO, FECHA, USUARIO_OPERACION)
@@ -355,10 +410,10 @@ end$$
 
 USE `venditor`$$
 CREATE
-DEFINER=`root`@`localhost`
-TRIGGER `venditor`.`TRI_DESCUENTOS_UPDATE`
-BEFORE UPDATE ON `venditor`.`descuentos`
-FOR EACH ROW
+    DEFINER=`root`@`localhost`
+    TRIGGER `venditor`.`TRI_DESCUENTOS_UPDATE`
+    BEFORE UPDATE ON `venditor`.`descuentos`
+    FOR EACH ROW
 BEGIN
     IF NEW.ID<>OLD.ID THEN
         INSERT INTO registro_modificacion( TABLA_MODIFICADA, Fecha, Usario_operacion, Columna_modificada,

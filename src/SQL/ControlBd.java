@@ -32,12 +32,12 @@ public class ControlBd {
 
     //Manejo Usuarios
 
-    public boolean crearNuevoUsuarioBd(String usuario, String password, String rol) {
+    public boolean crearNuevoUsuarioBd(String usuario, String password, String nombre, String cedula, String lugar,String rol) {
         boolean flag = false;
         boolean flag2 = false;
         try {
             flag = sen.crearUsuarioBd(usuario, password);
-            flag2 = insertUsuario(usuario, password, rol);
+            flag2 = insertUsuario(usuario, password,nombre,cedula,lugar,rol);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,10 +59,10 @@ public class ControlBd {
 
     //INSERTS
 
-    public boolean insertUsuario(String usuario, String password, String rol) {
-        String campos[] = {usuario, password, rol};
-        return sen.insertar(campos, "INSERT into venditor.usuario(username,password,rol)" +
-                " VALUES (?,?,?);");
+    public boolean insertUsuario(String usuario, String password, String nombre, String cedula, String lugar, String rol) {
+        String campos[] = {usuario, password,nombre,cedula,lugar, rol};
+        return sen.insertar(campos, "INSERT into venditor.usuario(username,password,nombre_completo,cedula,lugar_expedicion,rol)" +
+                " VALUES (?,?,?,?,?,?);");
     }
 
     public boolean insertEstadoCaja(String estado, String usuario) {
@@ -195,6 +195,13 @@ public class ControlBd {
         String cedula = cedulaString.replace(".", "");
         String[] columnas = {"Cedula", "Nombre", "Apellidos", "Direccion", "Barrio", "Telefono1", "Telefono2", "Correo", "Foto", "Perfil", "Fecha_registro"};
         Object[][] resultado = sen.GetTabla(columnas, "clientes", "select Cedula, Nombre, Apellidos, Direccion, Barrio, Telefono1, Telefono2, Correo, Foto, Perfil, Fecha_registro FROM clientes Where Cedula='" + cedula + "';");
+        return resultado;
+    }
+
+    public Object[][] GetDetallesNuevoContrato(String cedulaString) {
+        String cedula = cedulaString.replace(".", "");
+        String[] columnas = {"Cedula", "Nombre", "Apellidos", "Lugar_Expedicion", "Direccion", "Barrio", "Telefono1", "Telefono2", "Correo", "Foto", "Perfil", "Fecha_registro"};
+        Object[][] resultado = sen.GetTabla(columnas, "clientes", "select Cedula, Nombre, Apellidos, Lugar_Expedicion, Direccion, Barrio, Telefono1, Telefono2, Correo, Foto, Perfil, Fecha_registro FROM clientes Where Cedula='" + cedula + "';");
         return resultado;
     }
 

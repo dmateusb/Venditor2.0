@@ -44,14 +44,14 @@
             </AnchorPane>
             <AnchorPane>
                <children>
-                  <HBox layoutX="830.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <HBox layoutX="830.0" spacing="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <Button fx:id="btnNuevoCliente" mnemonicParsing="false" onAction="#onActionNuevoUsuario" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Nuevo">
+                        <Button fx:id="btnNuevoCliente" mnemonicParsing="false" onAction="#onActionNuevoUsuario" prefHeight="30.0" prefWidth="150.0" styleClass="btnVerde" text="Nuevo">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnEliminar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionEliminarUsuario" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Eliminar">
+                        <Button fx:id="btnEliminar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionEliminarUsuario" prefHeight="30.0" prefWidth="150.0" styleClass="btnRojo" text="Eliminar">
                            <font>
                               <Font size="14.0" />
                            </font>

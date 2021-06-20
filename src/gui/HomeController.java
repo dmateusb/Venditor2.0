@@ -87,6 +87,8 @@ public class HomeController implements Initializable {
     @FXML private MenuItem btnbusquedacliente;
     @FXML private AnchorPane pnCrearUsuario;
     @FXML private AnchorPane anchorTablaClientes;
+    @FXML private VBox VBoxAnchorTablaClientes;
+    @FXML private VBox VBoxanchorDetallesCliente;
     @FXML private AnchorPane anchorDetallesCliente;
     @FXML private AnchorPane anchorDetallesContrato;
     @FXML private AnchorPane anchorTablaContratos;
@@ -148,7 +150,7 @@ public class HomeController implements Initializable {
     @FXML private TextField txtFechaRegistroBusquedaCliente;
     @FXML private TextField txtPerfilBusquedaCliente;
     @FXML private TextField txtCedulaBusquedaCliente;
-    @FXML TextField txtCedulaConfirmacionNuevoCLiente;
+    @FXML private TextField txtLugarExpedicion;
     @FXML private TextField txtnombre;
     @FXML private TextField txttelefono1;
     @FXML private TextField txtcorreo;
@@ -725,7 +727,6 @@ public class HomeController implements Initializable {
         TextFormater(txtCedula_DetalleContrato);
         TextFormater(txtCedulaBusquedaCliente);
         TextFormater(txtcedula);
-        TextFormater(txtCedulaConfirmacionNuevoCLiente);
         TextFormater(txtcedulaNuevaRetroventa);
         TextFormater(txtBusquedaCliente);
         TextFormater(txtCedulaContratos);
@@ -1118,6 +1119,7 @@ public class HomeController implements Initializable {
         } else if (event.getSource() == btnbusquedacliente) {
             mostrarTablaInicial_Clientes();
             paneBusquedaCliente.toFront();
+            VBoxAnchorTablaClientes.toFront();
             anchorTablaClientes.toFront();
             //new FadeIn(paneBusquedaCliente).play();
 
@@ -1143,11 +1145,10 @@ public class HomeController implements Initializable {
 
     @FXML
     public void crearUsuario(ActionEvent event) throws SQLException, IOException {
-        if (txtcedula.getText().equals(txtCedulaConfirmacionNuevoCLiente.getText())) {
             byte[] data = null;
 
             Boolean isCreado = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarNuevoCliente((txtcedula.getText()),
-                    txtnombre.getText(), txtapellido.getText(), txtdireccion.getText(),txtbarrio.getText(),
+                    txtnombre.getText(), txtapellido.getText(), txtLugarExpedicion.getText(),txtdireccion.getText(),txtbarrio.getText(),
                     txttelefono1.getText(), txttelefono2.getText(), txtcorreo.getText(), sen.getUser());
             if (isCreado) {
                 Alert alert= new Alert(Alert.AlertType.CONFIRMATION,"Usuario creado exitosamente",ButtonType.OK);
@@ -1158,7 +1159,7 @@ public class HomeController implements Initializable {
                 btnInsertarDatosNuevoCliente.setDisable(true);
                 txtcedula.setEditable(false);
                 txtnombre.setEditable(false);
-                txtCedulaConfirmacionNuevoCLiente.setEditable(false);
+                txtLugarExpedicion.setEditable(false);
                 txtapellido.setEditable(false);
                 txtdireccion.setEditable(false);
                 txtbarrio.setEditable(false);
@@ -1167,13 +1168,7 @@ public class HomeController implements Initializable {
                 txtcorreo.setEditable(false);
             }
 
-        } else {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setContentText("Favor revise el número de cédula");
-            alert1.setTitle("Confirmar número cédula");
-            alert1.setHeaderText(null);
-            alert1.showAndWait();
-        }
+
 
     }
 
@@ -1659,7 +1654,7 @@ public class HomeController implements Initializable {
         txtcedula.setText("");
         txtnombre.setText("");
         txtapellido.setText("");
-        txtCedulaConfirmacionNuevoCLiente.setText("");
+        txtLugarExpedicion.setText("");
         txtdireccion.setText("");
         txtbarrio.setText("");
         txttelefono1.setText("");
@@ -1667,7 +1662,7 @@ public class HomeController implements Initializable {
         txtcorreo.setText("");
         txtcedula.setEditable(true);
         txtnombre.setEditable(true);
-        txtCedulaConfirmacionNuevoCLiente.setEditable(true);
+        txtLugarExpedicion.setEditable(true);
         txtapellido.setEditable(true);
         txtdireccion.setEditable(true);
         txtbarrio.setEditable(true);
@@ -1704,17 +1699,19 @@ public class HomeController implements Initializable {
     public void llenarDatosDetalleCliente(String cedulaString){
         String cedula = cedulaString.replace(".","");
         anchorDetallesCliente.toFront();
-        Object[][] informacionCliente = controlBd.GetClienteNuevoContrato(cedula);
+        VBoxanchorDetallesCliente.toFront();
+        Object[][] informacionCliente = controlBd.GetDetallesNuevoContrato(cedula);
         txtCedulaBusquedaCliente.setText(cedula);
         txtNombreBusquedaCliente.setText(informacionCliente[0][1].toString());
         txtApellidoBusquedaCliente.setText(informacionCliente[0][2].toString());
-        txtDireccionBusquedaCliente.setText(informacionCliente[0][3].toString());
-        txtBarrioBusquedaCliente.setText(informacionCliente[0][4].toString());
-        txtTelefono1BusquedaCliente.setText(informacionCliente[0][5].toString());
-        txtTelefono2BusquedaCliente.setText(informacionCliente[0][6].toString());
-        txtCorreoBusquedaCliente.setText(informacionCliente[0][7].toString());
-        txtPerfilBusquedaCliente.setText(informacionCliente[0][9].toString());
-        txtFechaRegistroBusquedaCliente.setText(informacionCliente[0][10].toString().substring(0,10));
+        txtLugarExpedicion.setText(informacionCliente[0][3].toString());
+        txtDireccionBusquedaCliente.setText(informacionCliente[0][4].toString());
+        txtBarrioBusquedaCliente.setText(informacionCliente[0][5].toString());
+        txtTelefono1BusquedaCliente.setText(informacionCliente[0][6].toString());
+        txtTelefono2BusquedaCliente.setText(informacionCliente[0][7].toString());
+        txtCorreoBusquedaCliente.setText(informacionCliente[0][8].toString());
+        txtPerfilBusquedaCliente.setText(informacionCliente[0][10].toString());
+        txtFechaRegistroBusquedaCliente.setText(informacionCliente[0][11].toString().substring(0,10));
         byte[] imagen = controlBd.ConsultarFotoCliente(cedula);
         mostrarFoto(imagen,imageViewBusquedaCliente);
     }
@@ -2822,6 +2819,7 @@ public class HomeController implements Initializable {
         llenarDatosDetalleCliente(cedulaSeleccionada);
         mostrarTablaInicialContratos_BusquedaClientes(cedulaSeleccionada);
         anchorDetallesCliente.toFront();
+        VBoxanchorDetallesCliente.toFront();
     }
     @FXML
     public void verDetalleCliente(){
@@ -2832,6 +2830,7 @@ public class HomeController implements Initializable {
         //mostrarTablaInicialContratos_BusquedaClientes();
 
         anchorDetallesCliente.toFront();
+        VBoxanchorDetallesCliente.toFront();
         paneBusquedaCliente.toFront();
     }
     @FXML
@@ -2880,6 +2879,7 @@ public class HomeController implements Initializable {
     public void regresarBusquedaClientes(){
         mostrarTablaInicial_Clientes();
         paneBusquedaCliente.toFront();
+        VBoxAnchorTablaClientes.toFront();
         anchorTablaClientes.toFront();
     }
 
@@ -2909,6 +2909,7 @@ public class HomeController implements Initializable {
     @FXML
     public void OcultarDetallesCliente(){
         anchorDetallesCliente.toBack();
+        VBoxanchorDetallesCliente.toBack();
     }
 
     @FXML
@@ -2919,7 +2920,7 @@ public class HomeController implements Initializable {
         txtcedula.setText("");
         txtnombre.setText("");
         txtapellido.setText("");
-        txtCedulaConfirmacionNuevoCLiente.setText("");
+        txtLugarExpedicion.setText("");
         txtdireccion.setText("");
         txtcorreo.setText("");
         txttelefono1.setText("");

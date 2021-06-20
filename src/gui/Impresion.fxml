@@ -1,11 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" styleClass="achPaneGris" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ImpresionController">
    <children>
-      <Text layoutX="401.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="IMPRESIÓN" />
-      <AnchorPane fx:id="pnPDF" layoutX="484.0" layoutY="145.0" prefHeight="532.0" prefWidth="478.0" />
+      <Text layoutX="401.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulos" text="IMPRESIÓN" AnchorPane.topAnchor="30.0" />
+      <VBox layoutX="74.0" layoutY="98.0" prefHeight="532.0" prefWidth="900.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="98.0">
+         <children>
+            <TabPane prefHeight="500.0" prefWidth="850.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+              <tabs>
+                <Tab text="Carta">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="achPaneBorde">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="subTitulos" text="Coordenadas">
+                                       <VBox.margin>
+                                          <Insets left="50.0" top="20.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <HBox prefHeight="468.0" prefWidth="898.0">
+                                       <children>
+                                          <AnchorPane prefHeight="100.0" prefWidth="569.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Fecha inicio" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="15.0" />
+                                                <ToggleButton fx:id="tgbtn1" disable="true" layoutX="299.0" layoutY="15.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="355.0" AnchorPane.topAnchor="15.0" />
+                                                <Text layoutX="481.0" layoutY="36.58203125" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Fecha final" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="15.0" />
+                                                <ToggleButton fx:id="tgbtn2" disable="true" layoutX="780.0" layoutY="15.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="15.0" />
+                                                <Text layoutX="33.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="N° contrato" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="65.0" />
+                                                <ToggleButton fx:id="tgbtn3" disable="true" layoutX="332.0" layoutY="101.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="355.0" AnchorPane.topAnchor="65.0" />
+                                                <Text layoutX="514.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Cliente" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="65.0" />
+                                                <ToggleButton fx:id="tgbtn4" disable="true" layoutX="813.0" layoutY="101.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="65.0" />
+                                                <Text layoutX="54.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Cliente cc" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="115.0" />
+                                                <ToggleButton fx:id="tgbtn5" disable="true" layoutX="353.0" layoutY="149.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="355.0" AnchorPane.topAnchor="115.0" />
+                                                <Text layoutX="535.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Lugar Exp C" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="115.0" />
+                                                <ToggleButton fx:id="tgbtn6" disable="true" layoutX="834.0" layoutY="149.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="115.0" />
+                                                <Text layoutX="55.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Dirección" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="165.0" />
+                                                <ToggleButton fx:id="tgbtn7" disable="true" layoutX="354.0" layoutY="197.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="355.0" AnchorPane.topAnchor="165.0" />
+                                                <Text layoutX="536.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Barrio" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="165.0" />
+                                                <ToggleButton fx:id="tgbtn8" disable="true" layoutX="835.0" layoutY="197.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="165.0" />
+                                                <Text layoutX="50.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Tel Cliente" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="215.0" />
+                                                <ToggleButton fx:id="tgbtn9" disable="true" layoutX="354.0" layoutY="217.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="355.0" AnchorPane.topAnchor="215.0" />
+                                                <Text layoutX="536.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Vendedor" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="215.0" />
+                                                <ToggleButton fx:id="tgbtn10" disable="true" layoutX="835.0" layoutY="217.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="215.0" />
+                                                <Spinner fx:id="tg1" disable="true" layoutX="174.0" layoutY="18.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="15.0" />
+                                                <Spinner fx:id="tg2" disable="true" layoutX="254.0" layoutY="18.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="15.0" />
+                                                <Spinner fx:id="tg5" disable="true" layoutX="175.0" layoutY="63.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="65.0" />
+                                                <Spinner fx:id="tg6" disable="true" layoutX="255.0" layoutY="63.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="65.0" />
+                                                <Spinner fx:id="tg9" disable="true" layoutX="180.0" layoutY="115.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="115.0" />
+                                                <Spinner fx:id="tg10" disable="true" layoutX="260.0" layoutY="115.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="115.0" />
+                                                <Spinner fx:id="tg13" disable="true" layoutX="175.0" layoutY="163.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="165.0" />
+                                                <Spinner fx:id="tg14" disable="true" layoutX="255.0" layoutY="163.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="165.0" />
+                                                <Spinner fx:id="tg17" disable="true" layoutX="175.0" layoutY="215.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="215.0" />
+                                                <Spinner fx:id="tg18" disable="true" layoutX="255.0" layoutY="215.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="215.0" />
+                                                <Spinner fx:id="tg3" disable="true" layoutX="598.0" layoutY="15.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="595.0" AnchorPane.topAnchor="15.0" />
+                                                <Spinner fx:id="tg4" disable="true" layoutX="678.0" layoutY="15.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="680.0" AnchorPane.topAnchor="15.0" />
+                                                <Spinner fx:id="tg7" disable="true" layoutX="608.0" layoutY="25.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="595.0" AnchorPane.topAnchor="65.0" />
+                                                <Spinner fx:id="tg11" disable="true" layoutX="605.0" layoutY="113.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="595.0" AnchorPane.topAnchor="115.0" />
+                                                <Spinner fx:id="tg15" disable="true" layoutX="605.0" layoutY="163.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="595.0" AnchorPane.topAnchor="165.0" />
+                                                <Spinner fx:id="tg19" disable="true" layoutX="605.0" layoutY="213.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="595.0" AnchorPane.topAnchor="215.0" />
+                                                <Spinner fx:id="tg8" disable="true" layoutX="680.0" layoutY="63.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="680.0" AnchorPane.topAnchor="65.0" />
+                                                <Spinner fx:id="tg12" disable="true" layoutX="680.0" layoutY="113.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="680.0" AnchorPane.topAnchor="115.0" />
+                                                <Spinner fx:id="tg16" disable="true" layoutX="680.0" layoutY="163.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="680.0" AnchorPane.topAnchor="165.0" />
+                                                <Spinner fx:id="tg20" disable="true" layoutX="680.0" layoutY="215.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="680.0" AnchorPane.topAnchor="215.0" />
+                                                <Text layoutX="50.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Vendedor cc" AnchorPane.topAnchor="265.0" />
+                                                <ToggleButton fx:id="tgbtn11" disable="true" layoutX="354.0" layoutY="272.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="355.0" AnchorPane.topAnchor="265.0" />
+                                                <Text layoutX="536.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Lugar Exp V" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="265.0" />
+                                                <ToggleButton fx:id="tgbtn12" disable="true" layoutX="835.0" layoutY="272.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" text="Inactivo" AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="265.0" />
+                                                <Spinner fx:id="tg21" disable="true" layoutX="175.0" layoutY="270.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="265.0" />
+                                                <Spinner fx:id="tg22" disable="true" layoutX="255.0" layoutY="270.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="265.0" />
+                                                <Spinner fx:id="tg23" disable="true" layoutX="605.0" layoutY="268.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="595.0" AnchorPane.topAnchor="265.0" />
+                                                <Spinner fx:id="tg24" disable="true" layoutX="680.0" layoutY="270.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="680.0" AnchorPane.topAnchor="265.0" />
+                                                <Text layoutX="50.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Descripción" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="315.0" />
+                                                <ToggleButton fx:id="tgbtn13" disable="true" layoutX="354.0" layoutY="317.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="355.0" AnchorPane.topAnchor="315.0" />
+                                                <Text layoutX="536.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Peso" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="315.0" />
+                                                <ToggleButton fx:id="tgbtn14" disable="true" layoutX="835.0" layoutY="317.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="315.0" />
+                                                <Spinner fx:id="tg26" disable="true" layoutX="175.0" layoutY="315.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="315.0" />
+                                                <Spinner fx:id="tg25" disable="true" layoutX="255.0" layoutY="315.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="315.0" />
+                                                <Spinner fx:id="tg27" disable="true" layoutX="605.0" layoutY="313.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="595.0" AnchorPane.topAnchor="315.0" />
+                                                <Spinner fx:id="tg28" disable="true" layoutX="680.0" layoutY="315.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="680.0" AnchorPane.topAnchor="315.0" />
+                                                <Text layoutX="52.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Precio" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="365.0" />
+                                                <ToggleButton fx:id="tgbtn15" disable="true" layoutX="356.0" layoutY="369.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="355.0" AnchorPane.topAnchor="365.0" />
+                                                <Text layoutX="538.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textos" text="Sobreprecio" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="365.0" />
+                                                <ToggleButton fx:id="tgbtn16" disable="true" layoutX="837.0" layoutY="369.0" mnemonicParsing="false" onAction="#botonesActivos" prefHeight="30.0" prefWidth="70.0" selected="true" text="Activo" AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="365.0" />
+                                                <Spinner fx:id="tg29" disable="true" layoutX="177.0" layoutY="367.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="365.0" />
+                                                <Spinner fx:id="tg30" disable="true" layoutX="257.0" layoutY="367.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="365.0" />
+                                                <Spinner fx:id="tg31" disable="true" layoutX="607.0" layoutY="365.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="595.0" AnchorPane.topAnchor="365.0" />
+                                                <Spinner fx:id="tg32" disable="true" layoutX="682.0" layoutY="367.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" AnchorPane.leftAnchor="680.0" AnchorPane.topAnchor="365.0" />
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+                                       <children>
+                                          <Button fx:id="btnEditar" minHeight="30.0" mnemonicParsing="false" onAction="#editar" prefHeight="30.0" prefWidth="150.0" styleClass="btnNaranja" text="Editar" />
+                                          <Button fx:id="btnFormato" minHeight="30.0" mnemonicParsing="false" onAction="#abrirTest" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzul" text="Ver formato" />
+                                          <Button fx:id="btnDocumento" minHeight="30.0" mnemonicParsing="false" onAction="#abrirDocumentoTest" prefHeight="30.0" prefWidth="150.0" styleClass="btnAzulClaro" text="Ver documento" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets></VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Oficio">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

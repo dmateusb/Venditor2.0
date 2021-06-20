@@ -11,6 +11,21 @@
     -fx-font-family: "Open Sans Semibold";
     -fx-font-size:14px;
 }
+.toggle-button {
+    -fx-cursor: HAND;
+    -fx-background-color: #77202F;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-font-size:14px;
+}
+.toggle-button:selected {
+    -fx-cursor: HAND;
+    -fx-background-color: #255958;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans Semibold";
+    -fx-font-size:14px;
+}
 .btnRenovar:openvertically{
     -fx-cursor: HAND;
     -fx-background-color: #0F4C81;
@@ -57,6 +72,11 @@
 .achPaneGris {
     -fx-background-color: #e2e2e2;
     -fx-height: 120px;
+}
+.achPaneBorde{
+    -fx-background-color: #e2e2e2;
+    fx-border-width: 3px,3px,3px,3px;
+    -fx-border-color: #FFFFFF;
 }
 .btnclasificacion:readonly .text{
 

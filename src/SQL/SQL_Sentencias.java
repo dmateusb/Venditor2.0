@@ -50,6 +50,7 @@ public class SQL_Sentencias {
             ps.close();
             flag=true;
         } catch (SQLException e) {
+            System.out.println("Error aquí");
             System.out.println(e);
         }
         return  flag;
@@ -351,7 +352,7 @@ public class SQL_Sentencias {
         }
     }
     
-    public boolean InsertarNuevoCliente(String cedulaString, String nombre, String apellidos, String direccion, String barrio, String telefono1, String telefono2, String correo, String usuario) throws SQLException{
+    public boolean InsertarNuevoCliente(String cedulaString, String nombre, String apellidos, String lugar,  String direccion, String barrio, String telefono1, String telefono2, String correo, String usuario) throws SQLException{
         try {
 
             String cedulaInt = cedulaString.replace(".", "");
@@ -360,16 +361,17 @@ public class SQL_Sentencias {
 
 
             Connection c = con.conectado();
-            ps = c.prepareStatement("INSERT into venditor.clientes (Cedula,Nombre,Apellidos,Direccion,Barrio,Telefono1,Telefono2,Correo,Usuario) values (?,?,?,?,?,?,?,?,?)");
+            ps = c.prepareStatement("INSERT into venditor.clientes (Cedula,Nombre,Apellidos,Lugar_Expedicion,Direccion,Barrio,Telefono1,Telefono2,Correo,Usuario) values (?,?,?,?,?,?,?,?,?,?)");
             ps.setInt(1, cedula);
             ps.setString(2, nombre);
             ps.setString(3, apellidos);
-            ps.setString(4, direccion);
-            ps.setString(5, barrio);
-            ps.setString(6, telefono1);
-            ps.setString(7, telefono2);
-            ps.setString(8, correo);
-            ps.setString(9, usuario);
+            ps.setString(4, lugar);
+            ps.setString(5, direccion);
+            ps.setString(6, barrio);
+            ps.setString(7, telefono1);
+            ps.setString(8, telefono2);
+            ps.setString(9, correo);
+            ps.setString(10, usuario);
             ps.execute();
             con.desconectar();
             return true;
