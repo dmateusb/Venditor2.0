@@ -417,13 +417,14 @@ public class SQL_Sentencias {
     public boolean InsertarRetractoCaja(Caja caja) throws SQLException{
         try {
             Connection c = con.conectado();
-            ps = c.prepareStatement("INSERT into venditor.caja (Descripcion, Ingreso, Egreso, Utilidad, Total, Usuario) values (?,?,?,?,?,?) ");
+            ps = c.prepareStatement("INSERT into venditor.caja (Descripcion, Ingreso, Egreso, Utilidad, Total, Usuario, Tipo) values (?,?,?,?,?,?,?) ");
             ps.setString(1, caja.getDescripcion());
             ps.setString(2, caja.getIngreso());
             ps.setString(3,"0");
             ps.setString(4, caja.getUtilidad());
             ps.setString(5, caja.getTotal());
             ps.setString(6, user);
+            ps.setString(7, caja.getTipo());
             ps.execute();
             con.desconectar();
             return true;

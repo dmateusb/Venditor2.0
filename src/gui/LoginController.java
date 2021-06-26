@@ -65,7 +65,7 @@ public class LoginController implements Initializable {
 
     //Método para cerrar la ventana "Login" pero que continúe la ejecución del programa
     @FXML
-    public void closeButtonAction() {
+    public void closeButtonAction(){
         Stage stage1 = (Stage) closeButton.getScene().getWindow();
         stage1.close();
     }

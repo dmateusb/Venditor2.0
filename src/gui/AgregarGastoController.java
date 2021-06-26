@@ -21,14 +21,26 @@ import java.util.regex.Pattern;
 
 public class AgregarGastoController implements Initializable{
     @FXML private TextField txtDinero = new TextField();
-    @FXML private ComboBox<String> comboGatos;
+    @FXML private ComboBox<String> comboGastos;
+    @FXML private ComboBox<String> comboGastos2;
+    @FXML private TextField txtDescripcionOtro;
     private HomeController homeController;
     private CajaController cajaController;
     private CajaAdminController cajaAdminController;
     private String usuario;
     private String password;
     private ObservableList<String> gastos = FXCollections.observableArrayList(
-            "Nomina", "Parafiscales", "Otro"
+            "Nómina", "Parafiscales", "Servicios", "Otro"
+    );
+    private ObservableList<String> gastosNomina = FXCollections.observableArrayList(
+            "Cesantías", "Comisiones", "Honorarios",
+            "Intereses de cesantías", "Primas" ,"Sueldos", "Vacaciones", "Otro"
+    );
+    private ObservableList<String> gastosServicios = FXCollections.observableArrayList(
+            "Agua", "Aseo","Energía",  "Gas", "Internet", "Seguridad" ,"Teléfono", "Otro"
+    );
+    private ObservableList<String> gastosParafiscales = FXCollections.observableArrayList(
+            "ARP","CCF" ,"EPS","ICBF",  "Pensiones",  "Sena",  "Otro"
     );
     public HomeController getHomeController() {
         return homeController;
@@ -127,11 +139,39 @@ public class AgregarGastoController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         TextFormater(txtDinero);
-        comboGatos.setItems(gastos);
+        comboGastos.setItems(gastos);
+        comboGastos.setValue("Nómina");
+        comboGastos2.setItems(gastosNomina);
+        comboGastos2.setValue("Cesantías");
+    }
+
+    @FXML public void onClicComboGastos(){
+        String gasto = comboGastos.getValue();
+        comboGastos2.setVisible(true);
+        txtDescripcionOtro.setVisible(false);
+        txtDescripcionOtro.setText("");
+        switch(gasto){
+            case "Nómina":
+                comboGastos2.setItems(gastosNomina);
+                comboGastos2.setValue("Césantias");
+                break;
+            case "Parafiscales":
+                comboGastos2.setItems(gastosParafiscales);
+                comboGastos2.setValue("ARP");
+                break;
+            case "Servicios":
+                comboGastos2.setItems(gastosServicios);
+                comboGastos2.setValue("Agua");
+                break;
+            case "Otro":
+                comboGastos2.setVisible(false);
+                txtDescripcionOtro.setVisible(true);
+                break;
+        }
     }
 
     @FXML public void agregarGasto(){
-        if(txtDinero.getText().length()==0 && comboGatos.getValue().equals("")){
+        if(txtDinero.getText().length()==0 && comboGastos.getValue().equals("")){
             homeController.mostrarAlerta(" Información incompleta","No has escrito el valor que quieres ingresar a la caja");
             return;
         }
@@ -140,12 +180,18 @@ public class AgregarGastoController implements Initializable{
             homeController.mostrarAlerta("Valor incorrecto","Por favor escribe una cantidad de dinero válida");
             return;
         }
+        if(comboGastos.getValue()==""){
+            homeController.mostrarAlerta(" Información incompleta","No has escrito el tipo de gasto que quieres ingresar a la caja");
+            return;
+        }
 
         float totalCaja=this.homeController.getControlBd().ConsultarTotalCaja();
 
         Caja caja= new Caja();
         caja.setTipo("Egreso");
-        caja.setDescripcion(comboGatos.getValue());
+        String descripcion = ((txtDescripcionOtro.getText().equals("")) ?
+                comboGastos.getValue()+" "+ comboGastos2.getValue() : txtDescripcionOtro.getText());
+        caja.setDescripcion(descripcion);
         caja.setEgreso(dinero);
         caja.setTotal(String.valueOf(totalCaja-Float.valueOf(dinero)));
         caja.setUsuario(usuario);
