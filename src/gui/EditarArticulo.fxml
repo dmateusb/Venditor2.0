@@ -19,7 +19,7 @@
       <ComboBox fx:id="comboCategoria" layoutX="26.0" layoutY="33.0" onAction="#cambioSubcategorias" prefWidth="150.0" />
       <ComboBox fx:id="comboSubcategoria" layoutX="26.0" layoutY="94.0" prefWidth="150.0" />
       <TextField fx:id="txtPesoArticulo" layoutX="195.0" layoutY="33.0" prefHeight="26.0" prefWidth="149.0" />
-      <TextField fx:id="txtValorArticulo" editable="false" layoutX="195.0" layoutY="94.0" prefHeight="26.0" prefWidth="150.0" />
+      <TextField fx:id="txtValorArticulo" layoutX="195.0" layoutY="94.0" prefHeight="26.0" prefWidth="150.0" />
       <TextArea fx:id="txtDescripcionArticulo" layoutX="366.0" layoutY="32.0" prefHeight="87.0" prefWidth="209.0" />
       <Label layoutX="194.0" layoutY="67.0" text="Valor" />
       <Spinner fx:id="SpinnerPorcentaje" layoutX="166.0" layoutY="136.0" prefHeight="25.0" prefWidth="69.0" />

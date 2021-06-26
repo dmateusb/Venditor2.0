@@ -217,6 +217,12 @@ public class ControlBd {
         return resultado;
     }
 
+    public Object[][] getValorArticulo(String numeroArticulo) {
+        String[] columnas = { "Valor" };
+        Object[][] resultado = sen.GetTabla(columnas, "articulos", "select Valor FROM articulos Where Id='" + numeroArticulo + "';");
+        return resultado;
+    }
+
     public Object getHuella(String cedulaString) {
         String cedula = cedulaString.replace(".", "");
         String[] columnas = {"Huella"};

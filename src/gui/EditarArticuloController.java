@@ -115,6 +115,7 @@ public class EditarArticuloController  {
         try {
             idArticulo= homeController.InsertarNuevoArticulo(comboCategoria,comboSubcategoria,txtDescripcionArticulo,
                     txtPesoArticulo,txtValorArticulo);
+            this.setIdArticulo(idArticulo);
             Stage stage = (Stage) btnCambiarPorcentaje.getScene().getWindow();
             stage.close();
 
@@ -126,6 +127,7 @@ public class EditarArticuloController  {
     public String getIdArticulo() {
         return idArticulo;
     }
+
 
     public void setIdArticulo(String idArticulo) {
         this.idArticulo = idArticulo;

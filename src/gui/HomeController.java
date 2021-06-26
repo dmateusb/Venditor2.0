@@ -544,7 +544,7 @@ public class HomeController implements Initializable {
 
 
 
-            String valor = txtValor_DetalleContrato.getText();
+            String valor = (String)controlBd.getValorArticulo(articulo)[0][0];
             String precio = valor.replace(".", "");
 
 
@@ -629,72 +629,11 @@ public class HomeController implements Initializable {
             mostrarAlerta("Contrato retractado","El contrato que intentas retractar ya está retractado.");
             return;
         }
-
         try {
              abrirDetalleContrato(true, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*
-        try {
-            String valorACobrar = confirmarCobroRenovacion(txtNumeroContrato_DetalleContrato.getText());
-            if(valorACobrar == null) {
-                return;
-            }else{
-                String ingreso=valorACobrar;
-                Caja caja = new Caja(
-                        "Renovación contrato "+txtNumeroContrato_DetalleContrato.getText(),
-                        ingreso,"0","0",
-                        String.valueOf(controlBd.ConsultarTotalCaja()+ingreso));
-                controlBd.insertCaja(caja);
-            };
-            idArticulo=popUpEditarArticulo( txtNumeroContrato_DetalleContrato,  txtCedula_DetalleContrato,
-                    txtNombre_DetalleContrato, txtFechaFinal_DetalleContrato,
-                    txtPorcentaje_DetalleContrato, txtValor_DetalleContrato);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if(idArticulo.equals("-1")) return;
-        //preguntarMesesRenovacion();
-        if(getMeses()==-1) return;
-
-        String confirmacion;
-
-        if(getMeses()==1){
-            confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por 1 mes a partir de la fecha de hoy. " +
-                    "¿Estás seguro de renovar el contrato?");
-
-        }else{
-            confirmacion = mostrarConfirmacion("Confirmación","El contrato se renovará por "+ getMeses()+" meses a partir de la fecha de hoy. " +
-                    "¿Estás seguro de renovar el contrato?");
-        }
-
-        if(confirmacion.equals("OK")){
-            Object[][] renovacion = controlBd.consultarRenovaciones(txtNumeroContrato_DetalleContrato.getText());
-
-            int renovaciones = Integer.parseInt(renovacion[0][0].toString())+1;
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime fechaFinal = LocalDateTime.now().plusMonths(getMeses());
-            LocalDateTime hoy = LocalDateTime.now();
-            String vencimiento = fechaFinal.toString();
-            String fechaHoy = hoy.toString();
-
-           // String articulo = control.consultarIdArticulo(idArticulo);
-
-            String valor = txtValor_DetalleContrato.getText();
-            String precio = valor.replace(".", "");
-
-            String nuevoContrato = new SQL_Sentencias(this.usuario.getUsername(),this.usuario.getPassword()).InsertarContratoRenovado(txtCedula_DetalleContrato.getText(),idArticulo,Integer.parseInt(precio),
-                    Double.parseDouble(txtPorcentaje_DetalleContrato.getText()),renovaciones,vencimiento,sen.getUser());
-            if(nuevoContrato.length()!=0){
-                controlBd.updateEstado_Retractado(txtNumeroContrato_DetalleContrato.getText(),fechaHoy);
-                mostrarTablaInicial();
-            }else{
-                mostrarAlerta("No se renovó","Algo salió mal y no se pudo renovar el contrato.");
-            }
-        }
-        */
     }
 
     public String popUpEditarArticulo() throws IOException {
