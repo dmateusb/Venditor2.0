@@ -184,8 +184,8 @@ CREATE TABLE IF NOT EXISTS `venditor`.`impresion` (
                                                       `Elemento` VARCHAR(45) NOT NULL,
                                                       `X` INT(11) NOT NULL,
                                                       `Y` INT(11) NOT NULL,
-                                                      `Documento` VARCHAR(45) NOT NULL,
-                                                      Activo BOOLEAN)
+                                                      Activo BOOLEAN,
+                                                      PRIMARY KEY (`Elemento`))
 
     ENGINE = InnoDB;
 USE `venditor`;
@@ -194,39 +194,39 @@ DELIMITER $$
 -- Inserts de la tabla impresion para los elementos que irán en el contrato impreso------
 -- --------------------------------------------------------------------------------------
 -- Carta
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Fecha inicio',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Fecha final',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Numero contrato',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Nombre cliente',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Cedula cliente',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Lugar cliente',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Direccion cliente',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Barrio cliente',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Telefono cliente',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Nombre vendedor',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Cedula vendedor',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Lugar vendedor',0,0,'Contrato carta', FALSE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Descripcion articulo',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Peso articulo',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Precio articulo',0,0,'Contrato carta', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Sobreprecio articulo',0,0,'Contrato carta', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Fecha inicio',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Fecha final',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Numero contrato',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Nombre cliente',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Cedula cliente',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Lugar cliente',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Direccion cliente',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Barrio cliente',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Telefono cliente',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Nombre vendedor',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Cedula vendedor',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Lugar vendedor',0,0, FALSE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Descripcion articulo',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Peso articulo',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Precio articulo',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Sobreprecio articulo',0,0, TRUE);
 -- Oficio
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Fecha inicio',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Fecha final',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Numero contrato',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Nombre cliente',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Cedula cliente',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Lugar cliente',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Direccion cliente',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Barrio cliente',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Telefono cliente',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Nombre vendedor',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Cedula vendedor',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Lugar vendedor',0,0,'Contrato oficio', FALSE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Descripcion articulo',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Peso articulo',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Precio articulo',0,0,'Contrato oficio', TRUE);
-INSERT INTO impresion(Elemento,X,Y,Documento,Activo)VALUES ('Sobreprecio articulo',0,0,'Contrato oficio', TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Fecha inicio O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Fecha final O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Numero contrato O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Nombre cliente O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Cedula cliente O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Lugar cliente O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Direccion cliente O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Barrio cliente O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Telefono cliente O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Nombre vendedor O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Cedula vendedor O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Lugar vendedor O',0,0, FALSE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Descripcion articulo O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Peso articulo O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Precio articulo O',0,0, TRUE);
+INSERT INTO impresion(Elemento,X,Y,Activo)VALUES ('Sobreprecio articulo O',0,0, TRUE);
 
 
 USE `venditor`$$

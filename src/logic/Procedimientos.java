@@ -14,8 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
+import SQL.ControlBd;
 
 public class Procedimientos {
+
     BufferedImage imagen;
     private static String nombreCamara;
     private static String cedula;
@@ -72,21 +74,45 @@ public class Procedimientos {
         }
     }
 
-    public static void abrirFormatoPdf(String tamañoPapel)throws IOException, DocumentException {
+    public static void abrirFormatoPdf(String tamañoPapel, ControlBd controlBd)throws IOException, DocumentException {
         PdfReader reader;
+        Object[][] informacionImpresion = controlBd.consultarImpresion();
          if(tamañoPapel.equals("carta")){
-             reader = new PdfReader("/im/CONTRATO.pdf");
+             reader = new PdfReader("/im/CONTRATO-CARTA.pdf");
          }else{
              reader = new PdfReader("/im/CONTRATO OFICIO.pdf");
          }
-         // input PDF
+        //Creo un archivo temporal para obtener la dirección local en la que se creó.
+        //Esta dirección la uso para obtener la ruta en la que se guardará el archivo generado
         File f = new File("program.txt");
 
-        // Get the absolute path of file f
+        // Obtengo la direccion absoluta del directorio
         String absolute = f.getAbsolutePath();
         String address = absolute.substring(0,absolute.length()-11);
         String direccion = address.replace("\\", "/");
-        String fechaInicio = "00-00-0000";
+
+
+        PdfStamper stamper = new PdfStamper(reader,
+                new FileOutputStream(direccion+"CONTRATO TEST.pdf")); // output PDF
+        BaseFont bf = BaseFont.createFont(
+                BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED); // set font
+        //loop on pages (1-based)
+
+        // get object for writing over the existing content;
+        // you can also use getUnderContent for writing in the bottom layer
+        PdfContentByte over = stamper.getOverContent(1);
+
+        if(informacionImpresion[0][3].equals("1")){
+            String fechaInicio = "00-00-0000";
+            over.beginText();
+            over.setFontAndSize(bf, 10);    // set font and size
+            over.setTextMatrix(416, 755);   // set x,y position (0,0 is at the bottom left)
+            over.showText(fechaInicio);  // set text
+            over.endText();
+        }
+
+
+
         String fechaFinal = "00-00-0000";
         String contratoImprimir = "C0000000";
         String nombreCliente = "José María Figueroa Martinez";
@@ -104,25 +130,10 @@ public class Procedimientos {
         String sobreprecio = "130.000";
 
 
-        PdfStamper stamper = new PdfStamper(reader,
-                new FileOutputStream(direccion+"CONTRATO TEST.pdf")); // output PDF
-        BaseFont bf = BaseFont.createFont(
-                BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED); // set font
 
-
-
-        //loop on pages (1-based)
-
-            // get object for writing over the existing content;
-            // you can also use getUnderContent for writing in the bottom layer
-            PdfContentByte over = stamper.getOverContent(1);
 
             // write text
-            over.beginText();
-            over.setFontAndSize(bf, 10);    // set font and size
-            over.setTextMatrix(416, 358);   // set x,y position (0,0 is at the bottom left)
-            over.showText(fechaInicio);  // set text
-            over.endText();
+
 
             over.beginText();
             over.setFontAndSize(bf, 10);    // set font and size
@@ -178,20 +189,27 @@ public class Procedimientos {
         }
     }
 
-    public static void abrirDocumentoPdf(String tamañoPapel)throws IOException, DocumentException {
+    public static void abrirDocumentoPdf(String tamañoPapel, ControlBd controlBd)throws IOException, DocumentException {
         PdfReader reader;
+        Object[][] informacionImpresion = controlBd.consultarImpresion();
         if(tamañoPapel.equals("carta")){
             reader = new PdfReader("/im/FORMATO BLANCO.pdf");
         }else{
             reader = new PdfReader("/im/FORMATO BLANCO.pdf");
         }
-        // input PDF
+        //Creo un archivo temporal para obtener la dirección local en la que se creó.
+        //Esta dirección la uso para obtener la ruta en la que se guardará el archivo generado
         File f = new File("program.txt");
 
-        // Get the absolute path of file f
+        // Obtengo la direccion absoluta del directorio
         String absolute = f.getAbsolutePath();
         String address = absolute.substring(0,absolute.length()-11);
         String direccion = address.replace("\\", "/");
+
+        System.out.println(informacionImpresion[0][3]);
+
+
+
         String fechaInicio = "00-00-0000";
         String fechaFinal = "00-00-0000";
         String contratoImprimir = "C0000000";

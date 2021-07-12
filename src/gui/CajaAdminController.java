@@ -81,6 +81,12 @@ public class CajaAdminController {
     }
 
     public void llenarTabla(String fechaCaja){
+        //Hago que los textFields de los totales de la caja normal no sean visibles en la caja admin
+        txtIngresos.setVisible(false);
+        txtEgresos.setVisible(false);
+        txtUtilidades.setVisible(false);
+        txtEfectivo.setVisible(false);
+        txtInicioCaja.setVisible(false);
         LocalDate now = LocalDate.parse(fechaCaja);
         if (selectorFecha.getValue()==null){
             selectorFecha.setValue(now);

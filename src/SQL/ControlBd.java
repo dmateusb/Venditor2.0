@@ -10,6 +10,7 @@ import logic.Caja;
 import logic.Home;
 import logic.Procedimientos;
 
+import javax.naming.ldap.Control;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -156,6 +157,14 @@ public class ControlBd {
                 "select Id,Fecha,Descripcion,Ingreso,Egreso,Utilidad,Total,Usuario FROM caja WHERE DATE(Fecha) < '" + fecha + "' ;");
         return resultado;
     }
+
+    public Object[][] consultarImpresion(){
+        String[] columnas = {"Elemento","X","Y","Activo"};
+        Object[][] resultado = sen.GetTabla(columnas, "impresion","select * FROM impresion");
+        return resultado;
+    }
+
+
 
     public Object[][] consultarCajaAdminAntesDeFecha(String fecha) {
         String[] columnas = {"Id", "Fecha", "Descripcion", "Ingreso", "Egreso", "Utilidad", "Total", "Usuario"};
@@ -431,6 +440,13 @@ public class ControlBd {
         String campos[] = {SobrePrecioReal, SobrePrecioCobrado, numeroContrato};
         return sen.insertar(campos, "update contratos set Sobreprecio_real = ?, Sobreprecio_cobrado = ? where Numero_contrato = ?;");
     }
+
+    public boolean updateImpresion(String[][] informacionImpresion){
+        String campos[] = {informacionImpresion[0][1], informacionImpresion[0][2], informacionImpresion[0][3], informacionImpresion[0][0]};
+        return sen.insertar(campos, "UPDATE impresion SET X = ?, Y = ? , Activo = ? where Elemento = ?;");
+    }
+
+
 
     //----------DELETES--------------
     private boolean eliminarUsuario(String username) throws SQLException {

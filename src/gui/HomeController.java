@@ -771,6 +771,8 @@ public class HomeController implements Initializable {
             anchorImpresion = loader.load();
             impresionController = loader.getController();
             impresionController.setHomeController(this);
+            impresionController.setControlBd(this.controlBd);
+            impresionController.iniciarElementosInterfaz();
             limpiarYCargar(HBoxPrincipal,anchorImpresion);
         } catch (IOException e) {
             e.printStackTrace();
