@@ -278,12 +278,8 @@ public class FinalizarRetractoController implements Initializable {
             float ingreso = Float.parseFloat(txtValorCobrado.getText().replace(".", ""));
             float utilidad = Float.parseFloat(valorCobrado) - Float.parseFloat(valorInicial);
             ingreso -= utilidad;
-            if (renovacion) {
-                cajaRetracto.setIngreso("0");
-                utilidad = Float.parseFloat(valorCobrado);
-            } else {
-                cajaRetracto.setIngreso(String.valueOf(ingreso));
-            }
+            cajaRetracto.setIngreso(String.valueOf(ingreso));
+            if (renovacion) utilidad = Float.parseFloat(valorCobrado);
             cajaRetracto.setUtilidad(String.valueOf(utilidad));
             String total = String.valueOf(totalCaja + ingreso + utilidad);
             cajaRetracto.setTotal(total);

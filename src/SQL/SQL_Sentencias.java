@@ -289,21 +289,12 @@ public class SQL_Sentencias {
             con.desconectar();
             return true;
         }
-
-
-
-
-
     }
-
-
-
 
     public String InsertarContratoRenovado(String cedulaString, String articulo, int valor,Double porcentaje,int renovaciones, String vencimiento, String usuario) throws SQLException{
         int Id = 0;
         String cedulaInt = cedulaString.replace(".", "");
         int cedula = Integer.valueOf(cedulaInt);
-
         String[] columnas={"Numero_contrato"};
         Object[][] resultado = GetTabla(columnas, "contratos", "SELECT Numero_contrato FROM contratos ORDER BY Numero_contrato ASC;");
         if(resultado.length==0){

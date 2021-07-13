@@ -24,6 +24,7 @@ public class AgregarGastoController implements Initializable{
     @FXML private ComboBox<String> comboGastos;
     @FXML private ComboBox<String> comboGastos2;
     @FXML private TextField txtDescripcionOtro;
+    @FXML private TextField txtDetalles;
     private HomeController homeController;
     private CajaController cajaController;
     private CajaAdminController cajaAdminController;
@@ -171,8 +172,8 @@ public class AgregarGastoController implements Initializable{
     }
 
     @FXML public void agregarGasto(){
-        if(txtDinero.getText().length()==0 && comboGastos.getValue().equals("")){
-            homeController.mostrarAlerta(" Información incompleta","No has escrito el valor que quieres ingresar a la caja");
+        if(txtDinero.getText().length()==0 || comboGastos.getValue().equals("")){
+            homeController.mostrarAlerta(" Información incompleta","Favor llena todos los campos");
             return;
         }
         String dinero = txtDinero.getText().replace(".","");
@@ -184,13 +185,19 @@ public class AgregarGastoController implements Initializable{
             homeController.mostrarAlerta(" Información incompleta","No has escrito el tipo de gasto que quieres ingresar a la caja");
             return;
         }
+        if(txtDetalles.getText().equals("")){
+            homeController.mostrarAlerta(" Información incompleta","No has escrito el detalle del egreso");
+            return;
+        }
 
         float totalCaja=this.homeController.getControlBd().ConsultarTotalCaja();
 
         Caja caja= new Caja();
         caja.setTipo("Egreso");
         String descripcion = ((txtDescripcionOtro.getText().equals("")) ?
-                comboGastos.getValue()+" "+ comboGastos2.getValue() : txtDescripcionOtro.getText());
+                String.format("%s %s %s", comboGastos.getValue(), comboGastos2.getValue(),
+                        txtDetalles.getText()) : txtDescripcionOtro.getText());
+        //comboGastos.getValue()+" "+ comboGastos2.getValue() + txtDetalles.getText()
         caja.setDescripcion(descripcion);
         caja.setEgreso(dinero);
         caja.setTotal(String.valueOf(totalCaja-Float.valueOf(dinero)));
