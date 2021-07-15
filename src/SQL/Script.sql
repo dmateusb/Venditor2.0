@@ -189,7 +189,6 @@ CREATE TABLE IF NOT EXISTS `venditor`.`impresion` (
 
     ENGINE = InnoDB;
 USE `venditor`;
-DELIMITER $$
 -- --------------------------------------------------------------------------------------
 -- Inserts de la tabla impresion para los elementos que irán en el contrato impreso------
 -- --------------------------------------------------------------------------------------
